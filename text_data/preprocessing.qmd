@@ -1,0 +1,500 @@
+---
+title: "Preprocessing"
+bibliography: "../STV4030A.bib"
+---
+
+```{r}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+library(tokenizers)
+library(janeaustenr)
+library(tidytext)
+library(quanteda)
+# library(spacyr);spacy_initialize()
+
+```
+
+In this section we will look at preprocessing of text, i.e. how we can go from 
+text to numbers and what choices/assumptions we want to make along the way. 
+We will review the most basic assumption we make in quantitative analysis of 
+large text data: bag of words.
+
+It is very important to remember that all texts are unique! It does not take 
+a large amount of words before one text begins to differ from another, even if 
+the theme, form, aim and meaning are identical. Even if the same author was to 
+write about exactly the same thing at two different times, the two texts would 
+very likely differ. Therefore, we often take steps to reduce or standardize the 
+number of elements in our texts, before we do analyses. This is what we 
+understand here as preprocessing.
+
+And preprocessing is quite important to how analysis results end up looking.
+
+# Bag of words
+
+A core assumption we usually make when working with text data is the 
+*Bag of Words* assumption. The main intuition behind this assumption is that
+a text will make sense even though you cut all the words into separate pieces,
+put them in a bag, shake the bag, and throw them out. Let us illustrate by doing
+exactly that:
+
+```{r}
+#| lable: bow_ex
+#| echo: false
+
+set.seed(58942)
+
+txt_ex <- rvest::read_html("../data/text_extract/sotu/123408.html") %>% 
+  rvest::html_nodes("div[class='field-docs-content']") %>% 
+  rvest::html_text() %>% 
+  tokenizers::tokenize_words(lowercase = FALSE,
+                             stopwords = FALSE,
+                             strip_punct = FALSE,
+                             strip_numeric = FALSE,
+                             simplify = TRUE) %>% 
+  unlist() %>% 
+  .[1:100]
+
+txt_ex[sample(1:length(txt_ex))] %>% 
+  str_c(collapse = "\n") %>% 
+  str_wrap(width = 50) %>% 
+  cat()
+
+```
+
+It is really hard to make sense of the scrambled words in this example; BoW is
+a very strong assumption. We can make some observations that gives us a good
+picture of what the text is about, but if we consider the original example --
+before scrambling the words ... :
+
+```{r}
+#| lable: bow_ex2
+#| echo: false
+txt_ex %>% 
+  str_c(collapse = "\n") %>% 
+  str_wrap(width = 50) %>% 
+  cat()
+```
+
+... we immediately recognize that this is a State of the Union speech by a US 
+President. It is important to bear this assumption in mind when we preprocess
+text, if it makes sense for the task we want to do, and whether we want
+to alleviate the assumption through our preprocessing.
+
+## Counting words
+
+```{r}
+#| label: count_austen
+
+library(tidytext)
+library(janeaustenr)
+
+austen_count <- austen_books() %>%                                         # <1>
+  unnest_tokens(token, text) %>%                                           # <2>
+  count(book, token, sort = TRUE) %>%                                      # <3>
+  arrange(desc(n))                                                         # <4>
+
+austen_count
+
+
+```
+
+
+
+## TF-IDF
+
+TF-IDF (term frequency-inverse document frequency) gives us the frequency of a
+word per document, weighted by how often the word appears in the corpus. The 
+main reason for using TF-IDF instead of word counts is that it highlights words
+that are distinctive and meaningful within a corpus.
+
+The formula for TF-IDF is quite simple if spelled out simply:
+
+$$ tf-idf = tf \times idf$$
+
+where:
+$$ tf = \frac{token\ count\ in\ document}{total\ tokens\ in\ the\ document} $$
+
+and:
+$$ idf = log(\frac{total\ amount\ of\ documents}{number\ of\ documents\ that\ contains\ the\ token}) $$
+
+
+We can calcultate TF-IDF with the `bind_tf_idf()` function:
+
+
+```{r}
+#| label: tf_idf_austen
+
+austen_tfidf <- austen_books() %>%                                         # <1>
+  unnest_tokens(token, text) %>%                                           # <2>
+  count(book, token, sort = TRUE) %>%                                      # <3>
+  bind_tf_idf(term = token, document = book, n = n) %>%                    # <4>
+  arrange(desc(tf_idf))                                                    # <5>
+
+austen_tfidf
+```
+
+
+# Feature removal
+
+Languages have a lot of words that we use very frequently, but do not carry any
+substantive meaning by itself. For instance, the word "treasure" gives us a
+picture of what the meaning of the word is, even with no context. These words
+are called *content words* or *lexical words*, and are very different from
+*function words* such as "it".
+
+Function words are pronouns (he, she, them), prepositions (on, over, under),
+conjunctions (and, or, but, for), and auxiliary verbs(be, have, do). These words
+are very important for the coherence of a text, but they rarely give us any
+information on the content of the text by themselves. Further, function words
+are the most common words in any language and make up a large share of the words
+in texts. However, some function words can significantly alter the meaning of
+a sentence^[Consider, for instance, "I'll do it as quickly as possible": if we
+remove "as", the sentence would be a lot more confusing.]
+
+## Punctuation, numbers, and more
+
+It is not uncommon to remove punctuation and numbers in text analysis. 
+Punctuation is usually removed, because it does not give us any particular 
+information in a standard bag of words model. Nevertheless, punctuation can be 
+relevant information if you want to divide texts into, for example, sentences. 
+It may also be relevant to take care of things such as the paragraph sign (§) 
+if you are working with legal texts. Think carefully about which features you 
+remove before you remove them.
+
+In the `unnest_tokens()` function from `tidytext`, punctuation is automatically 
+removed (but not all):
+
+## Stopwords
+
+Stopwords are a subset of function words (and in some contexts other words) 
+which are considered to be of little
+importance for the meaning of a text in text analysis. Most stopwords are 
+function words, but it is not
+uncommon to remove features based on the context of a corpus; the word
+"honourable" would be of little importance in a corpus of 
+speeches from the UK House of Commons, but possibly very important in a corpus 
+of moral philosophy books.
+
+In R, there are a couple of alternatives for identifying and removing stopwords.
+The `stopwords` package has the `stopwords()` function, which includes eight
+different stopword dictionaries with varying language support:
+
+```{r}
+#| label: stopwords_pack
+
+library(stopwords)
+
+src <- stopwords_getsources()
+src
+
+langs <- lapply(src, stopwords_getlanguages)
+names(langs) <- src
+
+langs
+
+```
+
+The most common source used in social science applications is probably the
+stopword list from SnowballC. Although, at least for Norwegian, this usage is
+probably a product of path dependency rather than quality:
+
+```{r}
+
+stopwords("no", source = "snowball")
+
+```
+
+You can remove stopwords quite easily with the `tidytext` package. Consider the 
+following example:
+
+```{r}
+#| label: stopwords_austen
+
+persuasion %>%                                                             # <1>
+  tibble(text = .,                                                         # <2>
+         line = 1:length(.)) %>%                                           # <2>
+  unnest_tokens(token, text) %>%                                           # <3>
+  count(token) %>%                                                         # <4>
+  arrange(desc(n))                                                         # <5>
+
+persuasion %>% 
+  tibble(text = .,
+         line = 1:length(.)) %>% 
+  unnest_tokens(token, text,
+                stopwords = stopwords("en", source = "nltk")) %>%          # <6>
+  count(token) %>% 
+  arrange(desc(n))
+
+```
+
+1. Using the book "Persuasion" by Jane Austen (`janeaustenr` package)
+2. Making a tibble of the text and line number 
+3. Tokenizing the text (spliting into words)
+4. Counting the occurence of each token
+5. Sorting by number of tokens
+6. Same as 1-5, but now with removing stopwords
+
+How many stopwords were removed? Does the amount differ between different
+stopword dictionaries?
+
+### IDF as stopwords
+
+A different and more practical approach to removing stopwords is to let the
+corpus itself generate the stopword list by using the inverse document frequency
+(IDF), discussed above. The intuition being that the lower IDF, the less 
+important the word is as a differentiator. This method is particularly useful
+if we want to analyze the difference between texts.
+
+```{r}
+#| label: idf_stopwords
+
+idf_order <- austen_tfidf %>% 
+  arrange(idf)
+
+persuasion %>% 
+  tibble(text = .,
+         line = 1:length(.)) %>% 
+  unnest_tokens(token, text,
+                stopwords = idf_order$token[which(idf_order$idf == 0)]) %>%          # <6>
+  count(token) %>% 
+  arrange(desc(n))
+
+```
+
+
+# Stemming
+
+We often also assume that the same word with different inflection has the same 
+meaning. For example, that "house" and "houses" are the same word. Although 
+inflections give extra meaning to words -- "houses" is plural of house -- this 
+is often a reasonable assumption to make. Standardizing words in this way will 
+also help reduce computational time.
+
+Stemming converts our words to its root form by cutting it down to its smallest 
+component that makes sense without becoming another word (in most cases), and 
+then removing the tail of the word, as shown by an example using the Snowball 
+stemmer through the `quanteda` package:
+
+```{r}
+c("computer",       # (Original Form)
+  "computers",      # (Plural)
+  "computing",      # (Gerund/Verb Form)
+  "computed",       #  (Past Tense Verb)
+  "computer's") %>% # (Possessive Form)
+  char_wordstem(.)
+```
+
+The output stem might not be a dictionary word in itself, but that is of no
+consequence for the computer, which does not know about dictionary words 
+(unless we give it a dictionary and instructions on how to use it). 
+Consequently, understandable sentences can become quite hard to read after 
+stemming:
+
+```{r}
+
+pp <- readLines("../data/preprocessing/pp.txt")
+
+pp_ex <- tokenize_words(pp[60], simplify = TRUE)
+
+pp_ex
+
+pp_stem <- pp_ex %>% 
+  char_wordstem(., language = "en")
+
+cbind(pp_ex, pp_stem)
+
+```
+
+There are also some limitations with stemming, such as strong inflections:^[
+elver is defined as "a young eel, especially when undergoing mass migration 
+upriver from the sea"]
+
+```{r}
+quanteda::char_wordstem(c("elf", "elves", "elver"), language = "en")
+```
+
+To remedy this, we need to use lemmatization algorighms, which will be discussed
+below.
+
+# Parts of speech
+
+Parts of speech (PoS) is, in short, the grammatical function of a word in a 
+sentence. Within the field of language technology, such information about 
+language is very important. In social science, we often see that including PoS 
+as a language feature often has a marginal impact in text analysis (see for 
+example @Lapponi2018).
+
+Consider the following three sentences: 
+
+1. She did a 10k run
+2. She went for a run
+3. She really likes to run 
+
+The word run here has three different grammatical functions in the sentence:
+
+
+```{r}
+#| echo: false
+# run <- c("She did a 10k run",
+#          "She went for a run",
+#          "She really likes to run") 
+# 
+# run <- spacy_parse(run)
+#
+# save(run, file = "../data/preprocessing/run.rda")
+load("../data/preprocessing/run.rda")
+
+run %>% select(doc_id, token_id, token, pos) %>% 
+  tidyr::pivot_wider(names_from = c("doc_id"),
+                     values_from = c("token", "pos")) %>% 
+  select(token_text1, pos_text1,
+         token_text2, pos_text2,
+         token_text3, pos_text3)
+
+```
+
+# Ngrams
+
+When we create a *bag of words*, we often split the text into one word and
+one word. We like to call the words tokens (hence the function 
+`unnest_tokens()`). But splitting the text up into one word at a time is not 
+always appropriate. We might want to preserve some sense of the order between 
+the words in the text, or perhaps we are interested in words that belong 
+together, for example first name and surname. In those cases, we can create 
+tokens consisting of, for example, two and two words, three and three words, 
+or even whole sentences.
+
+If we split into multi-word token, we call it **n-grams**. If we want to refer 
+to a specific number of words in a token, we can use the following terminology:
+
+- One and one word: Unigram
+- Two and two words: Bigrams
+- Three and three words: Trigrams
+
+To split text into unigrams, we set `token = "words"` in the `unnest_tokens` 
+function, as shown above.
+
+```{r}
+#| label: unigram_ex
+
+tibble(text = pp[2:length(pp)]) %>% 
+  unnest_tokens(output = token, input = text)
+
+
+```
+
+To extract bigrams, set `token = "ngrams"` and `n = 2`. What would the output
+be if we had set `n = 3`?
+
+```{r}
+#| label: bigram_ex
+tibble(text = pp[2:length(pp)]) %>% 
+  unnest_tokens(output = token, 
+                input = text,
+                token = "ngrams",
+                n = 2)
+
+```
+
+
+## Visualize
+
+
+```{r}
+#| label: pp_viz
+#| warning: false
+library(ggplot2)
+
+tibble(text = pp) %>% 
+  unnest_tokens(output = token, 
+                input = text,
+                token = "ngrams",
+                n = 2) %>% 
+  count(token) %>% 
+  arrange(desc(n)) %>% 
+  mutate(rank = 1:nrow(.)) %>% 
+  filter(n > 1) %>% 
+  ggplot(aes(x = log(rank), y = log(n))) +
+  geom_point() +
+  geom_path(aes(group = 1)) +
+  ggrepel::geom_label_repel(aes(label = token),
+                            max.overlaps = 5) 
+
+```
+
+
+
+
+<!-- # Language taggers -->
+
+<!-- ## spacy -->
+
+<!-- ```{r} -->
+<!-- #| label: sp_shown -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+<!-- library(spacyr) -->
+<!-- spacy_initialize() -->
+
+<!-- readLines("../data/dialogue_txt/1.1LEHRER.txt") %>%  -->
+<!--   spacy_parse() -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| label: sp_hidden -->
+<!-- #| echo: false -->
+<!-- # save(sp, file = "../data/preprocessing/sp.rda") -->
+<!-- load("../data/preprocessing/sp.rda") -->
+
+<!-- sp -->
+
+<!-- ``` -->
+
+
+<!-- ## koRpus -->
+
+<!-- ```{r} -->
+<!-- #| label: tt_shown -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+
+<!-- library(koRpus) -->
+<!-- library(koRpus.lang.en) -->
+
+<!-- treetag( -->
+<!--   "../data/dialogue_txt/1.1LEHRER.txt", -->
+<!--   treetagger = "manual", -->
+<!--   lang = "en", -->
+<!--   TT.options = list(path = "~/gits/treetagger/", preset = "en"), -->
+<!--   add.desc = TRUE, -->
+<!--   stopwords = quanteda::stopwords("en"), -->
+<!--   stemmer = SnowballC::wordStem -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| label: tt_hidden -->
+<!-- #| echo: false -->
+<!-- # save(tt, file = "../data/preprocessing/tt.rda") -->
+<!-- load("../data/preprocessing/tt.rda") -->
+
+<!-- tt@tokens[, c("token", "lemma", "wclass", "stop", "stem")] -->
+
+
+<!-- ``` -->
+
+
+
+<!-- ## Oslo-Bergen tagger -->
+
+<!-- ```{r} -->
+
+<!-- system.file(package = "stortingscrape") %>%  -->
+<!--   str_c(., "/extdata/obt_sample.txt") %>%  -->
+<!--   stortingscrape::read_obt() -->
+
+<!-- ``` -->
+

@@ -1,0 +1,437 @@
+---
+title: "Producing Tables from R"
+bibliography: "../STV4030A.bib"
+format: 
+  html:
+    code-link: true
+---
+When including tables that include regression model, descriptive statistics, or something else that you produce in R, you would want to format the table in R and export it directly to your Quarto document from an R chunk in your `.qmd`-file. You do not want to manually copy-paste results from R and add them to a table and you don't want to spend time manually formatting the tables to make them look nice. You want to automatize this process so that you don't have to redo it every time something changes in your analysis!
+
+There are lots of different R packages developed exactly for this purpose. Here we provide some illustrations, using the `modelsummary` package developed by @arel2022modelsummary and the `gt` package from the Posit team. Both packages have extensive and excellent documentation. [The `modelsummary` documentation is available here](https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html) and The [`gt` documentation is available here](https://mpn.metworx.com/packages/gt/0.2.2/index.html).  
+
+
+
+# Regression tables using `modelsummary`
+
+To illustrate how to make beautiful regression tables, we need some regression models. We will therefore re-estimate the linear regressions reported by @grewal2023military, [which we already discussed here](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/R_refresher.html#estimating-regression-models). We will now estimate both his models and try to reproduce his [Table 2](https://www.cambridge.org/core/journals/american-political-science-review/article/military-repression-and-restraint-in-algeria/D4A88E1174702955FBA9D07F5E1CAF7B#tab2):
+
+```{r}
+#| message: false
+library(readr)
+grewal_data <- read_delim("../data/algeria_military_survey.csv", delim = ",") 
+
+grewal_model_1 <- lm(restraint ~ 
+                       nonvio2 + prime_frat + prime_future + prime_RU + 
+                       prime_UN + oppose92coup2 + civwar + islamist + 
+                       supp_sharia + active + conscript + soldier + junoff + 
+                       senoff + branch2 + train_west + train_russia + 
+                       train_china + young + sex + edu + urban_area + 
+                       employed + student + arabic + econ1 + corr1 + 
+                       dem + supp_opp_parties + continue + protested + 
+                       preboutef + post_exp + mon + 
+                       as.factor(fgov), 
+                     data = grewal_data) 
+
+grewal_model_2 <-  lm(restraint ~ 
+                        nonvio2 * senoff + prime_frat * conscript + #<1>
+                        prime_future * soldier + prime_RU + prime_UN + 
+                        oppose92coup2 * young + civwar + islamist + 
+                        supp_sharia + active + conscript + soldier + 
+                        junoff + senoff + branch2 + train_west + 
+                        train_russia + train_china + young + sex + 
+                        edu + urban_area + employed + student + 
+                        arabic + econ1 + corr1 + dem + supp_opp_parties +
+                        continue + protested + preboutef + post_exp + mon + 
+                        as.factor(fgov), 
+                      data = grewal_data)
+
+```
+
+1.  we can include interaction terms using `*`, so for instance the variable `nonvio2` is interacted with `senoff`, meaning that the relationship between is `nonvio2` and the dependent variable might be conditional on the value on `senoff`.
+
+There are many different R packages for creating regression tables, but `modelsummary()`is both flexible and elegant, so we will focus on this approach:
+
+Using `modelsummary()` from `modelsummary` we can supply a `list()` of models and the function will produce a table for us:
+
+```{r}
+library(modelsummary)
+modelsummary(models = list(grewal_model_1, grewal_model_2 ))
+```
+
+The above table is already an improvement compared to pasting the output of `summary()` in our documents, but we would want to make a number of improvements:
+
+## Omitting fixed effects coefficients
+First, we don't want to include all the governorate fixed effects coefficients in the table. We can omit some of the coefficients using the `coef_omit` argument. If we set `coef_omit = "as.factor"` all coefficients with names that start with "as.factor" will be omitted from the table:
+
+```{r}
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_omit = "as.factor")
+```
+
+## Rearranging, renaming, and omitting coefficients
+Second, we would to change the variable labels in the tables so that readers can understand what the different variables are. We might also want to change the order of the variables so that the interaction terms don't end up at the bottom of the table. We can do both these things using the `coef_map` argument (`coef_map` can also be used to omit coefficients. We omit any coefficients not mentioned in `coef_map` so we then no longer need the `coef_omit` argument). The `coef_map` argument should be supplied a name list of the structure `list("name_of_coefficient1" = "label 1", "name_of_coefficient2" = "label 2")`:
+
+```{r}
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             #coef_omit = "as.factor",  ## We no longer need this because we can omit them in coef_map instead
+             coef_map = list("nonvio2" = "Nonviolent", 
+                              "nonvio2:senoff" = "Nonviolent × Senior officer",
+                            "prime_frat" =  "Prime-Fraternization", 
+                             "prime_frat:conscript" = "Prime-Fraternization × Conscript", 
+                             "prime_future" = "Prime-Civilian Control", 
+                              "prime_future:soldier" = "Prime-Civilian Control × Soldier", 
+                             "prime_RU" = "Prime-Russian Support", 
+                                "prime_RU:soldier" = "Prime-Russian Support × Soldier", 
+                             "prime_UN" = "Prime-United Nations", 
+                             "oppose92coup2" = "Oppose 1992 coup",
+                               "oppose92coup2:young" = "Oppose 1992 coup × Born after 1995",
+                             "active" = "Active-Duty", 
+                             "conscript" =  "Conscript", 
+                             "soldier" = "Soldier",
+                             "junoff" = "Junior officer", 
+                              "senoff" = "Senior officer", 
+                             "branch2Land" = "Army/Gendarmerie",
+                             "train_west" = "Trained in the West", 
+                             "train_russia" = "Trained in Russia", 
+                             "train_china" = "Trained in China", 
+                             "civwar" = "Fought in the 1990s", 
+                             "islamist" = "Islamist", 
+                             "supp_sharia" = "Support Sharia", 
+                             "econ1" = "Economy good", 
+                             "corr1" = "Corruption high", 
+                             "dem" = "Support democracy", 
+                             "supp_opp_parties" = "Support opposition parties", 
+                             "continue" = "Want Hirak to continue", 
+                             "protested" = "Protested", 
+                             "young" = "Born after 1995", 
+                             "sex" = "Female", 
+                             "edu" = "Education", 
+                            "urban_area" = "Urban area", 
+                            "employed" = "Employed",
+                            "student" = "Student", 
+                            "arabic" = "Arab", 
+                           "preboutef" =  "Pre-Bouteflika Ouster", 
+                           "post_exp" = "Post-experiment", 
+                           "mon" = "Month", 
+                           "(Intercept)" = "Constant"))
+```
+
+If we are using the same `coef_map` for multiple tables, we don't want to copy-paste it from table to table. We can instead assign the list to an object in our environment. That way, we will only have to correct it twice if for instance we discover a typo:
+
+```{r}
+grewal_coef_map <- list("nonvio2" = "Nonviolent", 
+                             "nonvio2:senoff" = "Nonviolent × Senior officer",
+                            "prime_frat" =  "Prime-Fraternization", 
+                             "prime_frat:conscript" = "Prime-Fraternization × Conscript", 
+                             "prime_future" = "Prime-Civilian Control", 
+                              "prime_future:soldier" = "Prime-Civilian Control × Soldier", 
+                             "prime_RU" = "Prime-Russian Support", 
+                                "prime_RU:soldier" = "Prime-Russian Support × Soldier", 
+                             "prime_UN" = "Prime-United Nations", 
+                             "oppose92coup2" = "Oppose 1992 coup",
+                               "oppose92coup2:young" = "Oppose 1992 coup × Born after 1995",
+                             "active" = "Active-Duty", 
+                             "conscript" =  "Conscript", 
+                             "soldier" = "Soldier",
+                             "junoff" = "Junior officer", 
+                              "senoff" = "Senior officer", 
+                             "branch2Land" = "Army/Gendarmerie",
+                             "train_west" = "Trained in the West", 
+                             "train_russia" = "Trained in Russia", 
+                             "train_china" = "Trained in China", 
+                             "civwar" = "Fought in the 1990s", 
+                             "islamist" = "Islamist", 
+                             "supp_sharia" = "Support Sharia", 
+                             "econ1" = "Economy good", 
+                             "corr1" = "Corruption high", 
+                             "dem" = "Support democracy", 
+                             "supp_opp_parties" = "Support opposition parties", 
+                             "continue" = "Want Hirak to continue", 
+                             "protested" = "Protested", 
+                             "young" = "Born after 1995", 
+                             "sex" = "Female", 
+                             "edu" = "Education", 
+                            "urban_area" = "Urban area", 
+                            "employed" = "Employed",
+                            "student" = "Student", 
+                            "arabic" = "Arab", 
+                           "preboutef" =  "Pre-Bouteflika Ouster", 
+                           "post_exp" = "Post-experiment", 
+                           "mon" = "Month", 
+                           "(Intercept)" = "Constant")
+
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map)
+```
+
+## Changing the shape of the table
+Third, this table is very long (many coefficients) but not too wide (only two models). We may save some space in our document by changing the layout so that the standard errors are printed to the right of each coefficient rather than just below it. Indeed, this is how this table is formatted in the [published article](https://www.cambridge.org/core/journals/american-political-science-review/article/military-repression-and-restraint-in-algeria/D4A88E1174702955FBA9D07F5E1CAF7B#tab2).
+
+We can use the `shape` argument to change the shape of the table. `shape` takes a formula, with what should be in different rows before the `~` and what should be in different columns after the `~`. We can thus get a more compact table like this:
+
+```{r}
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic)
+```
+
+## Rerarranging, renaming, selecting, and omitting goodness-of-fit statistics and other model information
+Fourth, by default several different goodness-of-fit statistics and other model information is included. We may want to change their names, what information and the order of these different rows.
+
+If so, we can use `gof_map` which works almost the same way as `coef_map` except that it deals with the model information rather than with the coefficients and that the supplied argument should be a `data.frame` rather than named list. The `data.frame` should have three columns:
+
+1. One column named "raw" includes the names of the statistics you want in the format used by `modelsummary`. You type `modelsummary::gof_map` in your console, the default `gof_map` will be printed out and you can find out what the different "raw" statistics names are.
+2. One column called "clean" where you write the names of the statistics as you want them printed in the table
+3. One column called "fmt" where you tell R how many digits you want for each of the statistics: 
+
+As before, we will assign our preferences to an object in our environment so that it is easy to reuse it later: 
+
+```{r}
+grewal_gof_map <- data.frame(raw = c("nobs", "r.squared", "adj.r.squared"),
+                             clean  = c("No. of. obs", "R2", "Adj. R2"), 
+                             fmt = c(0,3,3))
+  
+
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic, 
+             gof_map = grewal_gof_map)
+```
+
+## Adding significance stars 
+Many scholars like to add stars to their coefficients indicating that the coefficient has reached a particular level of statistical significance (for instance `.05` or `0.01`). Not everyone agrees that this practice is beneficial [e.g. @gill2018comments], but if you do want to include stars in your regression tables, `modelsummary()` got you covered. You simply can set the argument `stars` to `TRUE`, like we do here to get a `+` sign added to coefficients significant at the .1 level, a star added to coefficients significant at the .05-level, two stars added to coefficients significant at the .01 level and three stars added to coefficients significant at the .001-level: 
+
+```{r}
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic, 
+             gof_map = grewal_gof_map, 
+             stars = TRUE)
+```
+
+You can also specify the number of stars and the corresponding significance levels, by supplying a named numeric vector: 
+
+```{r}
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic, 
+             gof_map = grewal_gof_map, 
+             stars = c("*" = .05, "**" = .01,"***" = .01 ))
+```
+## Adding rows with additional information
+When removing the fixed effects coefficients, @grewal2023military added a row indicating that the models do include governorate fixed effects. We can do the same using the the `add_rows` argument. 
+
+The `add_rows` argument needs a `data.frame` with the same number of columns as the table. In our case this means five columns since we have one column for the variable names, two columns with coefficients and two columns with standard errors. We add information the information we want to the rows: 
+
+```{r}
+fixed_effects_info <- data.frame("Governorate fixed effects", "Yes","", "Yes", "")
+
+```
+
+Next, we need to to tell the position of that the additional row should get in our table. We will declare the position by assigning an attribute called "position" to our `data.frame` as illustrated below.  We want it be included just below all the included coefficients. We are not in the business of manually counting things in this course, so we use `length()` to figure out how many coefficients we have in our `coef_map` and use this number as our position: 
+
+```{r}
+attr(fixed_effects_info, "position") <- length(grewal_coef_map)
+```
+
+And now we just need to set the argument in the `modelsummary()` call: 
+
+```{r}
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic, 
+             gof_map = grewal_gof_map, 
+             stars = c("*" = .05, "**" = .01,"***" = .01 ), 
+             add_rows = fixed_effects_info)
+```
+
+
+## Changing the standard errors 
+We often make various corrections to our standard errors (we use various *robust*, *heteroskedasticity-consistent*, *clustered*, *bootstrapped*, etc standard errors because we have reasons to believe that the classical standard errors are off in some way). If so, we can use the `vcov` argument to change the variance-covariance matrix from which the standard errors are calculated. 
+
+There are different ways of specifying this argument (so read the documentation), but the most robust way is arguably to supply a `function` telling R how to make the variance-covariance matrix. 
+
+For instance, although @grewal2023military didn't adjust his standard errors, it would arguably have made sense to use heteroskedasticity-consistent standard errors. We can get those using the `vcovHC()`function from  `sandwich` package: 
+
+```{r}
+library(sandwich)
+
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic, 
+             gof_map = grewal_gof_map, 
+             stars = c("*" = .05, "**" = .01,"***" = .01 ), 
+             vcov = function(x){ vcovHC(x)})
+
+```
+
+## Including the table in our Quarto document
+`modelsummary()` also has arguments for tables and labels, etc. but it is better to declare this information in the execution options for the chunk that produces the table in our Quarto document. So for instance, we can add a table and label that we can use to cross-reference this table like this: 
+
+```{r}
+#| tbl-cap: Our attempt at reproducing Grewal's table 2
+#| label: tbl-grewal_table
+#| echo: fenced
+
+modelsummary(models = list(grewal_model_1, grewal_model_2 ), 
+             coef_map = grewal_coef_map, 
+             shape = term ~ model + statistic, 
+             gof_map = grewal_gof_map, 
+             stars = c("*" = .05, "**" = .01,"***" = .01 ), 
+             add_rows = fixed_effects_info)
+```
+
+Since we declared a label, we can use it to cross reference @tbl-grewal_table in our document. 
+
+# Summary statistics using `datasummary()`
+The `modelsummary` packages also contains the package `datasummary()` which you can use to create tables 
+with summary statistics. Let's make some tables with summary statistics for the variables included in model 1 in  @tbl-grewal_table. 
+
+You need to specify a formula with the variables you want separated by `+` signs followed by a `~` and functions calculating the statistics you want also separated by `+` signs. You also need to specify the dataset, using the `data` argument.  So something like this: 
+
+```{r}
+#| eval: false
+
+datasummary(variable1 + variable2 + variable3 ~ statistic1 + statistic2, 
+            data = my_dataset)
+```
+
+So, to get a summary statistics table for the numeric variables included in model 1 in  @tbl-grewal_table, we can run: 
+
+```{r}
+datasummary(restraint + nonvio2 + prime_frat + prime_future + prime_RU + prime_UN + oppose92coup2 + civwar + islamist +  supp_sharia + active + conscript + soldier + junoff +  senoff + train_west + train_russia + train_china + young + sex + edu + urban_area + employed + student + arabic + econ1 + corr1 + dem + supp_opp_parties + continue + protested + preboutef + post_exp + mon ~ 
+              Mean + Median + SD + Min + Max, 
+            data = grewal_data)
+```
+Note that we are using `Mean()`, `Median()`, `SD()`, `Min()`, and `Max()` rather than `mean()`, `median()`, `sd()`, `min()`, and `max()`. The former set of functions are included in the `modelsummary()` packages and are identical to the latter functions, except that `na.rm = TRUE` by default, which is helpful when we have missing data in our dataset. 
+
+## Changing the variable labels
+Before we include the table in our document, we would want to change the variable labels.  Changing the variable labels is a bit more cumbersome in `datasummary()` than in `modelsummary()`, but you can do by wrapping each  a term in parentheses and use the `=` sign to map new variable labels to the variables names that appear in the dataset: 
+
+```{r}
+datasummary((Restraint = restraint) + (Nonviolent = nonvio2) + (`Prime-Fraternization` = prime_frat) + (`Prime-Civilian Control`=prime_future) + (`Prime-Russian Support` = prime_RU) + 
+              (`Prime-United Nations` = prime_UN) + (`Oppose 1992 coup` = oppose92coup2) +
+              (`Fought in the 1990s` = civwar) + (Islamist = islamist) +  
+              (`Support Sharia` = supp_sharia) + (`Active-Duty`= active) +
+              (Conscript = conscript)  + (Soldier = soldier) + (`Junior officer` = junoff) +
+              (`Senior officer`= senoff) +(`Trained in the West` = train_west)  + 
+              (`Trained in Russia` = train_russia) + 
+              (`Trained in China` = train_china)  + (`Born after 1995` = young) + 
+              (Female = sex) + (Education = edu) + 
+              (Urban = urban_area) + (Employed = employed) + (Student = student) +
+              (Arab = arabic) + (`Economy is good` = econ1) + (`Corruption is high` = corr1) +
+              (`Support democracy` = dem) + (`Support opposition partie` = supp_opp_parties) +
+              (`Want Hirak to continue`= continue) + (Protested = protested) + 
+              (`Pre-Bouteflika Ouster` = preboutef) + (`Post-experiment` = post_exp) + (Month = mon) ~ 
+              Mean + Median + SD + Min + Max, 
+            data = grewal_data)
+```
+
+Because this way of renaming the variable labels is somewhat convoluted, it might be better to instead subset the `data.frame` and rename the variables there before passing it to the `datasummary()` function. We will illustrate this approach when we create a correlation table using `datasummary_correlation()`. 
+
+
+# Correlation matrices using `datasummary_correlation()`
+We can create correlation matrix using `datasummary_correlation()`. This function takes a `data.frame` supplied to the `data` argument and calculates the bivariate correlations between all the included variables. It is therefore best to subset the data and rename the variable before you use the `datasummary_correlation()`. [We will do that using our `tidyverse` skills which we develop further here.](https://pages.github.uio.no/oyvinsti/STV4030A/Wrangling/wrangling_in_dplyr_and_tidyr.html)
+```{r}
+#| message: false
+library(dplyr)
+grewal_subset <- grewal_data %>% #<1>
+  select(restraint , nonvio2 , prime_frat , prime_future , prime_RU , prime_UN , oppose92coup2 , civwar ,  islamist ,  supp_sharia , active , conscript , soldier , junoff ,  senoff , train_west , train_russia , train_china , young , sex , edu , urban_area , employed , student , arabic , econ1 , corr1 , dem , supp_opp_parties , continue , protested , preboutef , post_exp , mon) %>% #<2> 
+  rename(Restraint = restraint , Nonviolent = nonvio2 , `Prime-Fraternization` = prime_frat , `Prime-Civilian Control`=prime_future , `Prime-Russian Support` = prime_RU , 
+         `Prime-United Nations` = prime_UN , `Oppose 1992 coup` = oppose92coup2 ,
+         `Fought in the 1990s` = civwar , Islamist = islamist ,  
+         `Support Sharia` = supp_sharia , `Active-Duty`= active ,
+         Conscript = conscript  , Soldier = soldier , `Junior officer` = junoff ,
+         `Senior officer`= senoff ,`Trained in the West` = train_west  , 
+         `Trained in Russia` = train_russia , 
+         `Trained in China` = train_china  , `Born after 1995` = young , 
+         Female = sex , Education = edu , 
+         Urban = urban_area , Employed = employed , Student = student ,
+         Arab = arabic , `Economy is good` = econ1 , `Corruption is high` = corr1 ,
+         `Support democracy` = dem , `Support opposition parties` = supp_opp_parties ,
+         `Want Hirak to continue`= continue , Protested = protested , 
+         `Pre-Bouteflika Ouster` = preboutef , `Post-experiment` = post_exp , Month = mon) #<3> 
+
+datasummary_correlation(grewal_subset) #<4> 
+```
+1.  We create a new data.frame with the renamed subset of variables we create in the code that follows.
+2. We use `select()` from `dplyr` to select the variables we want. 
+3. We use `rename()` from `dplyr` to rename the variables
+4. Using `datasummary_correlation` on the subsetted dataset with renamed variables to produce a correlation matrix
+
+# Cross-tabulations using `datasummary_crosstab()`
+Cross-tabulations can be compelling for illustrating the relationship between two categorical variables. Let's make a crosstable between @grewal2023military's main dependent variable ("Restraint") and one of his main independent variables ("Non-violent"). He dichotomized both variables for the analysis and a crosstable is thus useful for illustrating the relationship between them. 
+
+`datasummary_crosstab()` needs to be supplied a formula with the variable you want in the rows and the variable you want in the columns separated by a `~`. We also need to supply the `data` argument: 
+
+
+```{r}
+datasummary_crosstab(Nonviolent ~Restraint , 
+  data = grewal_subset)
+```
+
+# Exporting data frames using the gt package
+Sometimes, it is easier to create the table we want as a `data.frame` and export it using `gt()` from the `gt` package. To illustrate, let's recreate the summary statistics table using this approach: 
+
+
+The first step is to create the `data.frame` we want. Here we use `apply` to create the different summary statistics that we want for all the variables in the dataset
+```{r}
+summary_table <- data.frame(variable = colnames(grewal_subset),  #<1> 
+                            Mean = apply(grewal_subset, 2, Mean),#<2>
+                            Median = apply(grewal_subset, 2,  Median), 
+                            Min = apply(grewal_subset, 2,  Min), 
+                             Max = apply(grewal_subset, 2,  Max))
+
+```
+1. We use `colnames()` to find the variable names and assign this to the variable called `variable` in the new `data.frame` which we call `summary_table`
+2. Using `apply()` to get the mean for all columns (hence 2 as the value on second argument) in the dataset. 
+
+Using `gt()` we can include the the `data.frame()` in our Quarto document: 
+
+```{r}
+library(gt)
+gt(summary_table)
+```
+
+By default, the `gt()` function reports the table exactly as is, which means that we get way too many decimals for the mean. There are number of functions that can be applied to `gt`-tables to further format them. For instance we can use `fmt_number()` to adjust the number of decimals: 
+
+```{r}
+gt(summary_table) %>% 
+  fmt_number(decimals = 2)
+```
+We probably don't need the column name for the "variable" column. We can rename the columns using the `cols_label()` function. If we just want to remove the "Variable" label we can rename to to an empty string: 
+```{r}
+gt(summary_table) %>% 
+  fmt_number(decimals = 2) %>% 
+  cols_label(variable =  "")
+```
+
+There are a variety of themes that you can use to make your table look nicer. For instance: 
+
+```{r}
+gt(summary_table) %>% 
+  fmt_number(decimals = 2) %>% 
+  cols_label(variable =  "") %>% 
+  opt_stylize(style = 2) 
+```
+
+
+There are large number of other features in the `gt` package that you may use to customize your tables. We encourage you to [consider the documentation!](https://mpn.metworx.com/packages/gt/0.2.2/index.html)
+
+
+As for the tables created using `modelsummary` there are options in `gt` for adding captions etc. However, we recommend creating the table caption and label in the R chunk that produces the table in your Quarto document. This way the table numbering will be automatically updated when you render the document and you can easily cross-reference the table.
+
+
+```{r}
+#| tbl-cap: A summary statistics table we made using gt()
+#| label: tbl_gt_summary_table
+#| echo: fenced
+gt(summary_table) %>% 
+  fmt_number(decimals = 2) %>% 
+  cols_label(variable =  "") %>% 
+  opt_stylize(style = 1) 
+```
+
+
+
+# References

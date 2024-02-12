@@ -1,0 +1,352 @@
+---
+title: "Extracting data from texts"
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(rvest)
+library(tidyverse)
+```
+
+When we are working with uncleaned data, but sometimes also cleaned data, we 
+often want to extract data from text that come with the data. This might be data
+such as dates, names, numbers, standardized sequences of text, and so on. In the
+following, we will illustrate some ways of extracting data from texts. We will 
+use State of the Union speeches (SOTU) as an example. We will show the various
+extractions with one of the speeches as the running example. The structuring of 
+the entire corpus is shown at the end. But, first lets do a short recap on
+how to structure HTML files (but see the 
+[webscraping section](../data_gather/webscraping.qmd) for a detailed run 
+through):
+
+```{r}
+#| label: download_sotu
+#| eval: false
+#| code-fold: true
+library(rvest)
+library(tidyverse)
+# download.file("https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union", # <1>
+#              destfile = "../data/text_extract/sotu_table.html")          # <1>
+
+sotu_tab_page <- read_html("../data/text_extract/sotu_table.html")         # <2>
+
+links <- sotu_tab_page %>%                                                 # <3>
+  html_nodes("a") %>%                                                      # <3>
+  html_attr("href")                                                        # <3>
+
+links <- links[which(str_detect(links, "pid\\=[0-9]{4}"))]                 # <3>
+  
+pbapply::pblapply(links, function(x) {                                     # <4>
+  
+  download.file(x, destfile = str_c("../data/text_extract/sotu/",          # <4>
+                                    str_extract(x, "[0-9]+$"),             # <4>
+                                    ".html"), quiet = TRUE)                # <4>
+  
+  Sys.sleep(2 + abs(rnorm(1)))                                             # <5>
+
+})
+```
+
+1. Downloading the page containing the table
+2. Reading the `.html` file
+3. Extracting the correct table and subsetting the links ending with
+   four numbers.
+4. Downloading the links (there are over 200 in total, so it will take a while)
+5. Adding random sleep between each call
+
+
+```{r}
+#| label: extracting_text_block_sotu
+
+sotu <- read_html("../data/text_extract/sotu/104596.html")                 # <1>
+
+text <- sotu %>% 
+  html_nodes("div[class='field-docs-content']") %>%                        # <2>
+  html_text()                                                              # <3>
+
+str_sub(text, 1, 50)                                                       # <4>
+
+```
+
+1. Reading one `.html` file for testing
+2. Extracting the speech content field of the speech
+3. Converting to text
+4. Viewing the start of the string
+
+
+## Extract reactions
+
+In the SOTU speeches, there are often recorded reactions from the audience. For
+instance, in Trump's speech from 2017:
+
+> [Laughter] And they wanted me to ride one, and I said, 
+  "No, thank you." [Laughter]
+
+Assuming that all reactions from the audience comes in square brackets ("[]"),
+we can extract all of these:
+
+```{r}
+#| label: extracting_reactions_sotu
+
+reactions <- text %>% 
+  str_extract_all("\\[(.*?)\\]") %>%                                       # <1>
+  unlist() %>%                                                             # <2>
+  str_remove_all("\\[|\\]")                                                # <3>
+
+reactions
+```
+
+1. Extracting segments starting with "[" and ending with "]", but also 
+   everything between the two.
+2. Unlisting into a character vector
+3. Removing "[" and "]" from the string
+
+Seeing as there are both laughs and applauses, we might want to separate these:
+
+
+```{r}
+n_laugh <- table(reactions)["Laughter"]                                    # <1>
+n_applause <- table(reactions)["Applause"]                                 # <1>
+
+c(n_laugh, n_applause)
+```
+
+1. Counting number of recorded laughs and applauses in the audience
+
+Notice how this does not count the "applause" with lower case "a". If we want to
+also count this, we can use regex to summarize different spelling:
+
+```{r}
+#| label: reaction_diffspelling
+
+n_laugh <- sum(str_detect(reactions, "^[Ll]"))
+n_applause <- sum(str_detect(reactions, "^[Aa]"))
+
+c(n_laugh, n_applause)
+
+```
+
+## Dates
+
+Next, looking at the SOTU speeches, there is a standardized segment for the date
+the speech was held. We can extract this node and convert it to a date. Because
+the dates contain months in letters, we have to set the correct locale in order
+to convert the dates correctly, as we discussed in the section on 
+[locales and encoding](../basics_refresh/encoding.qmd).
+
+```{r}
+#| label: extracting_date_sotu
+
+Sys.setlocale("LC_TIME", "en_US.UTF-8")                                    # <1>
+
+date <- sotu %>% 
+  html_nodes("div[class='field-docs-start-date-time']") %>%                # <2>
+  html_text() %>%                                                          # <3>
+  str_trim() %>%                                                           # <4>
+  as.Date("%B %d, %Y")                                                     # <5>
+
+Sys.setlocale("LC_TIME", "nb_NO.UTF-8")                                    # <6>
+```
+
+1. Setting time locale to US
+2. Extracting the date html node
+3. Converting to text
+4. Stripping leading and trailing whitespace
+5. Converting the vector to date (%B is month in letters, %d is day in two 
+   numbers, and %Y is years in four numbers)
+6. Reverting to Norwegian locale
+
+We have now converted the date to a a "Date" class.
+
+```{r}
+#| label: show_date_class
+date ; class(date)
+
+```
+
+
+## Person
+
+In the SOTU HTML files, there is also a `div` node containing the name of the
+President holding the speech. The node does, however, contain some other 
+information as well:
+
+```{r}
+#| label: show_person_field
+
+sotu %>% 
+  html_nodes("div[class='field-docs-person']") %>%                         
+  html_text()                                                          
+```
+
+
+We can extract the segment -- the name of the president -- we want by using 
+regex:
+
+```{r}
+#| label: extracting_president_sotu
+
+pres <- sotu %>% 
+  html_nodes("div[class='field-docs-person']") %>%                         # <1>
+  html_text() %>%                                                          # <2>  
+  str_trim() %>%                                                           # <3> 
+  str_extract("^([A-Za-z]+\\s{0,1}\\.*)+") %>%                             # <4>
+  str_trim()                                                               # <5>
+
+pres_number <- sotu %>% 
+  html_nodes("div[class='field-docs-person']") %>%                         # <6>
+  html_text() %>%                                                          # <7>
+  str_trim() %>%                                                           # <8>
+  str_extract("[0-9]+(th|st)")                                             # <9>
+
+```
+
+1. Extracting the president ("person") node
+2. Converting to text
+3. Trimming leading/trailing whitespace
+4. Extracting the start of the string ("^"), and one or more segments of any
+   upper case or lower case character, followed by 0 or 1 whitespace, followed 
+   by 0 or more dots (".").
+5. Trimming whitespace
+6. Extracting the president ("person") node
+7. Converting to text
+8. Trimming leading/trailing whitespace
+9. Extracting the first segment of any number one or more times, followed by
+   either "th" or "st".
+
+
+## Collect everything
+
+Now we can insert everything into a `tibble`:
+
+```{r}
+#| label: sotu_dataframe
+
+sotu_df <- tibble(pres, pres_number,                                       # <1>
+                  date,                                                    # <1>
+                  reactions = str_c(reactions, collapse = "/"),            # <1>
+                  n_laugh, n_applause)                                     # <1>
+
+
+sotu_df                                                                    # <2>
+```
+
+1. Inserting all variables into a tibble
+2. Viewing the tibble
+
+Of course, we want to standardize this for all speeches: 
+
+```{r}
+#| label: struct_sotu_all
+#| code-fold: true
+all_sotu <- list.files("../data/text_extract/sotu", full.names = TRUE)
+
+sotu_data <- lapply(all_sotu, function(x) {
+  
+  if(file.size(x) == 0) return(NULL)
+  
+  sotu <- read_html(x)
+  
+  text <- sotu %>% 
+    html_nodes("div[class='field-docs-content']") %>% 
+    html_text()
+  
+  reactions <- text %>% 
+    str_extract_all("\\[(.*?)\\]") %>% 
+    unlist() %>% 
+    str_remove_all("\\[|\\]") 
+  
+  n_laugh <- length(which(str_detect(reactions, "[Ll]augh")))
+  n_applause <- length(which(str_detect(reactions, "[Aa]pplau")))
+  
+  Sys.setlocale("LC_TIME", "en_US.UTF-8")
+  
+  date <- sotu %>% 
+    html_nodes("div[class='field-docs-start-date-time']") %>% 
+    html_text() %>% 
+    str_trim() %>% 
+    as.Date("%B %d, %Y", lo)
+  
+  Sys.setlocale("LC_TIME", "nb_NO.UTF-8")
+  
+  pres <- sotu %>% 
+    html_nodes("div[class='field-docs-person']") %>% 
+    html_text() %>% 
+    str_trim() %>% 
+    str_extract("^([A-Za-z]+\\s{0,1}\\.*)+") %>%
+    str_trim() 
+  
+  pres_number <- sotu %>% 
+    html_nodes("div[class='field-docs-person']") %>% 
+    html_text() %>% 
+    str_trim() %>% 
+    str_extract("[0-9]+(th|st)")
+  
+  
+  sotu_df <- tibble(pres, pres_number,
+                    date,
+                    reactions = str_c(reactions, collapse = "/"), 
+                    n_laugh, n_applause)
+  
+  
+  return(sotu_df)
+  
+})
+
+sotu_data <- bind_rows(sotu_data)
+
+sotu_data
+```
+
+Take note of any errors that might occur because of differences between the 
+speeches. For instance, what do you think might have happened to the 
+`pres_number` for the rows with `NA`?
+
+## Visualize
+
+```{r}
+#| label: viz_sotu
+#| message: false
+#| warning: false
+
+library(ggplot2)
+
+sotu_data %>% 
+  ggplot(aes(x = n_laugh, y = n_applause)) +
+  geom_point() +
+  geom_jitter() +
+  geom_smooth(method = "lm") +
+  ggrepel::geom_label_repel(
+    aes(label = ifelse(str_detect(pres, "Obama"), "Obama", NA)),
+    min.segment.length = 0
+    ) +
+  labs(x = "# laugh", y = "# applause") +
+  theme_classic()
+  
+
+```
+
+What do you think is a probable driver for the reactions based on this figure?
+How would you improve this figure? Hint: dates!
+
+
+```{r}
+#| label: suggestion
+#| eval: false
+#| code-fold: true
+
+sotu_data %>% 
+  filter(date > as.Date("1970-01-01")) %>% 
+  ggplot(aes(x = date, y = n_applause + n_laugh)) +
+  geom_point() +
+  geom_smooth() +
+  ggrepel::geom_label_repel(
+    aes(label = ifelse(str_detect(pres, "Obama"), "Obama", NA)),
+    min.segment.length = 0
+    ) +
+  labs(x = "# reactions", y = "# applause") +
+  theme_classic()
+
+```
+

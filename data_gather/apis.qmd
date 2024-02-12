@@ -1,0 +1,257 @@
+---
+title: "APIs"
+---
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=97266226-eb64-47f8-acec-b02f00de2697&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay"></iframe>
+
+```{r}
+#| label: setup
+#| eval: true
+#| echo: false
+#| message: false
+#| error: false
+
+library(tidyverse)
+person1_url <- "../data/apis/person1.json"
+```
+
+Although web pages in `.html` are what we often see with our eyes when using a 
+browser, it is not necessarily always the case that this is the best way to 
+scrape data. Depending on which website and data you are interested in, there 
+are often *back-end* databases from which the websites retrieve information 
+based on the user's clicks. Many such websites have an Application Programming 
+    Interface (API) available, which you can use relatively freely. And some 
+websites are themselves an API. Take for example the 
+[Star Wars API](https://swapi.dev/), which is a database of data on characters, 
+worlds, movies, etc., in the Star Wars universe.
+
+The front page of SWAPI shows how, for example, you can retrieve data about a 
+person:
+
+```{r}
+#| label: swapi_intro
+#| echo: true
+#| eval: false
+person1_url <- "https://swapi.dev/api/people/1/"
+
+readLines(person1_url)
+
+```
+
+```{r}
+#| label: swapi_intro_hidden
+#| echo: false
+#| eval: true
+#| warning: false
+
+readLines(person1_url)
+```
+
+
+### .json
+
+Here, the data format looks very different than a `.html` because `.html` is a 
+bad way to store data. Rather, the vast majority of APIs use formats such as 
+`.xml` and `.json`. In SWAPI's case, we get data in `.json` format. This format 
+does not lend itself very well to reading with `readLines()`. But, as always, 
+someone has made a package that parses data into `.json` for us:
+
+```{r}
+#| label: swapi_luke
+#| message: false
+library(jsonlite)
+
+person1 <- read_json(person1_url)
+
+names(person1)
+class(person1)
+
+person1$name
+person1$starships
+
+```
+
+Elements such as `starships`, `homeworld` and `films` link to other parts of 
+the API, from which further data can be extracted if desired.
+
+Below you will find a slightly longer example of a potential workflow for 
+SWAPI, which you can experiment with:
+
+```{r}
+#| label: swapi_long_ex
+#| file: "../scripts/swapi_ex.R"
+#| eval: false
+#| code-fold: true
+```
+
+:::callout-tip
+If you are working with `.json` files that are quite unmanageable, is to use
+The `listviewer` package. It provides a very clear visual tree of the data..
+:::
+
+### .xml
+
+The second data format most common in APIs is `.xml`. Lets use public transport 
+stops in Oslo via the 
+[Entur API](https://developer.entur. org/stops-and-timetable-data) API as an 
+example. `.xml` is quite similar to `.html`, just easier to work with (mostly).
+
+The first thing we need to do is download data locally to our machine -- there 
+is quite a lot of data to work with here. The code snippet below checks if we 
+have downloaded the file before and only downloads it if it is not already 
+there. We then only need to download the file once -- which is fine in this 
+and most cases.
+
+```{r}
+#| label: entur_dl
+#| eval: false
+if(file.exists("../data/apis/ruter.xml") == FALSE){
+  download.file(url = "https://api.entur.io/realtime/v1/rest/et?datasetId=RUT",
+                destfile = "../data/04-anskaff_tekst/ruter.xml")
+}
+
+```
+
+We will use parts of the `.xml` file, which is a bit too large to open in its 
+entirety, to find out which stops in Oslo most lines go through. These parts 
+look like this:
+
+```{bash}
+#| label: entur_preview
+#| code-fold: true
+#| eval: false
+# This is a Unix command that makes .xml files a little nicer when we print 
+# them in the console
+xmllint --encode utf8 --format ../data/apis/ruter.xml | sed -n 1185,1247p
+
+```
+
+```
+<RecordedCalls>
+  <RecordedCall>
+    <StopPointRef>NSR:Quay:8107</StopPointRef>
+    <Order>1</Order>
+    <StopPointName>Lillestrøm bussterminal</StopPointName>
+    <AimedDepartureTime>2022-08-03T13:50:00+02:00</AimedDepartureTime>
+    <ActualDepartureTime>2022-08-03T13:50:00+02:00</ActualDepartureTime>
+  </RecordedCall>
+  <RecordedCall>
+    <StopPointRef>NSR:Quay:9371</StopPointRef>
+    <Order>2</Order>
+    <StopPointName>Eikeliveien</StopPointName>
+    <AimedArrivalTime>2022-08-03T13:52:00+02:00</AimedArrivalTime>
+    <ActualArrivalTime>2022-08-03T13:52:00+02:00</ActualArrivalTime>
+    <AimedDepartureTime>2022-08-03T13:52:00+02:00</AimedDepartureTime>
+    <ActualDepartureTime>2022-08-03T13:52:00+02:00</ActualDepartureTime>
+  </RecordedCall>
+  . . .
+</RecordedCalls>
+```
+
+It is somewhat similar to `.html` in writing, but is a lot more structured.
+
+The next thing we need to do is read the local `.xml` file. We do that with the 
+same function we use on front-end `.html` pages: `rvest::read_html()`:
+
+```{r}
+#| label: entur_les
+#| eval: false
+library(rvest)
+
+ruter <- read_html("../data/04-anskaff_tekst/ruter.xml")
+
+```
+
+
+```{r , echo=FALSE, eval=TRUE}
+#| label: entur_jukselitt
+#| echo: false
+#| eval: true
+load("../data/apis/entur_alle_stop.rda")
+all_stops <- alle_stopp
+```
+
+We are now free to extract the data we want from the file. In our case, we want 
+all stops on every public transport route in Oslo. These are found within 
+`<recordedcall> . . . </recordedcall>`. The code below may seem a little 
+advanced at first glance, but a tip to see what happens inside the function can 
+be to create the object `x` as the first list element in 
+`stop`^[`x <- stop[[1]]`], then execute each line inside the function only on 
+this element.
+
+```{r}
+#| label: entur_strukt
+#| eval: false
+#| echo: true
+stops <- ruter %>% html_elements("recordedcall")                           # <1>
+
+all_stops <- lapply(stops, function(x){                                   # <2>
+  tibble::tibble(
+    stop_id = x %>% html_elements("stoppointref") %>% html_text(),         # <3>
+    order = x %>% html_elements("order") %>% html_text(),                  # <4>
+    stopp_name = x %>% html_elements("stoppointname") %>% html_text(),     # <5>
+    aimed_dep = x %>% html_elements("aimeddeparturetime") %>% html_text(), # <6>
+    actual_dep = x %>% html_elements("actualdeparturetime") %>% html_text()# <7>
+  )
+
+})
+
+alle_stopp <- bind_rows(alle_stopp)                                        # <8>
+
+```
+
+1. Splits the .xml document into each part contained within `<recordedcall> . . . </recordedcall>`
+2. For each of these elements we create a tibble() with ...
+3. Id for the stop
+4. Order in route
+5. Stop name
+6. Expected time of departure
+7. Actual time of departure
+8. Ties together all the stops
+
+Now we have a dataset we can use for visualization. For instance, a word cloud:
+
+```{r}
+#| label: entur_wordcloud
+
+# Viser data
+head(all_stops)
+
+# Making a new data frame where...
+stop_name_count <- alle_stopp %>%
+  count(stopp_name) %>%             # we count stop names
+  arrange(desc(n)) %>%              # sort the data by # routes
+  filter(nchar(stopp_name) > 3) %>% # remove stops with short names
+  slice_max(n = 30, order_by = n)   # include only the 3 most used stops
+
+
+library(ggwordcloud)
+
+# Setting up random colors
+cols <- sample(colors(),
+               size = nrow(stop_name_count),
+               replace = TRUE)
+
+# Making plot
+stop_name_count %>%
+  ggplot(., aes(label = stopp_name,
+                size = n,
+                color = cols)) +
+  geom_text_wordcloud_area() +
+  scale_size_area(max_size = 10) +
+  theme_void()
+
+```
+
+As expected, Jernbanetorget has the most routes going through the stop.
+
+::: callout-important
+Always check if the website you are gathering data from has an API! If it does,
+you should use it, not the front-end webpage, for scraping.
+
+There are also some data sources that have made available packages in R for
+working with specific APIs. For instance, 
+[WDI](https://cran.r-project.org/web/packages/WDI/index.html),
+[ESS](https://cran.r-project.org/web/packages/essurvey/), and
+[stortingscrape](https://cran.r-project.org/web/packages/stortingscrape).
+:::

@@ -1,0 +1,29 @@
+---
+title: "Beyond the basics: functions and iteration"
+bibliography: "../STV4030A.bib"
+format: 
+  html:
+    code-link: true
+---
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=eb9b18bd-6d46-48e0-912c-b00300982046&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay"></iframe>
+
+Your R skills from the previous courses ([as reviewed here](basics_refresh/R_refresher.qmd)) will take you far. However, as you will now embark on doing more complex data collection and wrangling tasks, two more advanced programming tools will be useful for you to write more efficient code that is easy to edit and debug:
+
+1. Writing your own R functions: You are already used to employing R functions written by others, but you can also write your own functions, using  `function()`: 
+```{r}
+#| eval: false
+
+my_function <- function(x, y, z){
+  ## Add some code that does something with the inputs x, y, and z 
+}
+```
+If you find yourself repeatedly doing the same sequence of tasks on different variables (perhaps a across different projects), a good way to make your work more efficient and less error-prone would be to write your own function. After all, we don't usually calculate the average in by summing up all the values and dividing by the number of observations. Instead we use the existing `mean()` function. The same logic applies to tasks for which there may not already be a readily available function. The only difference is that in such cases, we will need to define the function ourselves. 
+
+2. Iteration: Sometimes we need to make R repeat the same operation or sets of operations many times changing perhaps just one or two arguments to the functions we apply. For instance, maybe we have a many different `.dta`-files that we need to be load and bind together in a single `data.frame`. Repeatedly writing `read_dta("filename.dta")` only changing the argument "filename.dta" is inefficient and error prone. Instead, we would want to use something called iteration to automatize this process. 
+
+
+In what follows, we will explain both [how to write your own functions](Functions.qmd) and how to employ [different forms of iteration in R](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/Iteration.html). 
+
+
+

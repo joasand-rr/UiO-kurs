@@ -1,0 +1,385 @@
+---
+title: "Creating maps"
+---
+
+# Building maps in R
+
+We use the `ggplot` and `sf` packages to build maps in R. If you're already familiar with `ggplot` (see the [previous lesson on `ggplot`](../Visualization/data_viz_in_ggplot.html) for a refresher), many of the following principles will be familiar to you. 
+
+The key principle of creating maps in R using `ggplot` is that we build the map in **layers.** We put different elements of the map on top of each other, using the `+` operator to combine several `geoms.`
+
+Our main work horse function is the `geom_sf()` function. It mostly works like any other geom, but has a few extras. Let's look at an example.
+
+But first, we need load and prepare our map data from the previous example. 
+ 
+::: callout-important
+## Recap exercise
+
+The code below is a concise summary of all the steps from the [previous lesson](./spatial_joins.html), with minimal explanations. It's a good exercise to go through each line below and try to think about what it does and why. The code block is collapsed for readibility reasons. 
+:::
+
+```{r, warning=FALSE, message=FALSE}
+#| code-fold: true
+
+library(tidyverse)
+library(sf)
+
+# read the Bosnia shapefile with st_read() => it's already an sf data frame
+# because of the .shp (shapefile) format!
+bosnia_shp <- st_read("../data/spatial_data/datasets/bosnia_shapefile/bosnia.shp", 
+                      crs = 4326, quiet = T)
+
+# read the Bosnia GED events
+ged <- read_csv("../data/spatial_data/datasets/ged.csv")
+
+# transform GED events into sf data frame
+ged <- ged %>% 
+  st_as_sf(coords = c("longitude", "latitude"), 
+           crs = 4326)
+
+# rename the ID columns
+ged <- ged %>% 
+  rename(id_event = id)
+
+bosnia_shp <- bosnia_shp %>% 
+  rename(id_munic = id)
+
+
+# perform the spatial join
+ged_munic <- st_join(ged, 
+                     bosnia_shp) 
+
+# aggregate events on municipality level
+ged_munic_ag <- ged_munic %>% 
+  st_drop_geometry() %>% 
+  group_by(id_munic) %>% 
+  summarise(conflict_event_count = n()) 
+
+# join aggregated events back into the main municipalitiy shapefile
+bosnia_shp_ged <- left_join(bosnia_shp, 
+                            ged_munic_ag, 
+                            by = "id_munic")
+
+# replace missings in the conflict event count
+bosnia_shp_ged <- bosnia_shp_ged %>% 
+  replace_na(list(conflict_event_count = 0))
+
+```
+
+# Maps and layers
+
+Let's build a basic map first to see the commonalities and differences to the regular `ggplot` procedure.
+
+```{r}
+
+basic_map <- ggplot() + #<1>
+  geom_sf(data = bosnia_shp_ged,  #<2>
+          aes(fill = conflict_event_count)) #<3>
+
+basic_map
+
+```
+
+1. A key difference to a usual `ggplot` is that we don't give the `data` argument to the main `ggplot()` call. Instead we simply initiate an empty canvas with a blank `ggplot()` call. 
+2. We explicitly hand over the data `bosnia_shp_ged`, our main `sf` data frame with the Bosnian municipalities, to the `geom_sf()` geom call. That way, we know that this `geom_sf()` refers to the main data layer. 
+3. Similar to a regular `ggplot` we can then map plot elements to data using arguments to the `aes()` function within the `geom_sf()`. Here we want to fill the municipalities according to the number of conflict events in a municipality, so we're using `fill = conflict_event_count`.
+
+
+We'll talk about how to improve the coloring scheme in a minute, but let me first show you how to layer other map elements on top of this map. 
+
+```{r}
+
+basic_map <- ggplot() + 
+  # municipality layer
+  geom_sf(data = bosnia_shp_ged,  
+          aes(fill = conflict_event_count)) +
+  # point layer (conflict events)
+  geom_sf(data = ged, 
+          color = "firebrick")
+  
+
+
+```
+
+To layer map elements on top of each other, we simply add another  `geom_sf()` on top of the existing `geom_sf()` that plots the municipalities. I've given the points the `color = "firebrick` to make the points better visible on top of the map. This is how this looks like:
+
+```{r}
+
+basic_map
+```
+
+We could repeat this layering with other data frames, for instance a spatial data frame containing the coordinates of major cities in Bosnia as reference points. 
+
+# Categorizing continuous variables
+
+Now, the previous example looks admittedly a bit ugly. The problem is that the automatically picked color fill scale is somewhat off. The reason is that the underlying data is very heavily right-skewed, meaning that one municipality (Sarajevo) has waaaay more conflict events than the other municipalities. 
+
+The main way to deal with such skewed data is to **categorize** the underlying conflict event count data. In fact, that's a general rule when your map coloring is off: categorize the underlying data and then try to plot it.
+
+So let's do that. We use the `classify_intervals()` function from the `classInt` package to put the continous `conflict_event_count` variable into a categorical variable. 
+
+```{r}
+library(classInt)
+
+# classify continuous variable
+bosnia_shp_ged <- bosnia_shp_ged %>% 
+  mutate(conflict_event_count_cat = classify_intervals(conflict_event_count, #<1>
+                                                       n = 6,#<2>
+                                                       intervalClosure = "left", #<3>
+                                                       style = "quantile")) #<4>
+
+```
+
+1. First argument to `classify_intervals()` is the variable name that we want to classify
+2. The `n` argument tells the function how many categories we want. As a rule of thumb, you don't want more categories than 8 or 9, since the human eye can't distinguish between more color shades than that. 
+3. `intervalClosure = "left"` tells the function that we want one separate category for the zeros, since it's usually useful to know where the true zeros are (i.e. municipalities without conflict)
+4. `style = "quantile"` assigns the algorithm used to categorize the continuous variable. Use `help(classify_intervals)` to display other algorithm options. 
+
+Here's how the result looks like. We also use the `scale_fill_brewer()` argument to ggplot to assign a nicer, continuous color palette to the categorized conflict events variable. 
+
+
+
+```{r}
+
+
+basic_map <- ggplot() + 
+  # municipality layer
+  geom_sf(data = bosnia_shp_ged,  
+          aes(fill = conflict_event_count_cat)) +
+  scale_fill_brewer()
+  
+
+basic_map
+
+```
+
+This looks much nicer! On the right hand side, the legend displays the different categories that we created with `classify_intervals()`. A `)` means that the number just left to the `)` is NOT included in the range indicated by the two numbers. 
+
+# Picking a color scale
+
+The color scale we used with `scale_fill_brewer()` is the `Blues` color scales from the website [ColorBrewer](https://colorbrewer2.org/.) This website has a number of color schemes that look good on a map. You can go to the website and pick a color scale that might be more suitable to the style in which you want to display the map.
+
+I've circled in red where you find the name of the color palette on the ColorBrewer website. 
+
+![](../data/spatial_data/images/colorbrewer_website.png){#fig-color-brewer}
+
+Here's how we change the color palette:
+
+```{r}
+
+
+basic_map <- ggplot() + 
+  # municipality layer
+  geom_sf(data = bosnia_shp_ged,  
+          aes(fill = conflict_event_count_cat)) +
+  scale_fill_brewer(palette = "YlOrRd")
+  
+
+basic_map
+
+```
+
+Much better
+
+# Fine-tuning the legend
+
+We can fine tune the legend even more by assigning more human-readable labels and putting it below the map.
+
+```{r}
+
+
+basic_map <- ggplot() + 
+  # municipality layer
+  geom_sf(data = bosnia_shp_ged,  
+          aes(fill = conflict_event_count_cat)) +
+  scale_fill_brewer("Number of conflict events:", #<1>
+                    palette = "YlOrRd", #<2>
+                    labels = c("No events", #<3>
+                               "1",
+                               "2-3", 
+                               "4-8", 
+                               "9 or more")) +
+  theme(legend.position = "bottom") #<4>
+  
+
+basic_map
+
+```
+
+1. We assign a title to the legend.
+2. The palette we want to use (see above)
+3. Here come the labels. Note that they should be in the same order as the categorical variable. Also note that I've correctly labelled the range based on the excluded number as indicated by the `)` in the category name. 
+4. And we put the legend to the bottom using the `theme()` function
+
+# Background and borders
+
+This almost looks like a publishable map! 
+
+We can remove the background and axis labels since they are not so informative on a map like this:
+
+```{r}
+
+basic_map <- ggplot() + 
+  # municipality layer
+  geom_sf(data = bosnia_shp_ged,  
+          aes(fill = conflict_event_count_cat)) +
+  scale_fill_brewer("Number of conflict events:", 
+                    palette = "YlOrRd", 
+                    labels = c("No events", 
+                               "1",
+                               "2-3", 
+                               "4-8", 
+                               "9 or more")) +
+  # remove background
+  theme_void() + 
+  theme(legend.position = "bottom") 
+  
+
+basic_map
+
+```
+
+And we can also style the border of the municipalities a bit to make them thinner. 
+
+```{r, fig.width=8, fig.height = 8}
+#| column: screen-inset-right
+
+basic_map <- ggplot() + 
+  # municipality layer
+  geom_sf(data = bosnia_shp_ged,  
+          aes(fill = conflict_event_count_cat), 
+          # style the border width
+          linewidth = .1) + #<1>
+  scale_fill_brewer("Number of conflict events:", 
+                    palette = "YlOrRd", 
+                    labels = c("No events", 
+                               "1",
+                               "2-3", 
+                               "4-8", 
+                               "9 or more")) +
+  # remove background
+  theme_void() + 
+  theme(legend.position = "bottom") +
+  labs(title = "Conflict events in Bosnia")
+
+basic_map
+
+```
+
+Voilá! Here is our final map!
+
+# Creating a world map
+
+A frequent task in research is to create a world map and visualize the global distribution of some variable. 
+
+Let's visualize democracy scores across the world (see [this example](../Wrangling/wrangling_in_dplyr_and_tidyr.html#pivot_wider) from a prior lesson on democracy scores). We use the V-Dem democracy scores and the [`cshapes` package](https://icr.ethz.ch/data/cshapes/) (do an `install.packages("cshapes")` if you haven't installed the package yet). 
+
+The `cshp` function from the `cshapes` package gives us a map of every country in the world at a certain date as specified by the `date = ` argument. We want the world at January 1st, 2015. 
+
+```{r, message=FALSE, warning=FALSE}
+library(cshapes)
+
+# load democracy scores data
+democracy_scores <- read_delim("../data/democracy_scores.csv", delim = ",")
+
+# load a world map data
+world_map_data <- cshp(date = as.Date("2015-01-01"))
+
+```
+
+
+
+Let's look at the world map data:
+```{r}
+world_map_data
+```
+
+Conveniently, the `cshp()` function returns an `sf` data frame, i.e. the data already comes in a spatial data frame format. There are several columns, including columns that indicate the coordinates for the country's capital at the time. 
+
+That means we can plot the map already with the tools we have!
+
+```{r}
+
+world_map <- ggplot() + 
+  geom_sf(data = world_map_data)
+
+world_map
+```
+
+Now we need to merge the democracy score data into the world map data frame. 
+
+To do that we first need to create a column in the democracy scores data frame with the correct Gleditsch and Ward country code. See here for a [refresher on country codes from a prior lesson.](../Wrangling/wrangling_in_dplyr_and_tidyr.html#combining-datasets-with-dplyr)
+
+```{r}
+library(countrycode)
+
+democracy_scores <- democracy_scores %>% 
+  # only year 2015
+  filter(year == 2015) %>% 
+  # assign Gleditsch and Ward country codes since those are used in the cshp package
+  mutate(gwcode = countrycode(country_name, 
+                              "country.name", 
+                              "gwn"))
+
+
+```
+
+This throws some errors, since some of the countries in V-Dem do not have a dedicated GW ID. But we'll ignore that error for now, since it's not super relevant. 
+
+Let's merge the two datasets, but filter out the `v2x_polyarchy` variable first so we get a clean world map data set with only one variable, the main democracy indicator of V-Dem, `v2x_polyarchy`. 
+
+```{r}
+
+world_map_data <- left_join(world_map_data, 
+                            democracy_scores %>% 
+                              filter(democracy_index == "v2x_polyarchy"), 
+                            by = "gwcode")
+
+world_map_data
+```
+
+Now we're ready to map the democracy score:
+
+```{r}
+
+
+world_map_democracy <- ggplot() + 
+  geom_sf(data = world_map_data, 
+          aes(fill = score))
+
+world_map_democracy
+```
+
+Looking good! Western Europe and North America look pretty democratic, parts of Africa, Russia and Central Asia look more autocratic, exactly as we would expect. Now we can style the map a bit, using the tricks from above. 
+
+I'm not going to explain each step here, so try to read the code and figure out what each step does. 
+
+```{r, fig.width=15, fig.height = 8}
+#| column: screen-inset-right
+
+world_map_democracy <- ggplot() + 
+  geom_sf(data = world_map_data, 
+          aes(fill = score), 
+          linewidth = .1) +
+  scale_fill_distiller("Democracy score:", 
+                       palette = "Oranges", direction = 1) +
+  theme_void() + 
+  theme(legend.position = "bottom") +
+  labs(title = "V-Dem democracy scores around the world, 2015")
+
+world_map_democracy
+
+```
+
+And this is our world map!
+
+# Final thoughts
+
+Now you know:
+
+- What spatial data is and what types of spatial data exist
+- How to get spatial data into R
+- How to combine spatial information using spatial joins
+- And how to create nicely looking maps in R
+
+Have fun exploring the spatial side of R!

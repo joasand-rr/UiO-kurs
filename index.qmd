@@ -1,0 +1,45 @@
+---
+title: "STV4030A: Digital Data in Political Science "
+---
+
+Welcome to the course website for [STV4030A - Digital Data in Political Science](https://www.uio.no/studier/emner/sv/statsvitenskap/STV4030A/)!
+
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=c12736b3-d38a-4a81-ac65-aff000f9da60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay"></iframe>
+
+The aim of this course is to prepare you to use R and RStudio to gather your own data and write a quantitative MA thesis in political science or peace and conflict studies. 
+
+In previous courses, you have learned how to use R and RStudio to open datasets, recode variables, and fit statistical models. In this course, we will focus on all the other skills you need to do quantitative political science:
+
+Specifically, this website contains a set of resources on how to:
+
+-   collect data from various digital sources
+
+-   prepare the data for statistical analysis
+
+-   visualize different types of data and results from statistical models 
+
+-   how to combine text and code in Quarto documents
+
+-   make the full research process from data collection to a final MA thesis efficient and reproducible.
+
+The materials on this website serve as the curriculum for [STV4030A - Digital Data in Political Science](https://www.uio.no/studier/emner/sv/statsvitenskap/STV4030A/), but the materials may also be useful for students working on their MA theses or any other project involving quantitative data.
+
+We believe that the skills and tools covered in this course are better learned through practice than by reading textbooks and attending lectures. Instead of a traditional lecture-based course, we will  therefore provide you with a set of weekly challenges/assignments that you should complete during the [STV4030A - Digital Data in Political Science](https://www.uio.no/studier/emner/sv/statsvitenskap/STV4030A/) course. You will work on these challenges during the seminars (where we will be available to help you) and on your own. 
+
+The materials on this website aim to assist you in solving the weekly challenges (and in working on similar problems in your MA projects). 
+
+
+The course will run for five weeks with one mandatory challenge/assignment each week. Here is a list of the material that will useful to review prior to solving each week's assignment: 
+
+1. For the first week, you should review the sections on ["Working in R"](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/R_refresher.html), ["Writing Quarto documents"](https://pages.github.uio.no/oyvinsti/STV4030A/Quarto_documents/writing_quarto.html), ["Data Wrangling"](https://pages.github.uio.no/oyvinsti/STV4030A/Wrangling/tidy_data.html) and ["Data visualization"](https://pages.github.uio.no/oyvinsti/STV4030A/Visualization/data_viz_in_ggplot.html). These topics provide the foundation for the rest of the course and will stay relevant also for the remainder of the assignments! 
+2. For the second week, you should review all the materials on ["Text as Data"](https://pages.github.uio.no/oyvinsti/STV4030A/text_data/text_intro.html), covering [how to load texts into R](https://pages.github.uio.no/oyvinsti/STV4030A/text_data/read_texts.html), how to use [regular expressions](https://pages.github.uio.no/oyvinsti/STV4030A/text_data/regex.html) define patterns in the texts that we are interested in detecting, removing, or extracting,  how [How to extract data from texts](https://pages.github.uio.no/oyvinsti/STV4030A/text_data/extracting_data_from_texts.html), and how to [preprocess text data for further statistical analysis](https://pages.github.uio.no/oyvinsti/STV4030A/text_data/preprocessing.html). 
+3. For the third week, you should review [the materials on webscraping](https://pages.github.uio.no/oyvinsti/STV4030A/data_gather/webscraping.html).
+4. For the fourth week, you should review [the materials on APIs](https://pages.github.uio.no/oyvinsti/STV4030A/data_gather/apis.html). 
+5. For the final week, you should review [the materials on spatial data](https://pages.github.uio.no/oyvinsti/STV4030A/spatial_data/what_is_spatial_data.html). 
+
+This course assumes previous familiarity with R from [STV4022](https://www.uio.no/studier/emner/sv/statsvitenskap/STV4022/), [PECOS4022](https://www.uio.no/studier/emner/sv/statsvitenskap/PECOS4022/), or a similar course, but we [include a brief review of  R  and how to work in R and RStudio here.](basics_refresh/R_refresher.qmd) Whereas those courses focused on estimating statistical models in R using datasets that were already prepared for analysis, we will now focus on all the *other* tools you will need to write a quantitative MA thesis in political science or peace and conflict studies -- from data collection to writing up your thesis in Quarto.
+
+We will use a variety of example datasets. [You can access all of them here](https://github.uio.no/oyvinsti/STV4030A/tree/main/data).
+
+We hope you will enjoy the course!

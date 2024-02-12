@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title> | STV4030A - Preprocessing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../text_data/extracting_data_from_texts.html" rel="prev">
+<link href="..//pics/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"> | STV4030A</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../text_data/text_intro.html">Text data</a></li><li class="breadcrumb-item"><a href="../text_data/preprocessing.html">Preprocessing</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A">
+            Source code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A/issues">
+            Report an error
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Working in R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/R_refresher.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R refresher</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics: functions and iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing your own functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/encoding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Locales and encoding</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Quarto documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/writing_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing Quarto documents</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/producing_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Producing Tables from R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/tidy_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wrangling in <code>dplyr</code> and <code>tidyr</code></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_in_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization in <code>ggplot2</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examples of different types of data visualizations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing regression models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_model_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing quantities of interest based on regression models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Text data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/text_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Political Text as Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/read_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Texts into R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/extracting_data_from_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extracting data from texts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/preprocessing.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Preprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Data gathering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Webscraping</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">APIs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Spatial data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/what_is_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What is spatial data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/reading_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading spatial data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/spatial_joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/basic_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating maps</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#bag-of-words" id="toc-bag-of-words" class="nav-link active" data-scroll-target="#bag-of-words">Bag of words</a>
+  <ul class="collapse">
+  <li><a href="#counting-words" id="toc-counting-words" class="nav-link" data-scroll-target="#counting-words">Counting words</a></li>
+  <li><a href="#tf-idf" id="toc-tf-idf" class="nav-link" data-scroll-target="#tf-idf">TF-IDF</a></li>
+  </ul></li>
+  <li><a href="#feature-removal" id="toc-feature-removal" class="nav-link" data-scroll-target="#feature-removal">Feature removal</a>
+  <ul class="collapse">
+  <li><a href="#punctuation-numbers-and-more" id="toc-punctuation-numbers-and-more" class="nav-link" data-scroll-target="#punctuation-numbers-and-more">Punctuation, numbers, and more</a></li>
+  <li><a href="#stopwords" id="toc-stopwords" class="nav-link" data-scroll-target="#stopwords">Stopwords</a>
+  <ul class="collapse">
+  <li><a href="#idf-as-stopwords" id="toc-idf-as-stopwords" class="nav-link" data-scroll-target="#idf-as-stopwords">IDF as stopwords</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#stemming" id="toc-stemming" class="nav-link" data-scroll-target="#stemming">Stemming</a></li>
+  <li><a href="#parts-of-speech" id="toc-parts-of-speech" class="nav-link" data-scroll-target="#parts-of-speech">Parts of speech</a></li>
+  <li><a href="#ngrams" id="toc-ngrams" class="nav-link" data-scroll-target="#ngrams">Ngrams</a>
+  <ul class="collapse">
+  <li><a href="#visualize" id="toc-visualize" class="nav-link" data-scroll-target="#visualize">Visualize</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Preprocessing</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this section we will look at preprocessing of text, i.e.&nbsp;how we can go from text to numbers and what choices/assumptions we want to make along the way. We will review the most basic assumption we make in quantitative analysis of large text data: bag of words.</p>
+<p>It is very important to remember that all texts are unique! It does not take a large amount of words before one text begins to differ from another, even if the theme, form, aim and meaning are identical. Even if the same author was to write about exactly the same thing at two different times, the two texts would very likely differ. Therefore, we often take steps to reduce or standardize the number of elements in our texts, before we do analyses. This is what we understand here as preprocessing.</p>
+<p>And preprocessing is quite important to how analysis results end up looking.</p>
+<section id="bag-of-words" class="level1">
+<h1>Bag of words</h1>
+<p>A core assumption we usually make when working with text data is the <em>Bag of Words</em> assumption. The main intuition behind this assumption is that a text will make sense even though you cut all the words into separate pieces, put them in a bag, shake the bag, and throw them out. Let us illustrate by doing exactly that:</p>
+<div class="cell" data-lable="bow_ex">
+<div class="cell-output cell-output-stdout">
+<pre><code>Recent we Jewish Speaker to History Congress
+towards of of work our as Tonight civil President
+we on Thank well Members , you done rights
+targeting are policies conclusion , of reminded
+be be First Lady the , and City Mr , Kansas
+Black . of : we Jewish , , and as of week's mark
+Month last . of the America much us shooting in
+Nation's the that divided still centers Mr nation
+and path that . . United our the remains vandalism
+cemeteries may remind Vice of while celebration a
+threats , citizens community States as very ,</code></pre>
+</div>
+</div>
+<p>It is really hard to make sense of the scrambled words in this example; BoW is a very strong assumption. We can make some observations that gives us a good picture of what the text is about, but if we consider the original example – before scrambling the words … :</p>
+<div class="cell" data-lable="bow_ex2">
+<div class="cell-output cell-output-stdout">
+<pre><code>Thank you very much . Mr . Speaker , Mr . Vice
+President , Members of Congress , the First
+Lady of the United States , and citizens of
+America : Tonight , as we mark the conclusion of
+our celebration of Black History Month , we are
+reminded of our Nation's path towards civil rights
+and the work that still remains to be done .
+Recent threats targeting Jewish community centers
+and vandalism of Jewish cemeteries , as well as
+last week's shooting in Kansas City , remind us
+that while we may be a nation divided on policies</code></pre>
+</div>
+</div>
+<p>… we immediately recognize that this is a State of the Union speech by a US President. It is important to bear this assumption in mind when we preprocess text, if it makes sense for the task we want to do, and whether we want to alleviate the assumption through our preprocessing.</p>
+<section id="counting-words" class="level2">
+<h2 class="anchored" data-anchor-id="counting-words">Counting words</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode r code-annotation-code code-with-copy"><code class="sourceCode r"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janeaustenr)</span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>austen_count <span class="ot">&lt;-</span> <span class="fu">austen_books</span>() <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(token, text) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(book, token, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-hidden="true" tabindex="-1"></a>austen_count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 40,379 × 3
+   book              token     n
+   &lt;fct&gt;             &lt;chr&gt; &lt;int&gt;
+ 1 Mansfield Park    the    6206
+ 2 Mansfield Park    to     5475
+ 3 Mansfield Park    and    5438
+ 4 Emma              to     5239
+ 5 Emma              the    5201
+ 6 Emma              and    4896
+ 7 Mansfield Park    of     4778
+ 8 Pride &amp; Prejudice the    4331
+ 9 Emma              of     4291
+10 Pride &amp; Prejudice to     4162
+# ℹ 40,369 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="tf-idf" class="level2">
+<h2 class="anchored" data-anchor-id="tf-idf">TF-IDF</h2>
+<p>TF-IDF (term frequency-inverse document frequency) gives us the frequency of a word per document, weighted by how often the word appears in the corpus. The main reason for using TF-IDF instead of word counts is that it highlights words that are distinctive and meaningful within a corpus.</p>
+<p>The formula for TF-IDF is quite simple if spelled out simply:</p>
+<p><span class="math display">\[ tf-idf = tf \times idf\]</span></p>
+<p>where: <span class="math display">\[ tf = \frac{token\ count\ in\ document}{total\ tokens\ in\ the\ document} \]</span></p>
+<p>and: <span class="math display">\[ idf = log(\frac{total\ amount\ of\ documents}{number\ of\ documents\ that\ contains\ the\ token}) \]</span></p>
+<p>We can calcultate TF-IDF with the <code>bind_tf_idf()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode r code-annotation-code code-with-copy"><code class="sourceCode r"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>austen_tfidf <span class="ot">&lt;-</span> <span class="fu">austen_books</span>() <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(token, text) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(book, token, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_tf_idf</span>(<span class="at">term =</span> token, <span class="at">document =</span> book, <span class="at">n =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(tf_idf))</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a>austen_tfidf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 40,379 × 6
+   book                token         n      tf   idf  tf_idf
+   &lt;fct&gt;               &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Sense &amp; Sensibility elinor      623 0.00519  1.79 0.00931
+ 2 Sense &amp; Sensibility marianne    492 0.00410  1.79 0.00735
+ 3 Mansfield Park      crawford    493 0.00307  1.79 0.00551
+ 4 Pride &amp; Prejudice   darcy       373 0.00305  1.79 0.00547
+ 5 Persuasion          elliot      254 0.00304  1.79 0.00544
+ 6 Emma                emma        786 0.00488  1.10 0.00536
+ 7 Northanger Abbey    tilney      196 0.00252  1.79 0.00452
+ 8 Emma                weston      389 0.00242  1.79 0.00433
+ 9 Pride &amp; Prejudice   bennet      294 0.00241  1.79 0.00431
+10 Persuasion          wentworth   191 0.00228  1.79 0.00409
+# ℹ 40,369 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="feature-removal" class="level1">
+<h1>Feature removal</h1>
+<p>Languages have a lot of words that we use very frequently, but do not carry any substantive meaning by itself. For instance, the word “treasure” gives us a picture of what the meaning of the word is, even with no context. These words are called <em>content words</em> or <em>lexical words</em>, and are very different from <em>function words</em> such as “it”.</p>
+<p>Function words are pronouns (he, she, them), prepositions (on, over, under), conjunctions (and, or, but, for), and auxiliary verbs(be, have, do). These words are very important for the coherence of a text, but they rarely give us any information on the content of the text by themselves. Further, function words are the most common words in any language and make up a large share of the words in texts. However, some function words can significantly alter the meaning of a sentence<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<section id="punctuation-numbers-and-more" class="level2">
+<h2 class="anchored" data-anchor-id="punctuation-numbers-and-more">Punctuation, numbers, and more</h2>
+<p>It is not uncommon to remove punctuation and numbers in text analysis. Punctuation is usually removed, because it does not give us any particular information in a standard bag of words model. Nevertheless, punctuation can be relevant information if you want to divide texts into, for example, sentences. It may also be relevant to take care of things such as the paragraph sign (§) if you are working with legal texts. Think carefully about which features you remove before you remove them.</p>
+<p>In the <code>unnest_tokens()</code> function from <code>tidytext</code>, punctuation is automatically removed (but not all):</p>
+</section>
+<section id="stopwords" class="level2">
+<h2 class="anchored" data-anchor-id="stopwords">Stopwords</h2>
+<p>Stopwords are a subset of function words (and in some contexts other words) which are considered to be of little importance for the meaning of a text in text analysis. Most stopwords are function words, but it is not uncommon to remove features based on the context of a corpus; the word “honourable” would be of little importance in a corpus of speeches from the UK House of Commons, but possibly very important in a corpus of moral philosophy books.</p>
+<p>In R, there are a couple of alternatives for identifying and removing stopwords. The <code>stopwords</code> package has the <code>stopwords()</code> function, which includes eight different stopword dictionaries with varying language support:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stopwords)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>src <span class="ot">&lt;-</span> <span class="fu">stopwords_getsources</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>src</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "snowball"      "stopwords-iso" "misc"          "smart"        
+[5] "marimo"        "ancient"       "nltk"          "perseus"      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>langs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(src, stopwords_getlanguages)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(langs) <span class="ot">&lt;-</span> src</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>langs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$snowball
+ [1] "da" "de" "en" "es" "fi" "fr" "hu" "ir" "it" "nl" "no" "pt" "ro" "ru" "sv"
+
+$`stopwords-iso`
+ [1] "af" "ar" "hy" "eu" "bn" "br" "bg" "ca" "zh" "hr" "cs" "da" "nl" "en" "eo"
+[16] "et" "fi" "fr" "gl" "de" "el" "ha" "he" "hi" "hu" "id" "ga" "it" "ja" "ko"
+[31] "ku" "la" "lt" "lv" "ms" "mr" "no" "fa" "pl" "pt" "ro" "ru" "sk" "sl" "so"
+[46] "st" "es" "sw" "sv" "th" "tl" "tr" "uk" "ur" "vi" "yo" "zu"
+
+$misc
+[1] "ar" "ca" "el" "gu" "zh"
+
+$smart
+[1] "en"
+
+$marimo
+[1] "en"    "de"    "ru"    "ar"    "he"    "zh_tw" "zh_cn" "ko"    "ja"   
+
+$ancient
+[1] "grc" "la" 
+
+$nltk
+ [1] "ar" "az" "da" "nl" "en" "fi" "fr" "de" "el" "hu" "id" "it" "kk" "ne" "no"
+[16] "pt" "ro" "ru" "sl" "es" "sv" "tg" "tr"
+
+$perseus
+[1] "grc" "la" </code></pre>
+</div>
+</div>
+<p>The most common source used in social science applications is probably the stopword list from SnowballC. Although, at least for Norwegian, this usage is probably a product of path dependency rather than quality:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"no"</span>, <span class="at">source =</span> <span class="st">"snowball"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "og"        "i"         "jeg"       "det"       "at"        "en"       
+  [7] "et"        "den"       "til"       "er"        "som"       "på"       
+ [13] "de"        "med"       "han"       "av"        "ikke"      "ikkje"    
+ [19] "der"       "så"        "var"       "meg"       "seg"       "men"      
+ [25] "ett"       "har"       "om"        "vi"        "min"       "mitt"     
+ [31] "ha"        "hadde"     "hun"       "nå"        "over"      "da"       
+ [37] "ved"       "fra"       "du"        "ut"        "sin"       "dem"      
+ [43] "oss"       "opp"       "man"       "kan"       "hans"      "hvor"     
+ [49] "eller"     "hva"       "skal"      "selv"      "sjøl"      "her"      
+ [55] "alle"      "vil"       "bli"       "ble"       "blei"      "blitt"    
+ [61] "kunne"     "inn"       "når"       "være"      "kom"       "noen"     
+ [67] "noe"       "ville"     "dere"      "som"       "deres"     "kun"      
+ [73] "ja"        "etter"     "ned"       "skulle"    "denne"     "for"      
+ [79] "deg"       "si"        "sine"      "sitt"      "mot"       "å"        
+ [85] "meget"     "hvorfor"   "dette"     "disse"     "uten"      "hvordan"  
+ [91] "ingen"     "din"       "ditt"      "blir"      "samme"     "hvilken"  
+ [97] "hvilke"    "sånn"      "inni"      "mellom"    "vår"       "hver"     
+[103] "hvem"      "vors"      "hvis"      "både"      "bare"      "enn"      
+[109] "fordi"     "før"       "mange"     "også"      "slik"      "vært"     
+[115] "være"      "båe"       "begge"     "siden"     "dykk"      "dykkar"   
+[121] "dei"       "deira"     "deires"    "deim"      "di"        "då"       
+[127] "eg"        "ein"       "eit"       "eitt"      "elles"     "honom"    
+[133] "hjå"       "ho"        "hoe"       "henne"     "hennar"    "hennes"   
+[139] "hoss"      "hossen"    "ikkje"     "ingi"      "inkje"     "korleis"  
+[145] "korso"     "kva"       "kvar"      "kvarhelst" "kven"      "kvi"      
+[151] "kvifor"    "me"        "medan"     "mi"        "mine"      "mykje"    
+[157] "no"        "nokon"     "noka"      "nokor"     "noko"      "nokre"    
+[163] "si"        "sia"       "sidan"     "so"        "somt"      "somme"    
+[169] "um"        "upp"       "vere"      "vore"      "verte"     "vort"     
+[175] "varte"     "vart"     </code></pre>
+</div>
+</div>
+<p>You can remove stopwords quite easily with the <code>tidytext</code> package. Consider the following example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-1" class="code-annotation-target"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a>persuasion <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">text =</span> .,</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">line =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(.)) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(token, text) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(token) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>persuasion <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">text =</span> .,</span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">line =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(.)) <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(token, text,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="6" onclick="event.preventDefault();">6</a><span id="annotated-cell-6-12" class="code-annotation-target"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">stopwords =</span> <span class="fu">stopwords</span>(<span class="st">"en"</span>, <span class="at">source =</span> <span class="st">"nltk"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(token) <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="1" data-code-annotation="1">Using the book “Persuasion” by Jane Austen (<code>janeaustenr</code> package)</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="2,3" data-code-annotation="2">Making a tibble of the text and line number</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="3">Tokenizing the text (spliting into words)</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="4">Counting the occurence of each token</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="6" data-code-annotation="5">Sorting by number of tokens</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="12" data-code-annotation="6">Same as 1-5, but now with removing stopwords</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5,858 × 2
+   token     n
+   &lt;chr&gt; &lt;int&gt;
+ 1 the    3329
+ 2 to     2808
+ 3 and    2800
+ 4 of     2570
+ 5 a      1594
+ 6 in     1389
+ 7 was    1337
+ 8 her    1203
+ 9 had    1187
+10 she    1146
+# ℹ 5,848 more rows
+# A tibble: 5,732 × 2
+   token       n
+   &lt;chr&gt;   &lt;int&gt;
+ 1 &lt;NA&gt;     1144
+ 2 could     451
+ 3 anne      447
+ 4 would     355
+ 5 captain   303
+ 6 mrs       291
+ 7 mr        256
+ 8 elliot    254
+ 9 one       231
+10 must      228
+# ℹ 5,722 more rows</code></pre>
+</div>
+</div>
+<p>How many stopwords were removed? Does the amount differ between different stopword dictionaries?</p>
+<section id="idf-as-stopwords" class="level3">
+<h3 class="anchored" data-anchor-id="idf-as-stopwords">IDF as stopwords</h3>
+<p>A different and more practical approach to removing stopwords is to let the corpus itself generate the stopword list by using the inverse document frequency (IDF), discussed above. The intuition being that the lower IDF, the less important the word is as a differentiator. This method is particularly useful if we want to analyze the difference between texts.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode r code-annotation-code code-with-copy"><code class="sourceCode r"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>idf_order <span class="ot">&lt;-</span> austen_tfidf <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(idf)</span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a>persuasion <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">text =</span> .,</span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">line =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(.)) <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(token, text,</span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">stopwords =</span> idf_order<span class="sc">$</span>token[<span class="fu">which</span>(idf_order<span class="sc">$</span>idf <span class="sc">==</span> <span class="dv">0</span>)]) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(token) <span class="sc">%&gt;%</span> </span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,275 × 2
+   token         n
+   &lt;chr&gt;     &lt;int&gt;
+ 1 &lt;NA&gt;       3222
+ 2 anne        447
+ 3 captain     303
+ 4 elliot      254
+ 5 wentworth   191
+ 6 charles     155
+ 7 walter      123
+ 8 mary        121
+ 9 russell     118
+10 musgrove    111
+# ℹ 3,265 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="stemming" class="level1">
+<h1>Stemming</h1>
+<p>We often also assume that the same word with different inflection has the same meaning. For example, that “house” and “houses” are the same word. Although inflections give extra meaning to words – “houses” is plural of house – this is often a reasonable assumption to make. Standardizing words in this way will also help reduce computational time.</p>
+<p>Stemming converts our words to its root form by cutting it down to its smallest component that makes sense without becoming another word (in most cases), and then removing the tail of the word, as shown by an example using the Snowball stemmer through the <code>quanteda</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"computer"</span>,       <span class="co"># (Original Form)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"computers"</span>,      <span class="co"># (Plural)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"computing"</span>,      <span class="co"># (Gerund/Verb Form)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"computed"</span>,       <span class="co">#  (Past Tense Verb)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"computer's"</span>) <span class="sc">%&gt;%</span> <span class="co"># (Possessive Form)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">char_wordstem</span>(.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "comput" "comput" "comput" "comput" "comput"</code></pre>
+</div>
+</div>
+<p>The output stem might not be a dictionary word in itself, but that is of no consequence for the computer, which does not know about dictionary words (unless we give it a dictionary and instructions on how to use it). Consequently, understandable sentences can become quite hard to read after stemming:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"../data/preprocessing/pp.txt"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pp_ex <span class="ot">&lt;-</span> <span class="fu">tokenize_words</span>(pp[<span class="dv">60</span>], <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>pp_ex</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "and"        "there's"    "something"  "fluttering" "around"    
+[6] "the"        "flowers"   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pp_stem <span class="ot">&lt;-</span> pp_ex <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">char_wordstem</span>(., <span class="at">language =</span> <span class="st">"en"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(pp_ex, pp_stem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     pp_ex        pp_stem  
+[1,] "and"        "and"    
+[2,] "there's"    "there"  
+[3,] "something"  "someth" 
+[4,] "fluttering" "flutter"
+[5,] "around"     "around" 
+[6,] "the"        "the"    
+[7,] "flowers"    "flower" </code></pre>
+</div>
+</div>
+<p>There are also some limitations with stemming, such as strong inflections:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>quanteda<span class="sc">::</span><span class="fu">char_wordstem</span>(<span class="fu">c</span>(<span class="st">"elf"</span>, <span class="st">"elves"</span>, <span class="st">"elver"</span>), <span class="at">language =</span> <span class="st">"en"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "elf"   "elv"   "elver"</code></pre>
+</div>
+</div>
+<p>To remedy this, we need to use lemmatization algorighms, which will be discussed below.</p>
+</section>
+<section id="parts-of-speech" class="level1">
+<h1>Parts of speech</h1>
+<p>Parts of speech (PoS) is, in short, the grammatical function of a word in a sentence. Within the field of language technology, such information about language is very important. In social science, we often see that including PoS as a language feature often has a marginal impact in text analysis (see for example <span class="citation" data-cites="Lapponi2018">Lapponi et al. (<a href="#ref-Lapponi2018" role="doc-biblioref">2018</a>)</span>).</p>
+<p>Consider the following three sentences:</p>
+<ol type="1">
+<li>She did a 10k run</li>
+<li>She went for a run</li>
+<li>She really likes to run</li>
+</ol>
+<p>The word run here has three different grammatical functions in the sentence:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 6
+  token_text1 pos_text1 token_text2 pos_text2 token_text3 pos_text3
+  &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;    
+1 She         PRON      She         PRON      She         PRON     
+2 did         VERB      went        VERB      really      ADV      
+3 a           DET       for         ADP       likes       VERB     
+4 10k         NOUN      a           DET       to          PART     
+5 run         VERB      run         NOUN      run         VERB     </code></pre>
+</div>
+</div>
+</section>
+<section id="ngrams" class="level1">
+<h1>Ngrams</h1>
+<p>When we create a <em>bag of words</em>, we often split the text into one word and one word. We like to call the words tokens (hence the function <code>unnest_tokens()</code>). But splitting the text up into one word at a time is not always appropriate. We might want to preserve some sense of the order between the words in the text, or perhaps we are interested in words that belong together, for example first name and surname. In those cases, we can create tokens consisting of, for example, two and two words, three and three words, or even whole sentences.</p>
+<p>If we split into multi-word token, we call it <strong>n-grams</strong>. If we want to refer to a specific number of words in a token, we can use the following terminology:</p>
+<ul>
+<li>One and one word: Unigram</li>
+<li>Two and two words: Bigrams</li>
+<li>Three and three words: Trigrams</li>
+</ul>
+<p>To split text into unigrams, we set <code>token = "words"</code> in the <code>unnest_tokens</code> function, as shown above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">text =</span> pp[<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(pp)]) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(<span class="at">output =</span> token, <span class="at">input =</span> text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 370 × 1
+   token 
+   &lt;chr&gt; 
+ 1 ting  
+ 2 ting  
+ 3 all   
+ 4 aboard
+ 5 the   
+ 6 school
+ 7 bus   
+ 8 we    
+ 9 are   
+10 going 
+# ℹ 360 more rows</code></pre>
+</div>
+</div>
+<p>To extract bigrams, set <code>token = "ngrams"</code> and <code>n = 2</code>. What would the output be if we had set <code>n = 3</code>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">text =</span> pp[<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(pp)]) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(<span class="at">output =</span> token, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">input =</span> text,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">token =</span> <span class="st">"ngrams"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 309 × 1
+   token     
+   &lt;chr&gt;     
+ 1 ting ting 
+ 2 all aboard
+ 3 aboard the
+ 4 the school
+ 5 school bus
+ 6 we are    
+ 7 are going 
+ 8 going to  
+ 9 to the    
+10 the zoo   
+# ℹ 299 more rows</code></pre>
+</div>
+</div>
+<section id="visualize" class="level2">
+<h2 class="anchored" data-anchor-id="visualize">Visualize</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">text =</span> pp) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(<span class="at">output =</span> token, </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">input =</span> text,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">token =</span> <span class="st">"ngrams"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(token) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(rank), <span class="at">y =</span> <span class="fu">log</span>(n))) <span class="sc">+</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> token),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>                            <span class="at">max.overlaps =</span> <span class="dv">5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="preprocessing_files/figure-html/pp_viz-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<!-- # Language taggers -->
+<!-- ## spacy -->
+<!-- ```{r} -->
+<!-- #| label: sp_shown -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+<!-- library(spacyr) -->
+<!-- spacy_initialize() -->
+<!-- readLines("../data/dialogue_txt/1.1LEHRER.txt") %>%  -->
+<!--   spacy_parse() -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- #| label: sp_hidden -->
+<!-- #| echo: false -->
+<!-- # save(sp, file = "../data/preprocessing/sp.rda") -->
+<!-- load("../data/preprocessing/sp.rda") -->
+<!-- sp -->
+<!-- ``` -->
+<!-- ## koRpus -->
+<!-- ```{r} -->
+<!-- #| label: tt_shown -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
+<!-- library(koRpus) -->
+<!-- library(koRpus.lang.en) -->
+<!-- treetag( -->
+<!--   "../data/dialogue_txt/1.1LEHRER.txt", -->
+<!--   treetagger = "manual", -->
+<!--   lang = "en", -->
+<!--   TT.options = list(path = "~/gits/treetagger/", preset = "en"), -->
+<!--   add.desc = TRUE, -->
+<!--   stopwords = quanteda::stopwords("en"), -->
+<!--   stemmer = SnowballC::wordStem -->
+<!-- ) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- #| label: tt_hidden -->
+<!-- #| echo: false -->
+<!-- # save(tt, file = "../data/preprocessing/tt.rda") -->
+<!-- load("../data/preprocessing/tt.rda") -->
+<!-- tt@tokens[, c("token", "lemma", "wclass", "stop", "stem")] -->
+<!-- ``` -->
+<!-- ## Oslo-Bergen tagger -->
+<!-- ```{r} -->
+<!-- system.file(package = "stortingscrape") %>%  -->
+<!--   str_c(., "/extdata/obt_sample.txt") %>%  -->
+<!--   stortingscrape::read_obt() -->
+<!-- ``` -->
+
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Lapponi2018" class="csl-entry" role="listitem">
+Lapponi, Emanuele, Martin G. Søyland, Erik Velldal, and Stephan Oepen. 2018. <span>“The <span>T</span>alk of <span>N</span>orway: A Richly Annotated Corpus of the <span>N</span>orwegian Parliament, 1998–2016.”</span> <em>Language Resources and Evaluation</em> 52 (3): 873–93.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Consider, for instance, “I’ll do it as quickly as possible”: if we remove “as”, the sentence would be a lot more confusing.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> elver is defined as “a young eel, especially when undergoing mass migration upriver from the sea”<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../text_data/extracting_data_from_texts.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Extracting data from texts</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

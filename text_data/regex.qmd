@@ -1,0 +1,154 @@
+---
+title: "Regular expressions"
+---
+
+Regular expressions -- commonly referred to as regex -- is a pattern matching 
+language for text. Regex provides a way to define patterns in language to
+detect, extract, remove, and replace segments of text. We will cover more 
+practical uses of regex in the 
+[extracting data from texts](extracting_data_from_texts.qmd) section. But in 
+this section, we will
+demonstrate the basics of regex and how to use it in R. We will use the 
+`stringr` package for matching strings with patterns as it is a vital part
+of the `tidyverse`. 
+
+
+## Initial example
+
+As a simple initial example, consider the following sentence:
+
+> Gro Harlem Brundtland (84) was the Prime Minister of Norway in 1981, 1986 to 
+  1989, and 1990 to 1996.
+  
+If we want to extract all years mentioned in the sentence, we can use regex:
+
+```{r}
+library(stringr)
+
+ex_text <- "Gro Harlem Brundtland (84) was the Prime Minister of Norway in 1981,
+            1986 to 1989, and 1990 to 1996."
+
+str_extract(ex_text, "[0-9]")                                          # <1>
+
+str_extract_all(ex_text, "[0-9]")                                      # <2>
+
+str_extract_all(ex_text, "[0-9]+")                                     # <3>
+
+str_extract_all(ex_text, "[0-9]{4}")                                   # <4>
+```
+
+1. Using `str_extract()` will only return the first match; here, that is any
+   number between 0 and 9 -- "[0-9]"
+2. Using `str_extract_all()` will extract all numbers; here, that is any
+   number between 0 and 9 -- "[0-9]"
+3. Adding a "+" behind "[0-9]" indicates that we want this pattern -- any
+   number between 0 and 9 to match one or more times
+4. Adding a "{4}" behind "[0-9]" indicates that we want this pattern -- any
+   number between 0 and 9 -- to match exactly 4 times
+   
+Notice how the lines 1 through 3 does not extract the years correctly or just 
+the years; regex is extremely precise in that it will give you exactly what you
+ask for.
+
+## Usage
+
+The four most common regex usages and their corresponding `stringr` functions, 
+with examples are listed in the table below. Remember that all of these 
+functions also have a `*_all` version, for matching multiple times.
+
+
+|         | `stringr`                                   | Description                                               | Example                                            | Example return  |
+|---------|---------------------------------------------|-----------------------------------------------------------|----------------------------------------------------|-----------------|
+| Detect  | `str_detect(string, pattern)`               | Checks if a pattern exists in a string.                   | `str_detect("Hello world", "world")`               | TRUE            |
+| Extract | `str_extract(string, pattern)`              | Extracts the first match of a pattern from a string.      | `str_extract("Age: 25", "\\d+")`                   | 25              |
+| Remove  | `str_remove(string, pattern)`               | Removes the first occurrence of a pattern from a string.  | `str_remove("Hello, world", "\\W")`                | Hello world     |
+| Replace | `str_replace(string, pattern, replacement)` | Replaces the first match of a pattern with a replacement. | `str_replace("Colors: red blue", "\\w+", "green")` | green: red blue |
+
+
+## Special characters
+
+There are a lot of special characters in regex, and often we can extract the 
+same text with completely different regex (e.g `\\d` and `[0-9]`). There are,
+however, some common ones that we use more often than othere. Here is a list
+of 10 commonly used regex special characters:
+
+| Special character | Description                                       | `stringr` example              |
+|-------------------|---------------------------------------------------|---------------------------------|
+| `.`               | Matches any single character except a newline.    | `str_detect("a.b", "a.b")`       |
+| `*`               | Matches zero or more occurrences of the preceding character. | `str_detect("abbbc", "ab*c")`   |
+| `+`               | Matches one or more occurrences of the preceding character. | `str_detect("abbbc", "ab+c")`   |
+| `?`               | Matches zero or one occurrence of the preceding character. | `str_detect("color", "colou?r")` |
+| `[ ]`             | Defines a character class, allowing you to specify a range of characters. | `str_detect("apple", "[aeiou]")` |
+| `( )`             | Defines a capturing group for capturing and extracting matched text. | `str_extract("abab", "(ab)+")`  |
+| `\`               | Escapes a special character, treating it as a regular character. | `str_detect("www.example.com", "\\.")` |
+| `^`               | Matches the beginning of a line or string.       | `str_detect("Start of line", "^Start")` |
+| `$`               | Matches the end of a line or string.             | `str_detect("end of line", "end$")` |
+| `\d`              | Matches any digit (0-9).                         | `str_extract("123", "\\d{3}")`   |
+
+Try running the `stringr` examples in R!
+
+
+# Advanced regex
+
+Regex can become quite complex at even the simplest tasks. The most famous
+example of this being emails:
+
+```{r}
+two_email_addresses <- c("martin.soyland@stv.uio.no",
+                     "øyvind.stiansen@stv.uio.no")
+
+str_extract(two_email_addresses, 
+           "([a-z]+\\.*)+\\@")                                       # <1>
+
+str_extract(two_email_addresses, 
+           "([a-z]+[[:punct:]]*)+\\@")                               # <2>
+
+str_extract(two_email_addresses, 
+           "^([a-z]+[[:punct:]]*)+\\@([a-z]+[[:punct:]]*)+$")        # <3>
+
+str_extract(two_email_addresses, 
+           "(([a-zæøå]+[[:punct:]]*)+\\@*)+")                        # <4>
+```
+
+1. (Any letter between a to z matched one or more times, followed by 0 or more 
+   dots), matched one or more times, followed by the at sign.
+2. (Any letter between a to z matched one or more times, followed by 0 or more 
+   punctuation), matched one or more times, followed by the at sign.
+3. At the start of the string (any letter between a to z matched one or more 
+   times, followed by 0 or more punctuation), matched one or more times, 
+   followed by the at sign, followed by (any letter between a to z matched one 
+   or more times, followed by 0 or more punctuation), matched one or more times, 
+   followed by the end of the string.
+4. ...
+
+Can you dissect the last line? What does it fix and how?
+
+::: callout-tip
+[regexr.com](https://regexr.com/) has a nice interface for testing your regex.
+Do keep in mind, however, that R has a special way of declaring special 
+characters starting with `"\"`: R always uses two `"\\"`, so `"\d"` will be
+`"\\d"` in R.
+:::
+
+
+
+# Fixed matching
+
+Although regex is very helpful and we are able to escape special characters
+we want to match with `\\`, it is also worth mentioning that we can match 
+strings with *fixed patterns*: patterns that will be matched as they appear:
+
+
+```{r}
+#| label: fixed strings
+#| echo: true
+
+str_extract(ex_text, "(84)") # <1>
+
+str_extract(ex_text, fixed("(84)")) # <2>
+
+```
+
+1. `str_*()` functions will automatically recoginze the match pattern as regex
+2. ... but we can specify that we want the match to be fixed, for litteral 
+   extraction.

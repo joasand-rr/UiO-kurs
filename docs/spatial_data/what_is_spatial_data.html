@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title> | STV4030A - What is spatial data?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../spatial_data/reading_spatial_data.html" rel="next">
+<link href="..//pics/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"> | STV4030A</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../spatial_data/what_is_spatial_data.html">Spatial data</a></li><li class="breadcrumb-item"><a href="../spatial_data/what_is_spatial_data.html">What is spatial data?</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A">
+            Source code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A/issues">
+            Report an error
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Working in R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/R_refresher.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R refresher</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics: functions and iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing your own functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/encoding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Locales and encoding</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Quarto documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/writing_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing Quarto documents</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/producing_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Producing Tables from R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/tidy_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wrangling in <code>dplyr</code> and <code>tidyr</code></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_in_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization in <code>ggplot2</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examples of different types of data visualizations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing regression models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_model_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing quantities of interest based on regression models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Text data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/text_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Political Text as Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/read_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Texts into R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/extracting_data_from_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extracting data from texts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Data gathering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Webscraping</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">APIs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Spatial data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/what_is_spatial_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">What is spatial data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/reading_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading spatial data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/spatial_joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/basic_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating maps</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#literature" id="toc-literature" class="nav-link active" data-scroll-target="#literature">Literature</a></li>
+  <li><a href="#why-do-we-need-spatial-data" id="toc-why-do-we-need-spatial-data" class="nav-link" data-scroll-target="#why-do-we-need-spatial-data">Why do we need spatial data?</a>
+  <ul class="collapse">
+  <li><a href="#example-1-election-geography" id="toc-example-1-election-geography" class="nav-link" data-scroll-target="#example-1-election-geography">Example 1: Election geography</a></li>
+  <li><a href="#example-2-aid-allocation" id="toc-example-2-aid-allocation" class="nav-link" data-scroll-target="#example-2-aid-allocation">Example 2: Aid allocation</a></li>
+  <li><a href="#example-3-civil-war-intensity" id="toc-example-3-civil-war-intensity" class="nav-link" data-scroll-target="#example-3-civil-war-intensity">Example 3: Civil war intensity</a></li>
+  </ul></li>
+  <li><a href="#what-is-spatial-data" id="toc-what-is-spatial-data" class="nav-link" data-scroll-target="#what-is-spatial-data">What is spatial data?</a></li>
+  <li><a href="#types_of_spatial_data" id="toc-types_of_spatial_data" class="nav-link" data-scroll-target="#types_of_spatial_data">What types of spatial data exist?</a></li>
+  <li><a href="#coordinate-reference-systems" id="toc-coordinate-reference-systems" class="nav-link" data-scroll-target="#coordinate-reference-systems">Coordinate reference systems</a></li>
+  <li><a href="#what-can-we-do-with-spatial-data" id="toc-what-can-we-do-with-spatial-data" class="nav-link" data-scroll-target="#what-can-we-do-with-spatial-data">What can we do with spatial data?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">What is spatial data?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=ebfcc5e2-a54a-40da-8a1c-b07500f7928b&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=false&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay">
+</iframe>
+<p>In this section, you’ll learn about spatial data, i.e.&nbsp;data that is represented in space.</p>
+<section id="literature" class="level1">
+<h1>Literature</h1>
+<p>Several of the data, figures, and code examples in this part of the course are based on Nils Weidmann’s 2023 book <a href="https://www.cambridge.org/core/books/data-management-for-social-scientists/33356BF6DE034B25239DCF7C436CBFCD">“Data Management for Social Scientists.”</a> I highly recommend you to consult the <a href="https://www.cambridge.org/core/books/data-management-for-social-scientists/spatial-data/078F410D1D8BCF6C593E751E99589FF6">respective chapter on spatial data management</a> to deepen some the understanding of the concepts in this section.</p>
+</section>
+<section id="why-do-we-need-spatial-data" class="level1">
+<h1>Why do we need spatial data?</h1>
+<p>Many political phenomena that we’re interested in have a spatial component. Here are some examples.</p>
+<section id="example-1-election-geography" class="level2">
+<h2 class="anchored" data-anchor-id="example-1-election-geography">Example 1: Election geography</h2>
+<p>Where in a country does a certain political party have the most electoral support? Where is the party the weakest? Here’s a map of election results displayed by county from the 2020 US presidential elections. Such a map could help us answer these questions in the context for the US elections.</p>
+<div id="fig-us-elections" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../data/spatial_data/images/us_election_results_county.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: County-level map of 2020 US elections. <a href="https://github.com/tonmcg/US_County_Level_Election_Results_08-20">(source)</a></figcaption>
+</figure>
+</div>
+</section>
+<section id="example-2-aid-allocation" class="level2">
+<h2 class="anchored" data-anchor-id="example-2-aid-allocation">Example 2: Aid allocation</h2>
+<p>Another question could be: Where do the poorest people in a country live? And do poverty alleviation projects actually reach this part of the population? The figure below might help to answer this question. It shows (in red) the locations of World Bank aid projects. Did those projects actually reach the people who needed the help most? You’ll have to read <a href="https://static1.squarespace.com/static/5acc1ee17e3c3a103525fb2b/t/60a19b4363de2f0a135743a0/1621203782570/Briggs+%282021%29+Aid+poorest.pdf">the paper (Briggs 2018)</a> to find out.</p>
+<div id="fig-briggs" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../data/spatial_data/images/briggs_2018.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: The geo-location of World Bank aid projects (source: <a href="https://static1.squarespace.com/static/5acc1ee17e3c3a103525fb2b/t/60a19b4363de2f0a135743a0/1621203782570/Briggs+%282021%29+Aid+poorest.pdf">Briggs 2018</a>)</figcaption>
+</figure>
+</div>
+</section>
+<section id="example-3-civil-war-intensity" class="level2">
+<h2 class="anchored" data-anchor-id="example-3-civil-war-intensity">Example 3: Civil war intensity</h2>
+<p>A final example for a research question that involves spatial information might be: Where in a country does violent conflict occur? And which parts of a country are less affected by violence? Consider the map below, which shows the spatial distribution of violent events during the Bosnia civil war. The map shows that some areas where extremely affected (the dark areas) and some weren’t (the white ones). This is important information, if we want to, for example, study the strategy of why conflict actors target some areas but not others.</p>
+<div id="fig-bosnia" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../data/spatial_data/images/bosnia_GED.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Violence in Bosnia (source: <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/078F410D1D8BCF6C593E751E99589FF6/stamped-9781108845670c11_147-165.pdf/spatial_data.pdf">Weidmann 2023</a>)</figcaption>
+</figure>
+</div>
+<p>All these examples represent important political science questions, from different subfields. To answer them we need some form of spatial information for the data we collect on these phenomena. In short, we need “spatial” data.</p>
+</section>
+</section>
+<section id="what-is-spatial-data" class="level1">
+<h1>What is spatial data?</h1>
+<p>The term “spatial data” denotes a dataset which contains a variable with some form of geographic information for the observations in that dataset. Such geographic information typically refers to where in geographic space an observation is located, but often also information about the specific shape of an observation.</p>
+<p>Here’s an example to clarify what I mean by this. The right part of the figure below shows a regular dataset, similar to the ones you’ve previously encountered.</p>
+<div id="fig-spatial-data" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="../data/spatial_data/images/weidmann_spatial_data.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Spatial data (source: <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/078F410D1D8BCF6C593E751E99589FF6/stamped-9781108845670c11_147-165.pdf/spatial_data.pdf">Weidmann 2023</a>)</figcaption>
+</figure>
+</div>
+<p>Each row (or observation) in this toy dataset represents a city. What makes this dataset now a “spatial” dataset is an additional variable that contains information on <em>where in space</em> each observation is located. This information is visualized in the left part of the figure which represents each row in the dataset as points in space.</p>
+<p>Just to preview how this looks in R (we’re going to talk about how spatial data looks like in R in more detail below), consider the following data frame of Norwegian cities, similar to the stylized example in <a href="#fig-spatial-data">Figure&nbsp;4</a>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>       city     lng     lat    admin_name population
+1      Oslo 10.7528 59.9111          Oslo     693494
+2    Bergen  5.3233 60.3925     Hordaland     257087
+3 Trondheim 10.4000 63.4400 Sør-Trøndelag     183378
+4 Stavanger  5.7333 58.9701      Rogaland     129300
+5     Sørum 11.3472 59.9135      Akershus     113659
+6   Drammen 10.1907 59.7572      Buskerud      90722</code></pre>
+</div>
+</div>
+<p>This dataset does not contain any <em>explicit</em> spatial information. It does store the coordinates for each city in the <code>lat</code> and <code>lng</code> columns, but it is, so far not a <strong>spatial</strong> data frame.</p>
+<p>Here is the same data <em>with</em> spatial information, stored in the <code>geometry</code> column.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 417 features and 5 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 4.7131 ymin: 58.0333 xmax: 31.1106 ymax: 71.0373
+Geodetic CRS:  WGS 84
+# A tibble: 417 × 6
+   city           lng   lat admin_name    population          geometry
+   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;POINT [°]&gt;
+ 1 Oslo         10.8   59.9 Oslo              693494 (10.7528 59.9111)
+ 2 Bergen        5.32  60.4 Hordaland         257087  (5.3233 60.3925)
+ 3 Trondheim    10.4   63.4 Sør-Trøndelag     183378      (10.4 63.44)
+ 4 Stavanger     5.73  59.0 Rogaland          129300  (5.7333 58.9701)
+ 5 Sørum        11.3   59.9 Akershus          113659 (11.3472 59.9135)
+ 6 Drammen      10.2   59.8 Buskerud           90722 (10.1907 59.7572)
+ 7 Skien         9.61  59.2 Telemark           73330   (9.609 59.2096)
+ 8 Kristiansand  8.00  58.1 Vest-Agder         64057  (7.9956 58.1467)
+ 9 Sandnes       5.73  58.8 Rogaland           58694    (5.7333 58.85)
+10 Tønsberg     10.4   59.3 Vestfold           56293 (10.4236 59.2981)
+# ℹ 407 more rows</code></pre>
+</div>
+</div>
+<p>We need the data in a specific spatial format to perform spatial operations on it. So, the first step in any spatial data analysis is always to check whether the data is in a spatial format or if we have to transform it into one. We will learn how to transform a data frame that does not have explicit spatial data in the <a href="../spatial_data/reading_spatial_data.html">next section.</a></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How to check if a data frame contains spatial data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Type the name of the data frame object into the R console. If the resulting output contains a <code>geometry</code> column and the output starts with the line <code>Simple feature collection with X features and Y fields</code> (similar to the output above), then it’s a <strong>spatial</strong> dataset. See <strong>the next section</strong> for how to convert a regular data frame into a spatial data frame.</p>
+</div>
+</div>
+<!-- - Tells us what is *not* spatial data. Data that refers to spatial objects (countries), but without any spatial component.  -->
+</section>
+<section id="types_of_spatial_data" class="level1">
+<h1>What types of spatial data exist?</h1>
+<p>Now that we know why we might need spatial data, what spatial data is, and what we can do with it (at least roughly), let’s look a bit closer into what types of spatial data exist. In general, we distinguish between two types of spatial data: vector and raster data.</p>
+<p>Raster data is a type of spatial data that records for a geolocated pixel (e.g.&nbsp;a 1x1km grid) on the globe a certain value, e.g.&nbsp;the degree to which this pixel emits man-made lights at night. This type of data is often collected by satellites. We’re not going to cover raster data in this course, but R has some powerful features to handle raster data as well. See <a href="https://r-spatial.org/book/07-Introsf.html#package-stars">here</a> if you want to learn more about raster data.</p>
+<p>In this course, we’ll focus on how to handle <strong>vector</strong> data. Roughly speaking vector data refers to objects that can be represented in space by points, lines, or shapes (or “polygons”).</p>
+<p>Here is a visualization of each data type:</p>
+<div id="fig-vector-types" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="..\data/spatial_data/images/types_of_vector_data.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Types of vector data: points (left), lines (center), polygons (right); (source: <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/078F410D1D8BCF6C593E751E99589FF6/stamped-9781108845670c11_147-165.pdf/spatial_data.pdf">Weidmann 2023</a>)</figcaption>
+</figure>
+</div>
+<p>We’ve already encountered examples of <strong>point</strong> data: these are data points (observations; rows in a dataset) that can be represented by a point in space. Examples include cities, survey respondents (e.g.&nbsp;their home address), events that happen in a clearly defined location (e.g.&nbsp;battle in a war). In a spatial point dataset each observation therefore refers to a distinct point in space.</p>
+<p><strong>Line</strong> vectors refer to objects that can be represented by, well, a line. Think of rivers, roads, railway tracks, hiking routes etc. In a spatial line dataset, each observation or row in the dataset refers to the <em>entire</em> line, e.g.&nbsp;the road or hiking trail.</p>
+<p><strong>Polygon</strong> vectors represent things that have a shape. Examples are countries, municipalities (or other administrative areas within a country), lakes, natural parks, but also more abstract things like rectangles (often referred to as grid cells). In a polygon dataset, each observation represents an individual shape, e.g.&nbsp;a country or a municipality.</p>
+<p>When handling spatial data, we’re often interested in how these different types of vector data intersect: how many points fall within one polygon (e.g.&nbsp;how many battle events fall within a municipality?); how many countries (shapes) are crossed by river (line)? It’s important to know which type of vector data we’re dealing with and what precisely our analytical goal is with these data, e.g.&nbsp;which data types we want to match spatially. More on that in the <a href="../spatial_data/spatial_joins.html">section on spatial joins</a>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Know your vector data type!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you work with spatial data, make sure that you know which of your data frames is point, line, or polygon data.</p>
+</div>
+</div>
+</section>
+<section id="coordinate-reference-systems" class="level1">
+<h1>Coordinate reference systems</h1>
+<p>A final important feature of spatial data is that it references points in space on a sphere, the Earth.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This feature raises the issue of how to get from a three-dimensional surface to a two-dimensional representation of this surface in the form of points, lines, or shapes.</p>
+<p>The first approach to do this is to assign coordinates to each point (or points on a line/border). Here is how Weidmann (<a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/078F410D1D8BCF6C593E751E99589FF6/stamped-9781108845670c11_147-165.pdf/spatial_data.pdf">2023</a>) describes this approach, also called <em>geographic coordinate system.</em></p>
+<blockquote class="blockquote">
+<p>This is what we do when using longitude and latitude coordinates: The equator has latitude 0, and locations north (south) of the equator have positive (negative) latitudes, each measured in radial coordinates. Longitude 0 is defined as going through Greenwich, and longitudes increase as we move east, again measured in radial coordinates. Thus, each point on the globe can now be uniquely identified by its longitude (x) and latitude (y) values, which is called a <em>geographic coordinate system</em>.</p>
+</blockquote>
+<p>The second approach is called a <em>projected coordinate reference system</em>. Again, in Weidmann’s (<a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/078F410D1D8BCF6C593E751E99589FF6/stamped-9781108845670c11_147-165.pdf/spatial_data.pdf">2023</a>) words a projection is “essentially an instruction for mapping points on the globe to corresponding ones on a map.”</p>
+<p>The following picture illustrates both types of coordinate reference systems.</p>
+<div id="fig-crs" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="..\data/spatial_data/images/crs.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: Coordinate reference systems. Left: geographic reference system, right: project coordinate reference system (source: <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/078F410D1D8BCF6C593E751E99589FF6/stamped-9781108845670c11_147-165.pdf/spatial_data.pdf">Weidmann 2023</a>)</figcaption>
+</figure>
+</div>
+<p>It’s too complicated to go into the specific details of different CRS, but you need to keep in mind two essential features about them.</p>
+<ol type="1">
+<li>When you perform spatial operations, such as spatial matching (e.g.&nbsp;points to polygons, or intersection of lines with polygons) you need to make sure that both spatial data sources are in the same CRS. We will learn how to assign a CRS if you do not have one in the next section.</li>
+<li>If you like to calculate distances (e.g.&nbsp;the distance of each polygon to a point, such as the distance of municipalities to a country’s capital) you need to transform your spatial data frames into a projected CRS.</li>
+</ol>
+</section>
+<section id="what-can-we-do-with-spatial-data" class="level1">
+<h1>What can we do with spatial data?</h1>
+<p>Now that we know what spatial data is, what can we actually do with it? For the purposes of this course, we look at two main features of spatial data:</p>
+<ol type="1">
+<li>Spatial data gives us a new way to visualize data in addition to the techniques we learned <a href="../Visualization/data_viz_in_ggplot.html">in previous sessions</a>: maps. As illustrated by the examples above (cf. <a href="#fig-us-elections">Figure&nbsp;1</a>, <a href="#fig-briggs">Figure&nbsp;2</a>, <a href="#fig-bosnia">Figure&nbsp;3</a>), maps are a powerful way to communicate the spatial dimension of your data. We will cover how to create informative maps in the <a href="../spatial_data/basic_maps.html">section on mapping.</a></li>
+<li>Match spatial information to each other. One of the most powerful features of spatial data is that they allow us to combine two pieces information that we know exist in the same geographical space. An example: we know the home address of survey respondents, so we have their coordinates (similar to the coordinates of the cities above). But we’re analytically interested in how the economic performance of the survey respondent’s municipality is correlated with their political attitudes. We can use spatial data techniques to match the respondent location to the municipalities for which we have economic performance data. This technique is called a <strong>spatial join</strong> and we will learn about in the <a href="../spatial_data/spatial_joins.html">section on spatial joins</a>.</li>
+</ol>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The earth is actually not precisely a sphere, but that fact is usually not important for the types of spatial data we deal with as social scientists.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../spatial_data/reading_spatial_data.html" class="pagination-link">
+        <span class="nav-page-text">Reading spatial data</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

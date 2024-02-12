@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta charset="utf-8"><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"dee899de70",applicationID:"80106271"};;/*! For license information please see nr-loader-rum-1.237.1.min.js.LICENSE.txt */
+(()=>{"use strict";var e,t,n={5763:(e,t,n)=>{n.d(t,{P_:()=>f,Mt:()=>p,C5:()=>s,DL:()=>m,OP:()=>j,lF:()=>E,Yu:()=>y,Dg:()=>g,CX:()=>c,GE:()=>b,sU:()=>_});var r=n(8632),i=n(9567);const a={beacon:r.ce.beacon,errorBeacon:r.ce.errorBeacon,licenseKey:void 0,applicationID:void 0,sa:void 0,queueTime:void 0,applicationTime:void 0,ttGuid:void 0,user:void 0,account:void 0,product:void 0,extra:void 0,jsAttributes:{},userAttributes:void 0,atts:void 0,transactionName:void 0,tNamePlain:void 0},o={};function s(e){if(!e)throw new Error("All info objects require an agent identifier!");if(!o[e])throw new Error("Info for ".concat(e," was never set"));return o[e]}function c(e,t){if(!e)throw new Error("All info objects require an agent identifier!");o[e]=(0,i.D)(t,a),(0,r.Qy)(e,o[e],"info")}var d=n(7056);const u=()=>{const e={blockSelector:"[data-nr-block]",maskInputOptions:{password:!0}};return{allow_bfcache:!0,privacy:{cookies_enabled:!0},ajax:{deny_list:void 0,block_internal:!0,enabled:!0,harvestTimeSeconds:10},distributed_tracing:{enabled:void 0,exclude_newrelic_header:void 0,cors_use_newrelic_header:void 0,cors_use_tracecontext_headers:void 0,allowed_origins:void 0},session:{domain:void 0,expiresMs:d.oD,inactiveMs:d.Hb},ssl:void 0,obfuscate:void 0,jserrors:{enabled:!0,harvestTimeSeconds:10},metrics:{enabled:!0},page_action:{enabled:!0,harvestTimeSeconds:30},page_view_event:{enabled:!0},page_view_timing:{enabled:!0,harvestTimeSeconds:30,long_task:!1},session_trace:{enabled:!0,harvestTimeSeconds:10},harvest:{tooManyRequestsDelay:60},session_replay:{enabled:!1,harvestTimeSeconds:60,sampleRate:.1,errorSampleRate:.1,maskTextSelector:"*",maskAllInputs:!0,get blockClass(){return"nr-block"},get ignoreClass(){return"nr-ignore"},get maskTextClass(){return"nr-mask"},get blockSelector(){return e.blockSelector},set blockSelector(t){e.blockSelector+=",".concat(t)},get maskInputOptions(){return e.maskInputOptions},set maskInputOptions(t){e.maskInputOptions={...t,password:!0}}},spa:{enabled:!0,harvestTimeSeconds:10}}},l={};function f(e){if(!e)throw new Error("All configuration objects require an agent identifier!");if(!l[e])throw new Error("Configuration for ".concat(e," was never set"));return l[e]}function g(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");l[e]=(0,i.D)(t,u()),(0,r.Qy)(e,l[e],"config")}function p(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");var n=f(e);if(n){for(var r=t.split("."),i=0;i<r.length-1;i++)if("object"!=typeof(n=n[r[i]]))return;n=n[r[r.length-1]]}return n}const h={accountID:void 0,trustKey:void 0,agentID:void 0,licenseKey:void 0,applicationID:void 0,xpid:void 0},v={};function m(e){if(!e)throw new Error("All loader-config objects require an agent identifier!");if(!v[e])throw new Error("LoaderConfig for ".concat(e," was never set"));return v[e]}function b(e,t){if(!e)throw new Error("All loader-config objects require an agent identifier!");v[e]=(0,i.D)(t,h),(0,r.Qy)(e,v[e],"loader_config")}const y=(0,r.mF)().o;var w=n(385),A=n(6818);const x={buildEnv:A.Re,bytesSent:{},queryBytesSent:{},customTransaction:void 0,disabled:!1,distMethod:A.gF,isolatedBacklog:!1,loaderType:void 0,maxBytes:3e4,offset:Math.floor(w._A?.performance?.timeOrigin||w._A?.performance?.timing?.navigationStart||Date.now()),onerror:void 0,origin:""+w._A.location,ptid:void 0,releaseIds:{},session:void 0,xhrWrappable:"function"==typeof w._A.XMLHttpRequest?.prototype?.addEventListener,version:A.q4,denyList:void 0},D={};function j(e){if(!e)throw new Error("All runtime objects require an agent identifier!");if(!D[e])throw new Error("Runtime for ".concat(e," was never set"));return D[e]}function _(e,t){if(!e)throw new Error("All runtime objects require an agent identifier!");D[e]=(0,i.D)(t,x),(0,r.Qy)(e,D[e],"runtime")}function E(e){return function(e){try{const t=s(e);return!!t.licenseKey&&!!t.errorBeacon&&!!t.applicationID}catch(e){return!1}}(e)}},9567:(e,t,n)=>{n.d(t,{D:()=>i});var r=n(50);function i(e,t){try{if(!e||"object"!=typeof e)return(0,r.Z)("Setting a Configurable requires an object as input");if(!t||"object"!=typeof t)return(0,r.Z)("Setting a Configurable requires a model to set its initial properties");const n=Object.create(Object.getPrototypeOf(t),Object.getOwnPropertyDescriptors(t)),a=0===Object.keys(n).length?e:n;for(let o in a)if(void 0!==e[o])try{"object"==typeof e[o]&&"object"==typeof t[o]?n[o]=i(e[o],t[o]):n[o]=e[o]}catch(e){(0,r.Z)("An error occurred while setting a property of a Configurable",e)}return n}catch(e){(0,r.Z)("An error occured while setting a Configurable",e)}}},6818:(e,t,n)=>{n.d(t,{Re:()=>i,gF:()=>a,q4:()=>r});const r="1.237.1",i="PROD",a="CDN"},385:(e,t,n)=>{n.d(t,{FN:()=>o,IF:()=>d,Nk:()=>l,Tt:()=>s,_A:()=>a,il:()=>r,pL:()=>c,v6:()=>i,w1:()=>u});const r="undefined"!=typeof window&&!!window.document,i="undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self.navigator instanceof WorkerNavigator||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis.navigator instanceof WorkerNavigator),a=r?window:"undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis),o=""+a?.location,s=/iPad|iPhone|iPod/.test(navigator.userAgent),c=s&&"undefined"==typeof SharedWorker,d=(()=>{const e=navigator.userAgent.match(/Firefox[/\s](\d+\.\d+)/);return Array.isArray(e)&&e.length>=2?+e[1]:0})(),u=Boolean(r&&window.document.documentMode),l=!!navigator.sendBeacon},1117:(e,t,n)=>{n.d(t,{w:()=>a});var r=n(50);const i={agentIdentifier:"",ee:void 0};class a{constructor(e){try{if("object"!=typeof e)return(0,r.Z)("shared context requires an object as input");this.sharedContext={},Object.assign(this.sharedContext,i),Object.entries(e).forEach((e=>{let[t,n]=e;Object.keys(i).includes(t)&&(this.sharedContext[t]=n)}))}catch(e){(0,r.Z)("An error occured while setting SharedContext",e)}}}},8e3:(e,t,n)=>{n.d(t,{L:()=>u,R:()=>c});var r=n(2177),i=n(1284),a=n(4322),o=n(3325);const s={};function c(e,t){const n={staged:!1,priority:o.p[t]||0};d(e),s[e].get(t)||s[e].set(t,n)}function d(e){e&&(s[e]||(s[e]=new Map))}function u(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"feature";if(d(e),!e||!s[e].get(t))return o(t);s[e].get(t).staged=!0;const n=[...s[e]];function o(t){const n=e?r.ee.get(e):r.ee,o=a.X.handlers;if(n.backlog&&o){var s=n.backlog[t],c=o[t];if(c){for(var d=0;s&&d<s.length;++d)l(s[d],c);(0,i.D)(c,(function(e,t){(0,i.D)(t,(function(t,n){n[0].on(e,n[1])}))}))}delete o[t],n.backlog[t]=null,n.emit("drain-"+t,[])}}n.every((e=>{let[t,n]=e;return n.staged}))&&(n.sort(((e,t)=>e[1].priority-t[1].priority)),n.forEach((e=>{let[t]=e;o(t)})))}function l(e,t){var n=e[1];(0,i.D)(t[n],(function(t,n){var r=e[0];if(n[0]===r){var i=n[1],a=e[3],o=e[2];i.apply(a,o)}}))}},2177:(e,t,n)=>{n.d(t,{ee:()=>d});var r=n(8632),i=n(2210),a=n(1284),o=n(5763),s="nr@context";let c=(0,r.fP)();var d;function u(){}function l(){return new u}function f(){d.aborted=!0,d.backlog={}}c.ee?d=c.ee:(d=function e(t,n){var r={},c={},g={},p=!1;try{p=16===n.length&&(0,o.OP)(n).isolatedBacklog}catch(e){}var h={on:b,addEventListener:b,removeEventListener:y,emit:m,get:A,listeners:w,context:v,buffer:x,abort:f,aborted:!1,isBuffering:D,debugId:n,backlog:p?{}:t&&"object"==typeof t.backlog?t.backlog:{}};return h;function v(e){return e&&e instanceof u?e:e?(0,i.X)(e,s,l):l()}function m(e,n,r,i,a){if(!1!==a&&(a=!0),!d.aborted||i){t&&a&&t.emit(e,n,r);for(var o=v(r),s=w(e),u=s.length,l=0;l<u;l++)s[l].apply(o,n);var f=j()[c[e]];return f&&f.push([h,e,n,o]),o}}function b(e,t){r[e]=w(e).concat(t)}function y(e,t){var n=r[e];if(n)for(var i=0;i<n.length;i++)n[i]===t&&n.splice(i,1)}function w(e){return r[e]||[]}function A(t){return g[t]=g[t]||e(h,t)}function x(e,t){var n=j();h.aborted||(0,a.D)(e,(function(e,r){t=t||"feature",c[r]=t,t in n||(n[t]=[])}))}function D(e){return!!j()[c[e]]}function j(){return h.backlog}}(void 0,"globalEE"),c.ee=d)},5546:(e,t,n)=>{n.d(t,{E:()=>r,p:()=>i});var r=n(2177).ee.get("handle");function i(e,t,n,i,a){a?(a.buffer([e],i),a.emit(e,t,n)):(r.buffer([e],i),r.emit(e,t,n))}},4322:(e,t,n)=>{n.d(t,{X:()=>a});var r=n(5546);a.on=o;var i=a.handlers={};function a(e,t,n,a){o(a||r.E,i,e,t,n)}function o(e,t,n,i,a){a||(a="feature"),e||(e=r.E);var o=t[a]=t[a]||{};(o[n]=o[n]||[]).push([e,i])}},3239:(e,t,n)=>{n.d(t,{bP:()=>s,iz:()=>c,m$:()=>o});var r=n(385);let i=!1,a=!1;try{const e={get passive(){return i=!0,!1},get signal(){return a=!0,!1}};r._A.addEventListener("test",null,e),r._A.removeEventListener("test",null,e)}catch(e){}function o(e,t){return i||a?{capture:!!e,passive:i,signal:t}:!!e}function s(e,t){let n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0;window.addEventListener(e,t,o(n,r))}function c(e,t){let n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0;document.addEventListener(e,t,o(n,r))}},4402:(e,t,n)=>{n.d(t,{Rl:()=>o,ky:()=>s});var r=n(385);const i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";function a(e,t){return e?15&e[t]:16*Math.random()|0}function o(){const e=r._A?.crypto||r._A?.msCrypto;let t,n=0;return e&&e.getRandomValues&&(t=e.getRandomValues(new Uint8Array(31))),i.split("").map((e=>"x"===e?a(t,++n).toString(16):"y"===e?(3&a()|8).toString(16):e)).join("")}function s(e){const t=r._A?.crypto||r._A?.msCrypto;let n,i=0;t&&t.getRandomValues&&(n=t.getRandomValues(new Uint8Array(31)));const o=[];for(var s=0;s<e;s++)o.push(a(n,++i).toString(16));return o.join("")}},7056:(e,t,n)=>{n.d(t,{Bq:()=>r,Hb:()=>a,oD:()=>i});const r="NRBA",i=144e5,a=18e5},7894:(e,t,n)=>{function r(){return Math.round(performance.now())}n.d(t,{z:()=>r})},50:(e,t,n)=>{function r(e,t){"function"==typeof console.warn&&(console.warn("New Relic: ".concat(e)),t&&console.warn(t))}n.d(t,{Z:()=>r})},2587:(e,t,n)=>{n.d(t,{N:()=>c,T:()=>d});var r=n(2177),i=n(5546),a=n(8e3),o=n(3325);const s={stn:[o.D.sessionTrace],err:[o.D.jserrors,o.D.metrics],ins:[o.D.pageAction],spa:[o.D.spa],sr:[o.D.sessionReplay,o.D.sessionTrace]};function c(e,t){const n=r.ee.get(t);e&&"object"==typeof e&&(Object.entries(e).forEach((e=>{let[t,r]=e;void 0===d[t]&&(s[t]?s[t].forEach((e=>{r?(0,i.p)("feat-"+t,[],void 0,e,n):(0,i.p)("block-"+t,[],void 0,e,n),(0,i.p)("rumresp-"+t,[Boolean(r)],void 0,e,n)})):r&&(0,i.p)("feat-"+t,[],void 0,void 0,n),d[t]=Boolean(r))})),Object.keys(s).forEach((e=>{void 0===d[e]&&(s[e]?.forEach((t=>(0,i.p)("rumresp-"+e,[!1],void 0,t,n))),d[e]=!1)})),(0,a.L)(t,o.D.pageViewEvent))}const d={}},2210:(e,t,n)=>{n.d(t,{X:()=>i});var r=Object.prototype.hasOwnProperty;function i(e,t,n){if(r.call(e,t))return e[t];var i=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:i,writable:!0,enumerable:!1}),i}catch(e){}return e[t]=i,i}},1284:(e,t,n)=>{n.d(t,{D:()=>r});const r=(e,t)=>Object.entries(e||{}).map((e=>{let[n,r]=e;return t(n,r)}))},4351:(e,t,n)=>{n.d(t,{P:()=>a});var r=n(2177);const i=()=>{const e=new WeakSet;return(t,n)=>{if("object"==typeof n&&null!==n){if(e.has(n))return;e.add(n)}return n}};function a(e){try{return JSON.stringify(e,i())}catch(e){try{r.ee.emit("internal-error",[e])}catch(e){}}}},3960:(e,t,n)=>{n.d(t,{K:()=>o,b:()=>a});var r=n(3239);function i(){return"undefined"==typeof document||"complete"===document.readyState}function a(e,t){if(i())return e();(0,r.bP)("load",e,t)}function o(e){if(i())return e();(0,r.iz)("DOMContentLoaded",e)}},8632:(e,t,n)=>{n.d(t,{EZ:()=>d,Qy:()=>c,ce:()=>a,fP:()=>o,gG:()=>u,mF:()=>s});var r=n(7894),i=n(385);const a={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net"};function o(){return i._A.NREUM||(i._A.NREUM={}),void 0===i._A.newrelic&&(i._A.newrelic=i._A.NREUM),i._A.NREUM}function s(){let e=o();return e.o||(e.o={ST:i._A.setTimeout,SI:i._A.setImmediate,CT:i._A.clearTimeout,XHR:i._A.XMLHttpRequest,REQ:i._A.Request,EV:i._A.Event,PR:i._A.Promise,MO:i._A.MutationObserver,FETCH:i._A.fetch}),e}function c(e,t,n){let i=o();const a=i.initializedAgents||{},s=a[e]||{};return Object.keys(s).length||(s.initializedAt={ms:(0,r.z)(),date:new Date}),i.initializedAgents={...a,[e]:{...s,[n]:t}},i}function d(e,t){o()[e]=t}function u(){return function(){let e=o();const t=e.info||{};e.info={beacon:a.beacon,errorBeacon:a.errorBeacon,...t}}(),function(){let e=o();const t=e.init||{};e.init={...t}}(),s(),function(){let e=o();const t=e.loader_config||{};e.loader_config={...t}}(),o()}},7956:(e,t,n)=>{n.d(t,{N:()=>i});var r=n(3239);function i(e){let t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=arguments.length>2?arguments[2]:void 0,i=arguments.length>3?arguments[3]:void 0;return void(0,r.iz)("visibilitychange",(function(){if(t)return void("hidden"==document.visibilityState&&e());e(document.visibilityState)}),n,i)}},3081:(e,t,n)=>{n.d(t,{gF:()=>a,mY:()=>i,t9:()=>r,vz:()=>s,xS:()=>o});const r=n(3325).D.metrics,i="sm",a="cm",o="storeSupportabilityMetrics",s="storeEventMetrics"},7633:(e,t,n)=>{n.d(t,{Dz:()=>i,OJ:()=>o,qw:()=>a,t9:()=>r});const r=n(3325).D.pageViewEvent,i="firstbyte",a="domcontent",o="windowload"},9251:(e,t,n)=>{n.d(t,{t:()=>r});const r=n(3325).D.pageViewTiming},5938:(e,t,n)=>{n.d(t,{W:()=>a});var r=n(5763),i=n(2177);class a{constructor(e,t,n){this.agentIdentifier=e,this.aggregator=t,this.ee=i.ee.get(e,(0,r.OP)(this.agentIdentifier).isolatedBacklog),this.featureName=n,this.blocked=!1}}},9144:(e,t,n)=>{n.d(t,{j:()=>v});var r=n(3325),i=n(5763),a=n(5546),o=n(2177),s=n(7894),c=n(8e3),d=n(3960),u=n(385),l=n(50),f=n(3081),g=n(8632);function p(){const e=(0,g.gG)();["setErrorHandler","finished","addToTrace","inlineHit","addRelease","addPageAction","setCurrentRouteName","setPageViewName","setCustomAttribute","interaction","noticeError","setUserId"].forEach((t=>{e[t]=function(){for(var n=arguments.length,r=new Array(n),i=0;i<n;i++)r[i]=arguments[i];return function(t){for(var n=arguments.length,r=new Array(n>1?n-1:0),i=1;i<n;i++)r[i-1]=arguments[i];let a=[];return Object.values(e.initializedAgents).forEach((e=>{e.exposed&&e.api[t]&&a.push(e.api[t](...r))})),a.length>1?a:a[0]}(t,...r)}}))}var h=n(2587);function v(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},v=arguments.length>2?arguments[2]:void 0,m=arguments.length>3?arguments[3]:void 0,{init:b,info:y,loader_config:w,runtime:A={loaderType:v},exposed:x=!0}=t;const D=(0,g.gG)();y||(b=D.init,y=D.info,w=D.loader_config),(0,i.Dg)(e,b||{}),(0,i.GE)(e,w||{}),y.jsAttributes??={},u.v6&&(y.jsAttributes.isWorker=!0),(0,i.CX)(e,y);const j=(0,i.P_)(e);A.denyList=[...j.ajax?.deny_list||[],...j.ajax?.block_internal?[y.beacon,y.errorBeacon]:[]],(0,i.sU)(e,A),p();const _=function(e,t){t||(0,c.R)(e,"api");const g={};var p=o.ee.get(e),h=p.get("tracer"),v="api-",m=v+"ixn-";function b(t,n,r,a){const o=(0,i.C5)(e);return null===n?delete o.jsAttributes[t]:(0,i.CX)(e,{...o,jsAttributes:{...o.jsAttributes,[t]:n}}),A(v,r,!0,a||null===n?"session":void 0)(t,n)}function y(){}["setErrorHandler","finished","addToTrace","inlineHit","addRelease"].forEach((e=>g[e]=A(v,e,!0,"api"))),g.addPageAction=A(v,"addPageAction",!0,r.D.pageAction),g.setCurrentRouteName=A(v,"routeName",!0,r.D.spa),g.setPageViewName=function(t,n){if("string"==typeof t)return"/"!==t.charAt(0)&&(t="/"+t),(0,i.OP)(e).customTransaction=(n||"http://custom.transaction")+t,A(v,"setPageViewName",!0)()},g.setCustomAttribute=function(e,t){let n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if("string"==typeof e){if(["string","number"].includes(typeof t)||null===t)return b(e,t,"setCustomAttribute",n);(0,l.Z)("Failed to execute setCustomAttribute.\nNon-null value must be a string or number type, but a type of <".concat(typeof t,"> was provided."))}else(0,l.Z)("Failed to execute setCustomAttribute.\nName must be a string type, but a type of <".concat(typeof e,"> was provided."))},g.setUserId=function(e){if("string"==typeof e||null===e)return b("enduser.id",e,"setUserId",!0);(0,l.Z)("Failed to execute setUserId.\nNon-null value must be a string type, but a type of <".concat(typeof e,"> was provided."))},g.interaction=function(){return(new y).get()};var w=y.prototype={createTracer:function(e,t){var n={},i=this,o="function"==typeof t;return(0,a.p)(m+"tracer",[(0,s.z)(),e,n],i,r.D.spa,p),function(){if(h.emit((o?"":"no-")+"fn-start",[(0,s.z)(),i,o],n),o)try{return t.apply(this,arguments)}catch(e){throw h.emit("fn-err",[arguments,this,e],n),e}finally{h.emit("fn-end",[(0,s.z)()],n)}}}};function A(e,t,n,i){return function(){return(0,a.p)(f.xS,["API/"+t+"/called"],void 0,r.D.metrics,p),i&&(0,a.p)(e+t,[(0,s.z)(),...arguments],n?null:this,i,p),n?void 0:this}}function x(){n.e(439).then(n.bind(n,7438)).then((t=>{let{setAPI:n}=t;n(e),(0,c.L)(e,"api")})).catch((()=>(0,l.Z)("Downloading runtime APIs failed...")))}return["actionText","setName","setAttribute","save","ignore","onEnd","getContext","end","get"].forEach((e=>{w[e]=A(m,e,void 0,r.D.spa)})),g.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),(0,a.p)(f.xS,["API/noticeError/called"],void 0,r.D.metrics,p),(0,a.p)("err",[e,(0,s.z)(),!1,t],void 0,r.D.jserrors,p)},u.il?(0,d.b)((()=>x()),!0):x(),g}(e,m);return(0,g.Qy)(e,_,"api"),(0,g.Qy)(e,x,"exposed"),(0,g.EZ)("activatedFeatures",h.T),_}},3325:(e,t,n)=>{n.d(t,{D:()=>r,p:()=>i});const r={ajax:"ajax",jserrors:"jserrors",metrics:"metrics",pageAction:"page_action",pageViewEvent:"page_view_event",pageViewTiming:"page_view_timing",sessionReplay:"session_replay",sessionTrace:"session_trace",spa:"spa"},i={[r.pageViewEvent]:1,[r.pageViewTiming]:2,[r.metrics]:3,[r.jserrors]:4,[r.ajax]:5,[r.sessionTrace]:6,[r.pageAction]:7,[r.spa]:8,[r.sessionReplay]:9}}},r={};function i(e){var t=r[e];if(void 0!==t)return t.exports;var a=r[e]={exports:{}};return n[e](a,a.exports,i),a.exports}i.m=n,i.d=(e,t)=>{for(var n in t)i.o(t,n)&&!i.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},i.f={},i.e=e=>Promise.all(Object.keys(i.f).reduce(((t,n)=>(i.f[n](e,t),t)),[])),i.u=e=>(({78:"page_action-aggregate",147:"metrics-aggregate",193:"session_trace-aggregate",242:"session-manager",317:"jserrors-aggregate",348:"page_view_timing-aggregate",412:"lazy-feature-loader",439:"async-api",538:"recorder",590:"session_replay-aggregate",675:"compressor",786:"page_view_event-aggregate",873:"spa-aggregate",898:"ajax-aggregate"}[e]||e)+"."+{78:"467f8594",147:"b86cefcf",193:"ac30a1f3",242:"d080e4cc",317:"319b8300",348:"7b2a53ee",412:"c1052c27",439:"e9f77430",538:"9c5c1546",590:"8b420469",646:"9e7a6b8d",675:"9614fd62",786:"4988d952",860:"95a91211",873:"550eec7b",898:"d95c640e"}[e]+"-1.237.1.min.js"),i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),e={},t="NRBA:",i.l=(n,r,a,o)=>{if(e[n])e[n].push(r);else{var s,c;if(void 0!==a)for(var d=document.getElementsByTagName("script"),u=0;u<d.length;u++){var l=d[u];if(l.getAttribute("src")==n||l.getAttribute("data-webpack")==t+a){s=l;break}}s||(c=!0,(s=document.createElement("script")).charset="utf-8",s.timeout=120,i.nc&&s.setAttribute("nonce",i.nc),s.setAttribute("data-webpack",t+a),s.src=n),e[n]=[r];var f=(t,r)=>{s.onerror=s.onload=null,clearTimeout(g);var i=e[n];if(delete e[n],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach((e=>e(r))),t)return t(r)},g=setTimeout(f.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=f.bind(null,s.onerror),s.onload=f.bind(null,s.onload),c&&document.head.appendChild(s)}},i.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.j=4,i.p="https://js-agent.newrelic.com/",(()=>{var e={4:0,465:0};i.f.j=(t,n)=>{var r=i.o(e,t)?e[t]:void 0;if(0!==r)if(r)n.push(r[2]);else{var a=new Promise(((n,i)=>r=e[t]=[n,i]));n.push(r[2]=a);var o=i.p+i.u(t),s=new Error;i.l(o,(n=>{if(i.o(e,t)&&(0!==(r=e[t])&&(e[t]=void 0),r)){var a=n&&("load"===n.type?"missing":n.type),o=n&&n.target&&n.target.src;s.message="Loading chunk "+t+" failed.\n("+a+": "+o+")",s.name="ChunkLoadError",s.type=a,s.request=o,r[1](s)}}),"chunk-"+t,t)}};var t=(t,n)=>{var r,a,[o,s,c]=n,d=0;if(o.some((t=>0!==e[t]))){for(r in s)i.o(s,r)&&(i.m[r]=s[r]);if(c)c(i)}for(t&&t(n);d<o.length;d++)a=o[d],i.o(e,a)&&e[a]&&e[a][0](),e[a]=0},n=window.webpackChunkNRBA=window.webpackChunkNRBA||[];n.forEach(t.bind(null,0)),n.push=t.bind(null,n.push.bind(n))})();var a={};(()=>{i.r(a);var e=i(50);class t{addPageAction(t,n){(0,e.Z)("Call to agent api addPageAction failed. The session trace feature is not currently initialized.")}setPageViewName(t,n){(0,e.Z)("Call to agent api setPageViewName failed. The page view feature is not currently initialized.")}setCustomAttribute(t,n,r){(0,e.Z)("Call to agent api setCustomAttribute failed. The js errors feature is not currently initialized.")}noticeError(t,n){(0,e.Z)("Call to agent api noticeError failed. The js errors feature is not currently initialized.")}setUserId(t){(0,e.Z)("Call to agent api setUserId failed. The js errors feature is not currently initialized.")}setErrorHandler(t){(0,e.Z)("Call to agent api setErrorHandler failed. The js errors feature is not currently initialized.")}finished(t){(0,e.Z)("Call to agent api finished failed. The page action feature is not currently initialized.")}addRelease(t,n){(0,e.Z)("Call to agent api addRelease failed. The agent is not currently initialized.")}}var n=i(3325),r=i(5763);const o=Object.values(n.D);function s(e){const t={};return o.forEach((n=>{t[n]=function(e,t){return!1!==(0,r.Mt)(t,"".concat(e,".enabled"))}(n,e)})),t}var c=i(9144);var d=i(5546),u=i(385),l=i(8e3),f=i(5938),g=i(3960);class p extends f.W{constructor(e,t,n){let r=!(arguments.length>3&&void 0!==arguments[3])||arguments[3];super(e,t,n),this.auto=r,this.abortHandler,this.featAggregate,this.onAggregateImported,r&&(0,l.R)(e,n)}importAggregator(){let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(this.featAggregate||!this.auto)return;const n=u.il&&!0===(0,r.Mt)(this.agentIdentifier,"privacy.cookies_enabled");let a;this.onAggregateImported=new Promise((e=>{a=e}));const o=async()=>{let r;try{if(n){const{setupAgentSession:e}=await Promise.all([i.e(860),i.e(242)]).then(i.bind(i,3228));r=e(this.agentIdentifier)}}catch(t){(0,e.Z)("A problem occurred when starting up session manager. This page will not start or extend any session.",t)}try{if(!this.shouldImportAgg(this.featureName,r))return(0,l.L)(this.agentIdentifier,this.featureName),void a(!1);const{lazyFeatureLoader:e}=await i.e(412).then(i.bind(i,8582)),{Aggregate:n}=await e(this.featureName,"aggregate");this.featAggregate=new n(this.agentIdentifier,this.aggregator,t),a(!0)}catch(t){(0,e.Z)("Downloading and initializing ".concat(this.featureName," failed..."),t),this.abortHandler?.(),a(!1)}};u.il?(0,g.b)((()=>o()),!0):o()}shouldImportAgg(e,t){return e!==n.D.sessionReplay||!!r.Yu.MO&&(!1!==(0,r.Mt)(this.agentIdentifier,"session_trace.enabled")&&(!!t?.isNew||!!t?.state.sessionReplay))}}var h=i(7633),v=i(7894);class m extends p{static featureName=h.t9;constructor(e,t){let i=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];if(super(e,t,h.t9,i),("undefined"==typeof PerformanceNavigationTiming||u.Tt)&&"undefined"!=typeof PerformanceTiming){const t=(0,r.OP)(e);t[h.Dz]=Math.max(Date.now()-t.offset,0),(0,g.K)((()=>t[h.qw]=Math.max((0,v.z)()-t[h.Dz],0))),(0,g.b)((()=>{const e=(0,v.z)();t[h.OJ]=Math.max(e-t[h.Dz],0),(0,d.p)("timing",["load",e],void 0,n.D.pageViewTiming,this.ee)}))}this.importAggregator()}}var b=i(1117),y=i(1284);class w extends b.w{constructor(e){super(e),this.aggregatedData={}}store(e,t,n,r,i){var a=this.getBucket(e,t,n,i);return a.metrics=function(e,t){t||(t={count:0});return t.count+=1,(0,y.D)(e,(function(e,n){t[e]=A(n,t[e])})),t}(r,a.metrics),a}merge(e,t,n,r,i){var a=this.getBucket(e,t,r,i);if(a.metrics){var o=a.metrics;o.count+=n.count,(0,y.D)(n,(function(e,t){if("count"!==e){var r=o[e],i=n[e];i&&!i.c?o[e]=A(i.t,r):o[e]=function(e,t){if(!t)return e;t.c||(t=x(t.t));return t.min=Math.min(e.min,t.min),t.max=Math.max(e.max,t.max),t.t+=e.t,t.sos+=e.sos,t.c+=e.c,t}(i,o[e])}}))}else a.metrics=n}storeMetric(e,t,n,r){var i=this.getBucket(e,t,n);return i.stats=A(r,i.stats),i}getBucket(e,t,n,r){this.aggregatedData[e]||(this.aggregatedData[e]={});var i=this.aggregatedData[e][t];return i||(i=this.aggregatedData[e][t]={params:n||{}},r&&(i.custom=r)),i}get(e,t){return t?this.aggregatedData[e]&&this.aggregatedData[e][t]:this.aggregatedData[e]}take(e){for(var t={},n="",r=!1,i=0;i<e.length;i++)t[n=e[i]]=D(this.aggregatedData[n]),t[n].length&&(r=!0),delete this.aggregatedData[n];return r?t:null}}function A(e,t){return null==e?function(e){e?e.c++:e={c:1};return e}(t):t?(t.c||(t=x(t.t)),t.c+=1,t.t+=e,t.sos+=e*e,e>t.max&&(t.max=e),e<t.min&&(t.min=e),t):{t:e}}function x(e){return{t:e,min:e,max:e,sos:e*e,c:1}}function D(e){return"object"!=typeof e?[]:(0,y.D)(e,j)}function j(e,t){return t}var _=i(8632),E=i(4402),T=i(4351);var k=i(7956),N=i(3239),P=i(9251);class C extends p{static featureName=P.t;constructor(e,t){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,P.t,n),u.il&&((0,r.OP)(e).initHidden=Boolean("hidden"===document.visibilityState),(0,k.N)((()=>(0,d.p)("docHidden",[(0,v.z)()],void 0,P.t,this.ee)),!0),(0,N.bP)("pagehide",(()=>(0,d.p)("winPagehide",[(0,v.z)()],void 0,P.t,this.ee))),this.importAggregator())}}var I=i(3081);class S extends p{static featureName=I.t9;constructor(e,t){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,I.t9,n),this.importAggregator()}}new class extends t{constructor(t){let n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:(0,E.ky)(16);super(),u._A?(this.agentIdentifier=n,this.sharedAggregator=new w({agentIdentifier:this.agentIdentifier}),this.features={},this.desiredFeatures=new Set(t.features||[]),this.desiredFeatures.add(m),Object.assign(this,(0,c.j)(this.agentIdentifier,t,t.loaderType||"agent")),this.start()):(0,e.Z)("Failed to initial the agent. Could not determine the runtime environment.")}get config(){return{info:(0,r.C5)(this.agentIdentifier),init:(0,r.P_)(this.agentIdentifier),loader_config:(0,r.DL)(this.agentIdentifier),runtime:(0,r.OP)(this.agentIdentifier)}}start(){const t="features";try{const r=s(this.agentIdentifier),i=[...this.desiredFeatures];i.sort(((e,t)=>n.p[e.featureName]-n.p[t.featureName])),i.forEach((t=>{if(r[t.featureName]||t.featureName===n.D.pageViewEvent){const i=function(e){switch(e){case n.D.ajax:return[n.D.jserrors];case n.D.sessionTrace:return[n.D.ajax,n.D.pageViewEvent];case n.D.sessionReplay:return[n.D.sessionTrace];case n.D.pageViewTiming:return[n.D.pageViewEvent];default:return[]}}(t.featureName);i.every((e=>r[e]))||(0,e.Z)("".concat(t.featureName," is enabled but one or more dependent features has been disabled (").concat((0,T.P)(i),"). This may cause unintended consequences or missing data...")),this.features[t.featureName]=new t(this.agentIdentifier,this.sharedAggregator)}})),(0,_.Qy)(this.agentIdentifier,this.features,t)}catch(n){(0,e.Z)("Failed to initialize all enabled instrument classes (agent aborted) -",n);for(const e in this.features)this.features[e].abortHandler?.();const r=(0,_.fP)();return delete r.initializedAgents[this.agentIdentifier]?.api,delete r.initializedAgents[this.agentIdentifier]?.[t],delete this.sharedAggregator,r.ee?.abort(),delete r.ee?.get(this.agentIdentifier),!1}}addToTrace(t){(0,e.Z)("Call to agent api addToTrace failed. The page action feature is not currently initialized.")}setCurrentRouteName(t){(0,e.Z)("Call to agent api setCurrentRouteName failed. The spa feature is not currently initialized.")}interaction(){(0,e.Z)("Call to agent api interaction failed. The spa feature is not currently initialized.")}}({features:[m,C,S],loaderType:"lite"})})(),window.NRBA=a})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+<link rel="canonical" href="/documents/annual-message-the-congress" />
+<link rel="shortlink" href="/node/210437" />
+<link rel="shortcut icon" href="https://www.presidency.ucsb.edu/sites/default/files/favicon-app_0.png" type="image/png" />
+  <title>Annual Message to the Congress | The American Presidency Project</title>
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,400italic,800,700,600,300|Dosis:400,200,300,500,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_lQaZfjVpwP_oGNqdtWCSpJT1EMqXdMiU84ekLLxQnc4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_uuQd0L7qawhKpY0MHO8pVG2W6LSQqS5w9XHZMk3vO2U.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_Cq1R3m_ERXC2ynYnp57HZ-O7ehprd9pvLTuV32DY_ow.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_BXCmDYWIH6zmNsU0Js_WJYpLGUpEB4GhicAN6AdoPdM.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_gsVew5cLoW8YoOz5wlq-MSojac7Ph5f6cujHg4HQfcM.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_DW59q6nX-P3-D4cA08_V2iLlMJIaFdPFYT8X6nSFpV8.css" media="print" />
+  <!-- HTML5 element support for IE6-8 -->
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+<script>window.jQuery || document.write("<script src='/sites/default/modules/contrib/jquery_update/replace/jquery/1.11/jquery.min.js'>\x3C/script>")</script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_Hfha9RCTNm8mqMDLXriIsKGMaghzs4ZaqJPLj2esi7s.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
+<script>window.jQuery.ui || document.write("<script src='/sites/default/modules/contrib/jquery_update/replace/ui/ui/minified/jquery-ui.min.js'>\x3C/script>")</script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_Tik8PIaz_eQ5I4FMzmjkWoPEs9jKBgTSauo1jgsNa6g.js"></script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_OnsvYlQ_LTosJ-SxmHIq3Rw7eH2XmXi69Q68wgclccA.js"></script>
+<script src="https://www.googletagmanager.com/gtag/js?id=UA-86410002-1"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};gtag("js", new Date());gtag("set", "developer_id.dMDhkMT", true);gtag("config", "UA-86410002-1", {"groups":"default","linker":{"domains":["dev-wwwpresidencyucsbedu.pantheonsite.io","www.presidency.ucsb.edu"]},"anonymize_ip":true});gtag("config", "G-86B9KEYGFJ", {"groups":"default","linker":{"domains":["dev-wwwpresidencyucsbedu.pantheonsite.io","www.presidency.ucsb.edu"]},"anonymize_ip":true});</script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_0ri5u0t83fzlM17yaHG1aQGEln8kbFJP2gAtCU7MncM.js"></script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_gvpxcPEErmaiJn8qGSGx2O87lReivTR09hs10gIG3Yg.js"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"ajaxPageState":{"theme":"app","theme_token":"-Dg79i9ldU8iLaHAmjPp-RP-Iu6rlgXjMfTG_3TQOI8","js":{"sites\/default\/libraries\/jquery-ui-multiselect-widget\/src\/jquery.multiselect.js":1,"sites\/default\/libraries\/jquery-ui-multiselect-widget\/src\/jquery.multiselect.filter.js":1,"sites\/default\/modules\/contrib\/jquery_ui_multiselect_widget\/jquery_ui_multiselect_widget.js":1,"modules\/statistics\/statistics.js":1,"sites\/default\/themes\/bootstrap\/js\/bootstrap.js":1,"\/\/ajax.aspnetcdn.com\/ajax\/jQuery\/jquery-1.11.2.min.js":1,"0":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"\/\/ajax.aspnetcdn.com\/ajax\/jquery.ui\/1.11.4\/jquery-ui.min.js":1,"1":1,"sites\/default\/modules\/contrib\/extlink\/extlink.js":1,"sites\/default\/modules\/contrib\/better_exposed_filters\/better_exposed_filters.js":1,"sites\/default\/modules\/contrib\/google_analytics\/googleanalytics.js":1,"https:\/\/www.googletagmanager.com\/gtag\/js?id=UA-86410002-1":1,"2":1,"sites\/default\/modules\/contrib\/field_group\/field_group.js":1,"sites\/default\/modules\/contrib\/rrssb\/rrssb.init.js":1,"sites\/default\/libraries\/rrssb-plus\/js\/rrssb.min.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/affix.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/alert.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/button.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/carousel.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/collapse.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/dropdown.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/modal.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/tooltip.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/popover.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/scrollspy.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/tab.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/transition.js":1,"sites\/default\/themes\/app\/scripts\/scripts.js":1},"css":{"modules\/system\/system.base.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.accordion.css":1,"sites\/default\/modules\/contrib\/date\/date_api\/date.css":1,"sites\/default\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"sites\/default\/modules\/contrib\/date\/date_repeat_field\/date_repeat_field.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"sites\/default\/modules\/contrib\/extlink\/extlink.css":1,"sites\/default\/modules\/contrib\/views\/css\/views.css":1,"sites\/default\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/default\/libraries\/jquery-ui-multiselect-widget\/jquery.multiselect.css":1,"sites\/default\/libraries\/jquery-ui-multiselect-widget\/jquery.multiselect.filter.css":1,"sites\/default\/modules\/contrib\/jquery_ui_multiselect_widget\/jquery_ui_multiselect_widget.css":1,"sites\/default\/modules\/contrib\/vefl\/css\/vefl-layouts.css":1,"public:\/\/rrssb\/rrssb.089adcbb.css":1,"sites\/default\/libraries\/rrssb-plus\/css\/rrssb.css":1,"sites\/default\/themes\/app\/css\/style.css":1,"sites\/default\/themes\/app\/css\/oog.css":1,"sites\/default\/themes\/app\/css\/print.css":1}},"jquery_ui_multiselect_widget":{"module_path":"sites\/default\/modules\/contrib\/jquery_ui_multiselect_widget","multiple":1,"filter":1,"subselector":"#edit-category2","selectedlist":"4","autoOpen":0,"header":1,"height":"auto","classes":"app-uberselect","filter_auto_reset":1,"filter_width":"auto","jquery_ui_multiselect_widget_path_match_exclude":"admin\/*\r\nmedia\/*\r\nfile\/*\r\nsystem\/ajax"},"better_exposed_filters":{"datepicker":false,"slider":false,"settings":[],"autosubmit":false,"views":{"dpg_docs_media":{"displays":{"block_2":{"filters":[]}}},"report_a_typo":{"displays":{"block":{"filters":[]}}},"document_attached_files":{"displays":{"block":{"filters":[]},"block_1":{"filters":[]}}}}},"urlIsAjaxTrusted":{"\/advanced-search":true},"extlink":{"extTarget":"_blank","extClass":0,"extLabel":"(link is external)","extImgClass":0,"extIconPlacement":"append","extSubdomains":1,"extExclude":"","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":0,"extAlertText":"This link will take you to an external web site.","mailtoClass":0,"mailtoLabel":"(link sends e-mail)"},"googleanalytics":{"account":["UA-86410002-1","G-86B9KEYGFJ"],"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip","trackDomainMode":2,"trackCrossDomains":["dev-wwwpresidencyucsbedu.pantheonsite.io","www.presidency.ucsb.edu"]},"statistics":{"data":{"nid":"210437"},"url":"\/modules\/statistics\/statistics.php"},"field_group":{"div":"full"},"rrssb":{"size":"1","shrink":"1","regrow":"","minRows":"1","maxRows":"1","prefixReserve":"1em","prefixHide":"1em","alignRight":0},"bootstrap":{"anchorsFix":1,"anchorsSmoothScrolling":1,"formHasError":1,"popoverEnabled":0,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","triggerAutoclose":1,"title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":1,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-node page-node- page-node-210437 node-type-documents" >
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    <div class="wrapper"> <!-- Wrapper for Sticky Footer -->
+
+      <div class="branding-region">
+      <div class="container">
+                  <div class="region region-branding">
+    <section id="block-block-1" class="block block-block site-title-block clearfix">
+
+      
+  <div class="site-title"><a href="https://www.presidency.ucsb.edu/">The American Presidency Project</a></div>
+
+</section>
+<section id="block-block-2" class="block block-block top-link-buttons clearfix">
+
+      
+  <p><a class="btn btn-default" href="https://www.presidency.ucsb.edu/about">About</a><a class="btn btn-default" href="/advanced-search"><span class="glyphicon glyphicon-search"></span> Search</a></p>
+<p id="ucScript"><a href="https://www.ucsb.edu/" target="_blank"><img alt="ucsb wordmark black" src="https://www.presidency.ucsb.edu/sites/default/files/pictures/uc_santa_barbara_wordmark_black_rgb.svg" style="width: 175px; height: 13px;" /></a></p>
+
+</section>
+  </div>
+      </div>
+    </div>
+  
+  <div id="navbar" role="banner" class="navbar navbar-default"><!-- Only way to remove "container" class -->
+    <div class="container">
+      <div class="navbar-header">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+              <div class="navbar-collapse collapse">
+          <nav role="navigation">
+                          <ul class="menu nav navbar-nav"><li class="first expanded active-trail active dropdown"><a href="/documents" class="active-trail dropdown-toggle" data-toggle="dropdown">Documents <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/documents/presidential-documents-archive-guidebook">Guidebook</a></li>
+<li class="last leaf"><a href="/documents/category-attributes">Category Attributes</a></li>
+</ul></li>
+<li class="collapsed"><a href="/statistics">Statistics</a></li>
+<li class="leaf"><a href="/media" title="">Media Archive</a></li>
+<li class="leaf"><a href="/presidents" title="">Presidents</a></li>
+<li class="leaf"><a href="/analyses" title="">Analyses</a></li>
+<li class="last leaf"><a href="https://giving.ucsb.edu/Funds/Give?id=185" title="">GIVE</a></li>
+</ul>                                              </nav>
+        </div>
+          </div>
+  </div>
+
+  <div role="banner" id="page-header" class="site-header">
+      </div>
+
+  <div class="main-container container">
+    <div class="row">
+
+          <aside class="col-sm-3 no-print" role="complementary">
+            <div class="region region-sidebar-first well">
+    <section id="block-menu-block-8" class="block block-menu-block doc-sub clearfix">
+
+        <h2 class="block-title">Documents</h2>
+    
+  <div class="menu-block-wrapper menu-block-8 menu-name-menu-documents parent-mlid-0 menu-level-1">
+  <ul class="menu nav"><li class="first leaf menu-mlid-10329"><a href="/documents/presidential-documents-archive-guidebook" title="">Archive Guidebook</a></li>
+<li class="leaf active-trail menu-mlid-10330 active"><a href="/documents" title="" class="active-trail">Categories</a></li>
+<li class="last leaf menu-mlid-10791"><a href="/documents/category-attributes" title="">Attributes</a></li>
+</ul></div>
+
+</section>
+<section id="block-menu-block-7" class="block block-menu-block dropdown clearfix">
+
+        <h2 class="block-title">Categories</h2>
+    
+  <div class="menu-block-wrapper menu-block-7 menu-name-menu-doc-cat-menu parent-mlid-0 menu-level-1">
+    <ul class="menu nav"><li class="first expanded menu-mlid-10954 dropdown"><a href="/documents/app-categories/presidential" title="Presidential (73842)" class="dropdown-toggle" data-toggle="dropdown">Presidential (229349) <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf menu-mlid-10910"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/eulogies" title="Eulogies (55)">Eulogies (63)</a></li>
+<li class="leaf menu-mlid-10930"><a href="/documents/app-categories/written-presidential-orders/presidential/executive-orders" title="Executive Orders (5885)">Executive Orders (8331)</a></li>
+<li class="leaf menu-mlid-10912"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/fireside-chats" title="Fireside Chats (27)">Fireside Chats (27)</a></li>
+<li class="leaf menu-mlid-10906"><a href="/documents/app-categories/presidential/interviews" title="Interviews (950)">Interviews (958)</a></li>
+<li class="leaf menu-mlid-10894"><a href="/documents/app-categories/presidential/letters" title="Letters (4363)">Letters (4692)</a></li>
+<li class="leaf menu-mlid-10899"><a href="/documents/app-categories/presidential/miscellaneous-written" title="Miscellaneous Written (741)">Miscellaneous Written (103)</a></li>
+<li class="leaf menu-mlid-10907"><a href="/documents/app-categories/presidential/news-conferences" title="News Conferences (2096)">News Conferences (2501)</a></li>
+<li class="collapsed menu-mlid-10909"><a href="/documents/app-categories/presidential/spoken-addresses-and-remarks" title="Spoken Addresses and Remarks (5428)">Spoken Addresses and Remarks (34069)</a></li>
+<li class="leaf menu-mlid-10911"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/farewell-address" title="Farewell Address (10)">Farewell Address (11)</a></li>
+<li class="leaf menu-mlid-10913"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/inaugural-addresses" title="Inaugural Addresses (61)">Inaugural Addresses (62)</a></li>
+<li class="leaf menu-mlid-10895"><a href="/documents/app-categories/presidential/memoranda" title="Memoranda (1828)">Memoranda (3440)</a></li>
+<li class="leaf menu-mlid-10927"><a href="/documents/app-categories/citations/presidential/messages" title="Messages (11049)">Messages (12471)</a></li>
+<li class="leaf menu-mlid-10931"><a href="/documents/app-categories/written-presidential-orders/presidential/proclamations" title="Proclamations (7974)">Proclamations (9158)</a></li>
+<li class="leaf menu-mlid-10919"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/saturday-weekly-addresses-radio" title="Saturday Addresses (Radio and Webcast) (1629)">Saturday Weekly Addresses (Radio and Webcast) (1639)</a></li>
+<li class="leaf menu-mlid-10920"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/state-dinners" title="State Dinners (953)">State Dinners (960)</a></li>
+<li class="leaf menu-mlid-10921"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/state-the-union-addresses" title="State of the Union Addresses (98)">State of the Union Addresses (99)</a></li>
+<li class="leaf menu-mlid-10928"><a href="/documents/app-categories/citations/presidential/state-the-union-written-messages" title="State of the Union Messages (1)">State of the Union Written Messages (140)</a></li>
+<li class="expanded menu-mlid-10934"><a href="/documents/app-categories/statements" title="Statements (8647)">Statements (13891)</a></li>
+<li class="leaf menu-mlid-10924"><a href="/documents/app-categories/presidential/vetoes" title="Vetoes (266)">Vetoes (1216)</a></li>
+<li class="collapsed menu-mlid-10925"><a href="/documents/app-categories/presidential/citations" title="Written Messages (11021)">Citations (12838)</a></li>
+<li class="last expanded menu-mlid-10929"><a href="/documents/app-categories/presidential/written-presidential-orders" title="Written Presidential Orders (13858)">Written Presidential Orders (40698)</a></li>
+</ul></li>
+<li class="leaf menu-mlid-10897"><a href="/documents/app-categories/remarks-administration-officials" title="Miscellaneous Press Secretary (23298)">Remarks by Administration Officials (142)</a></li>
+<li class="expanded menu-mlid-10887 dropdown"><a href="/documents/app-categories/elections-and-transitions" title="Elections and Transitions (16448)" class="dropdown-toggle" data-toggle="dropdown">Elections and Transitions (42160) <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf menu-mlid-10888"><a href="/documents/app-categories/elections-and-transitions/campaign-documents" title="Campaign Documents (2747)">Campaign Documents (19873)</a></li>
+<li class="expanded menu-mlid-10889"><a href="/documents/app-categories/elections-and-transitions/convention-speeches" title="Convention Speeches (50)">Convention Speeches (117)</a></li>
+<li class="leaf menu-mlid-10890"><a href="/documents/app-categories/elections-and-transitions/debates" title="Debates (152)">Debates (171)</a></li>
+<li class="leaf menu-mlid-10892"><a href="/documents/app-categories/elections-and-transitions/party-platforms" title="Party Platforms (98)">Party Platforms (103)</a></li>
+<li class="last leaf menu-mlid-10893"><a href="/documents/app-categories/elections-and-transitions/transition-documents" title="Transition Documents (346)">Transition Documents (552)</a></li>
+</ul></li>
+<li class="last leaf menu-mlid-10883"><a href="/documents/app-categories/congressional" title="Congressional (3)">Congressional (29)</a></li>
+</ul></div>
+
+</section>
+  </div>
+        </aside>  <!-- /#sidebar-first -->
+      
+      <section class="col-sm-9">
+                        <a id="main-content"></a>
+                <div class="alert alert-block alert-success messages status">
+  <a class="close" data-dismiss="alert" href="#">&times;</a>
+<h4 class="element-invisible">Status message</h4>
+You visited this Document through a legacy url format. The new permanent url can be found at the bottom of the webpage.</div>
+
+                          
+                          <div class="region region-content">
+    <section id="block-system-main" class="block block-system clearfix">
+
+      
+  
+
+<div  about="/documents/annual-message-the-congress" typeof="sioc:Item foaf:Document" class="node node-documents view-mode-full ">
+    <div class="row">
+    <div class="col-sm-8 ">
+      
+  <div class="field-docs-person">
+    <div  about="/people/president/franklin-d-roosevelt" typeof="sioc:Item foaf:Document" class="ds-1col node node-prez-diet view-mode-for_documents  clearfix">
+
+  
+  
+  <div class="field-diet-pictures">
+    <img typeof="foaf:Image" class="img-responsive" src="https://www.presidency.ucsb.edu/sites/default/files/styles/doc_img/public/people/franklin-d-roosevelt_2.jpg?itok=gbyLJ_Cd" width="170" height="230" alt="Franklin D. Roosevelt photo" />  </div>
+
+  <div class="field-title">
+    <h3 class="diet-title"><a href="/people/president/franklin-d-roosevelt">Franklin D. Roosevelt</a></h3>  </div>
+
+  <div class="field-ds-byline">
+    
+  <div class="field-resuable-byline">
+    <div class="diet-by-line president"><span class="presidential-ordinal-number">32nd</span> <span class="job-position">President of the United States:</span> <span class="dates">1933 ‐ 1945</span></div>
+  </div>
+  </div>
+
+  <div class="field-ds-doc-title">
+    <h1>Annual Message to the Congress</h1>
+  </div>
+</div>
+
+  </div>
+
+  <div class="field-docs-start-date-time">
+    <span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="1940-01-03T00:00:00+00:00">January 03, 1940</span>  </div>
+
+  <div class="field-docs-content">
+    <p>Mr. Vice President, Mr. Speaker, Members of the Senate and the House of Representatives:</p>
+<p>I wish each and every one of you a very happy New Year.</p>
+<p>As the Congress reassembles, the impact of war abroad makes it natural to approach "the state of the union" through a discussion of foreign affairs.</p>
+<p>But it is important that those who hear and read this message should in no way confuse that approach with any thought that our Government is abandoning, or even overlooking, the great significance of its domestic policies.</p>
+<p>The social and economic forces which have been mismanaged abroad until they have resulted in revolution, dictatorship and war are the same as those which we here are struggling to adjust peacefully at home.</p>
+<p>You are well aware that dictatorships—and the philosophy of force that justifies and accompanies dictatorships—have originated in almost every case in the necessity for drastic action to improve internal conditions in places where democratic action for one reason or another has failed to respond to modern needs and modern demands.</p>
+<p>It was with far-sighted wisdom that the framers of our Constitution brought together in one magnificent phrase three great concepts—"common defense," "general welfare" and "domestic tranquility."</p>
+<p>More than a century and a half later we, who are here today, still believe with them that our best defense is the promotion of our general welfare and domestic tranquillity.</p>
+<p>In previous messages to the Congress I have repeatedly warned that, whether we like it or not, the daily lives of American citizens will, of necessity, feel the shock of events on other continents. This is no longer mere theory; because it has been definitely proved to us by the facts of yesterday and today.</p>
+<p>To say that the domestic well-being of one hundred and thirty million Americans is deeply affected by the well-being or the ill-being of the populations of other nations is only to recognize in world affairs the truth that we all accept in home affairs.</p>
+<p>If in any local unit-a city, county, State or region—low standards of living are permitted to continue, the level of the civilization of the entire nation will be pulled downward.</p>
+<p>The identical principle extends to the rest of the civilized world. But there are those who wishfully insist, in innocence or ignorance or both, that the United States of America as a self-contained unit can live happily and prosperously, its future secure, inside a high wall of isolation while, outside, the rest of Civilization and the commerce and culture of mankind are shattered.</p>
+<p>I can understand the feelings of those who warn the nation that they will never again consent to the sending of American youth to fight on the soil of Europe. But, as I remember, nobody has asked them to consent—for nobody expects such an undertaking.</p>
+<p>The overwhelming majority of our fellow citizens do not abandon in the slightest their hope and their expectation that the United States will not become involved in military participation in these wars.</p>
+<p>I can also understand the wishfulness of those who oversimplify the whole situation by repeating that all we have to do is to mind our own business and keep the nation out of war. But there is a vast difference between keeping out of war and pretending that this war is none of our business.</p>
+<p>We do not have to go to war with other nations, but at least we can strive with other nations to encourage the kind of peace that will lighten the troubles of the world, and by so doing help our own nation as well.</p>
+<p>I ask that all of us everywhere think things through with the single aim of how best to serve the future of our own nation. I do not mean merely its future relationship with the outside world. I mean its domestic future as well—the work, the security, the prosperity, the happiness, the life of all the boys and girls in the United States, as they are inevitably affected by such world relationships. For it becomes clearer and clearer that the future world will be a shabby and dangerous place to live in-yes, even for Americans to live in—if it is ruled by force in the hands of a few.</p>
+<p>Already the crash of swiftly moving events over the earth has made us all think with a longer view. Fortunately, that thinking cannot be controlled by partisanship. The time is long past when any political party or any particular group can curry or capture public favor by labeling itself the "peace party" or the "peace bloc." That label belongs to the whole United States and to every right thinking man, woman and child within it.</p>
+<p>For out of all the military and diplomatic turmoil, out of all the propaganda, and counter-propaganda of the present conflicts, there are two facts which stand out, and which the whole world acknowledges.</p>
+<p>The first is that never before has the Government of the United States of America done so much as in our recent past to establish and maintain the policy of the Good Neighbor with its sister nations.</p>
+<p>The second is that in almost every nation in the world today there is a true public belief that the United States has been, and will continue to be, a potent and active factor in seeking the reestablishment of world peace.</p>
+<p>In these recent years we have had a clean record of peace and good-will. It is an open book that cannot be twisted or defamed. It is a record that must be continued and enlarged.</p>
+<p>So I hope that Americans everywhere will work out for themselves the several alternatives which lie before world civilization, which necessarily includes our own.</p>
+<p>We must look ahead and see the possibilities for our children if the rest of the world comes to be dominated by concentrated force alone—even though today we are a very great and a very powerful nation.</p>
+<p>We must look ahead and see the effect on our own future if all the small nations of the world have their independence snatched from them or become mere appendages to relatively vast and powerful military systems.</p>
+<p>We must look ahead and see the kind of lives our children would have to lead if a large part of the rest of the world were compelled to worship a god imposed by a military ruler, or were forbidden to worship God at all; if the rest of the world were forbidden to read and hear the facts—the daily news of their own and other nations—if they were deprived of the truth that makes men free.</p>
+<p>We must look ahead and see the effect on our future generations if world trade is controlled by any nation or group of nations 'which sets up that control through military force.</p>
+<p>It is, of course, true that the record of past centuries includes destruction of many small nations, the enslavement of peoples, and the building of empires on the foundation of force. But wholly apart from the greater international morality which we seek today, we recognize the practical fact that with modern weapons and modern conditions, modern man can no longer lead a civilized life if we are to go back to the practice of wars and conquests of the seventeenth and eighteenth centuries.</p>
+<p>Summing up this need of looking ahead, and in words of common sense and good American citizenship. I hope that we shall have fewer American ostriches in our midst. It is not good for the ultimate health of ostriches to bury their heads in the sand.</p>
+<p>Only an ostrich would look upon these wars through the eyes of cynicism or ridicule.</p>
+<p>Of course, the peoples of other nations have the right to choose their own form of Government. But we in this nation still believe that such choice should be predicated on certain freedoms which we think are essential everywhere. We know that we ourselves shall never be wholly safe at home unless other governments recognize such freedoms.</p>
+<p>Twenty-one American Republics, expressing the will of two hundred and fifty million people to preserve peace and freedom in this Hemisphere, are displaying a unanimity of ideals and practical relationships which gives hope that what is being done here can be done on other continents. We in all the Americas are coming to the realization that we can retain our respective nationalities without, at the same time, threatening the national existence of our neighbors.</p>
+<p>Such truly friendly relationships, for example, permit us to follow our own domestic policies with reference to our agricultural products, while at the same time we have the privilege of trying to work out mutual assistance arrangements for a world distribution of world agricultural surpluses.</p>
+<p>And we have been able to apply the same simple principle to many manufactured products—surpluses of which must be sold in the world export markets if we intend to continue a high level of production and employment.</p>
+<p>For many years after the World War blind economic selfishness in most countries, including our own, resulted in a destructive mine-field of trade restrictions which blocked the channels of commerce among nations. Indeed, this policy was one of the contributing causes of existing wars. It dammed up vast unsalable surpluses, helping to bring about unemployment and suffering in the United States and everywhere else.</p>
+<p>To point the way to break up that log-jam our Trade Agreements Act was passed-based upon a policy of equality of treatment among nations and of mutually profitable arrangements of trade.</p>
+<p>It is not correct to infer that legislative powers have been transferred from the Congress to the Executive Branch of the Government. Everyone recognizes that general tariff legislation is a Congressional function; but we know that, because of the stupendous task involved in the fashioning and the passing of a general tariff law, it is advisable to provide at times of emergency some flexibility to make the general law adjustable to quickly changing conditions.</p>
+<p>We are in such a time today. Our present trade agreement method provides a temporary flexibility and is, therefore, practical in the best sense. It should be kept alive to serve our trade interests—agricultural and industrial—in many valuable ways during the existing wars.</p>
+<p>But what is more important, the Trade Agreements Act should be extended as an indispensable part of the foundation of any stable and enduring peace.</p>
+<p>The old conditions of world trade made for no enduring peace; and when the time comes, the United States must use its influence to open up the trade channels of the world, in all nations, in order that no one nation need feel compelled in later days to seek by force of arms what it can well gain by peaceful conference. For that purpose, too, we need the Trade Agreements Act even more today than when it was passed.</p>
+<p>I emphasize the leadership which this nation can take when the time comes for a renewal of world peace. Such an influence will be greatly weakened if this Government becomes a dog in the manger of trade selfishness.</p>
+<p>The first President of the United States warned us against entangling foreign alliances. The present President of the United States subscribes to and follows that precept.</p>
+<p>I hope that most of you will agree that trade cooperation with the rest of the world does not violate that precept in any way.</p>
+<p>Even as through these trade agreements we prepare to cooperate in a world that wants peace, we must likewise be prepared to take care of ourselves if the world cannot attain peace.</p>
+<p>For several years past we have been compelled to strengthen our own national defense. That has created a very large portion of our Treasury deficits. This year in the light of continuing world uncertainty, I am asking the Congress for Army and Navy increases which are based not on panic but on common sense. They are not as great as enthusiastic alarmists seek. They are not as small as unrealistic persons claiming superior private information would demand.</p>
+<p>As will appear in the annual budget tomorrow, the only important increase in any part of the budget is the estimate for national defense. Practically all other important items show a reduction. But you know, you can't eat your cake and have it too. Therefore, in the hope that we can continue in these days of increasing economic prosperity to reduce the Federal deficit, I am asking the Congress to levy sufficient additional taxes to meet the emergency spending for national defense.</p>
+<p>Behind the Army and Navy, of course, lies our ultimate line of defense—"the general welfare" of our people. We cannot report, despite all the progress that we have made in our domestic problems—despite the fact that production is back to 1929 levels—that all our problems are solved. The fact of unemployment of millions of men and women remains a symptom of a number of difficulties in our economic system not yet adjusted.</p>
+<p>While the number of the unemployed has decreased very greatly, while their immediate needs for food and clothing-as far as the Federal Government is concerned—have been largely met, while their morale has been kept alive by giving them useful public work, we have not yet found a way to employ the surplus of our labor which the efficiency of our industrial processes has created.</p>
+<p>We refuse the European solution of using the unemployed to build up excessive armaments which eventually result in dictatorships and war. We encourage an American way—through an increase of national income which is the only way we can be sure will take up the slack. Much progress has been made; much remains to be done.</p>
+<p>We recognize that we must find an answer in terms of work and opportunity.</p>
+<p>The unemployment problem today has become very definitely a problem of youth as well as of age. As each year has gone by hundreds of thousands of boys and girls have come of working age. They now form an army of unused youth. They must be an especial concern of democratic Government.</p>
+<p>We must continue, above all things, to look for a solution of their special problem. For they, looking ahead to life, are entitled to action on our part and not merely to admonitions of optimism or lectures on economic laws.</p>
+<p>Some in our midst have sought to instill a feeling of fear and defeatism in the minds of the American people about this problem.</p>
+<p>To face the task of finding jobs faster than invention can take them away—is not defeatism. To warble easy platitudes that if we would only go back to ways that have failed, everything would be all right—is not courage.</p>
+<p>In 1933 we met a problem of real fear and real defeatism. We faced the facts—with action and not with words alone.</p>
+<p>The American people will reject the doctrine of fear, confident that in the 'thirties we have been building soundly a new order of things, different from the order of the 'twenties. In this dawn of the decade of the 'forties, with our program of social improvement started, we will continue to carry on the processes of recovery, so as to preserve our gains and provide jobs at living wages.</p>
+<p>There are, of course, many other items of great public interest which could be enumerated in this message—the continued conservation of our natural resources, the improvement of health and of education, the extension of social security to larger groups, the freeing of large areas from restricted transportation discriminations, the extension of the merit system and many others.</p>
+<p>Our continued progress in the social and economic field is important not only for the significance of each part of it but for the total effect which our program of domestic betterment has upon that most valuable asset of a nation in dangerous times—its national unity.</p>
+<p>The permanent security of America in the present crisis does not lie in armed force alone. What we face is a set of world-wide forces of disintegration—vicious, ruthless, destructive of all the moral, religious and political standards which mankind, after centuries of struggle, has come to cherish most.</p>
+<p>In these moral values, in these forces which have made our nation great, we must actively and practically reassert our faith.</p>
+<p>These words-"national unity"-must not be allowed to be come merely a high-sounding phrase, a vague generality, a pious hope, to which everyone can give lip-service. They must be made to have real meaning in terms of the daily thoughts and acts of every man, woman and child in our land during the coming year and during the years that lie ahead.</p>
+<p>For national unity is, in a very real and a very deep sense, the fundamental safeguard of all democracy.</p>
+<p>Doctrines that set group against group, faith against faith, race against race, class against class, fanning the fires of hatred in men too despondent, too desperate to think for themselves, were used as rabble-rousing slogans on which dictators could ride to power. And once in power they could saddle their tyrannies on whole nations and on their weaker neighbors.</p>
+<p>This is the danger to which we in America must begin to be more alert. For the apologists for foreign aggressors, and equally those selfish and partisan groups at home who wrap themselves in a false mantle of Americanism to promote their own economic, financial or political advantage, are now trying European tricks upon us, seeking to muddy the stream of our national thinking, weakening us in the face of danger, by trying to set our own people to fighting among themselves. Such tactics are what have helped to plunge Europe into war. We must combat them, as we would the plague, if American integrity and American security are to be preserved. We cannot afford to face the future as a disunited people.</p>
+<p>We must as a united people keep ablaze on this continent the flames of human liberty, of reason, of democracy and of fair play as living things to be preserved for the better world that is to come.</p>
+<p>Overstatement, bitterness, vituperation, and the beating of drums have contributed mightily to ill-feeling and wars between nations. If these unnecessary and unpleasant actions are harmful in the international field, if they have hurt in other parts of the world, they are also harmful in the domestic scene. Peace among ourselves would seem to have some of the advantage of peace between us and other nations. In the long run history amply demonstrates that angry controversy surely wins less than calm discussion.</p>
+<p>In the spirit, therefore, of a greater unselfishness, recognizing that the world—including the United States of America—passes through perilous times, I am very hopeful that the closing session of the Seventy-sixth Congress will consider the needs of the nation and of humanity with calmness, with tolerance and with cooperative wisdom.</p>
+<p>May the year 1940 be pointed to by our children as another period when democracy justified its existence as the best instrument of government yet devised by mankind.</p>
+  </div>
+
+  <div class="field-prez-document-citation">
+    <p class="ucsbapp_citation">Franklin D. Roosevelt, Annual Message to the Congress Online by Gerhard Peters and John T. Woolley, The American Presidency Project https://www.presidency.ucsb.edu/node/210437</p>  </div>
+    </div>
+    <div class="col-sm-4 ">
+      <div class="group-meta">
+  <div class="field-ds-filed-under-">
+    <h3 class="oog-label">Filed Under</h3>  </div>
+<h3 class="label-above oog-label ds ">Categories</h3><div><a href="/documents/app-categories/presidential" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Presidential</a></div><div><a href="/documents/app-categories/presidential/spoken-addresses-and-remarks" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Spoken Addresses and Remarks</a></div><div><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/state-the-union-addresses" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">State of the Union Addresses</a></div><h3 class="label-above oog-label ds">Attributes</h3><div><a href="/documents/app-attributes/the-congress" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">to the Congress</a></div><div class="jump"><div class="view view-dpg-docs-media view-id-dpg_docs_media view-display-id-block_2 view-dom-id-b5489ba3816b11152db7843ac195cea1">
+        
+    
+      <div class="view-content">
+        <div>
+      </div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div></div>
+  <div class="field-docs-location">
+    
+
+<div  about="/node/200009" typeof="sioc:Item foaf:Document" class="node node-location-flag view-mode-for_documents ">
+    <div class="row">
+    <div class="col-sm-12 ">
+        <h3 class="field-label">
+    Location  </h3>
+
+  <div class="field-spot-state">
+    Washington, DC  </div>
+
+  <div class="field-spot-flag">
+    <img typeof="foaf:Image" class="img-responsive" src="https://www.presidency.ucsb.edu/sites/default/files/location-flags/DC.jpg" width="120" height="60" alt="" />  </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Needed to activate display suite support on forms -->
+  </div>
+</div><div class="rrssb"><ul class="rrssb-buttons"><li class="rrssb-twitter"><a href="https://twitter.com/intent/tweet?text=Annual%20Message%20to%20the%20Congress&url=https%3A%2F%2Fwww.presidency.ucsb.edu%2Fdocuments%2Fannual-message-the-congress" class="popup"><span class="rrssb-icon"></span><span class="rrssb-text">twitter</span></a></li><li class="rrssb-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.presidency.ucsb.edu%2Fdocuments%2Fannual-message-the-congress" class="popup"><span class="rrssb-icon"></span><span class="rrssb-text">facebook</span></a></li><li class="rrssb-linkedin"><a href="http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.presidency.ucsb.edu%2Fdocuments%2Fannual-message-the-congress&title=Annual%20Message%20to%20the%20Congress" class="popup"><span class="rrssb-icon"></span><span class="rrssb-text">linkedin</span></a></li><li class="rrssb-googleplus"><a href="https://plus.google.com/share?url=https%3A%2F%2Fwww.presidency.ucsb.edu%2Fdocuments%2Fannual-message-the-congress" class="popup"><span class="rrssb-icon"></span><span class="rrssb-text">google+</span></a></li><li class="rrssb-email"><a href="mailto:?subject=Annual%20Message%20to%20the%20Congress&body=https%3A%2F%2Fwww.presidency.ucsb.edu%2Fdocuments%2Fannual-message-the-congress" ><span class="rrssb-icon"></span><span class="rrssb-text">email</span></a></li></ul></div>
+  <div class="field-ds-big-search-block">
+    <section id="block-views-5c12edf56060306972111336e0789cf4" class="block block-views other-frontpage-block clearfix">
+
+        <h2 class="block-title">Simple Search of Our Archives</h2>
+    
+  <form action="/advanced-search" method="get" id="views-exposed-form-prez-documents-archive-search2-page-1" accept-charset="UTF-8"><div>  <div class="views-exposed-form vefl-layout bootstrap-6-6-stacked">
+    <div class="views-exposed-widgets clearfix">
+              <div class="vefl-region vefl-region-top">
+                      
+<div id="edit-field-keywords-wrapper" class="views-exposed-widget views-widget-edit-field-keywords">
+    
+  <div class="views-widget">    <div class="form-item form-item-field-keywords form-type-textfield form-group"><input class="form-control form-text" type="text" id="edit-field-keywords" name="field-keywords" value="" size="30" maxlength="128" /></div>  </div>
+  </div>
+                  </div>
+              <div class="vefl-region vefl-region-left">
+                  </div>
+              <div class="vefl-region vefl-region-right">
+                  </div>
+              <div class="vefl-region vefl-region-bottom">
+                      
+<div id="items-per-page-wrapper" class="views-exposed-widget views-widget-items-per-page">
+    
+      <div class="form-item form-item-items-per-page form-type-select form-group"> <label class="control-label" for="edit-items-per-page"># per page</label>
+<select class="form-control form-select" id="edit-items-per-page" name="items_per_page"><option value="5">5</option><option value="10">10</option><option value="25" selected="selected">25</option><option value="50">50</option><option value="100">100</option></select></div>  
+  </div>
+                      
+<div id="button-wrapper" class="views-exposed-widget views-widget-button views-submit-button">
+    
+      <button type="submit" id="edit-submit-prez-documents-archive-search2" name="" value="Apply" class="btn btn-default form-submit">Apply</button>
+  
+  </div>
+                  </div>
+          </div>
+  </div>
+</div></form>
+</section>
+  </div>
+
+  <div class="field-ds-typo">
+    <div class="view view-report-a-typo view-id-report_a_typo view-display-id-block view-dom-id-e15f6dd6f7c306ef75eb155347aac97e">
+        
+    
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first views-row-last">
+      
+  <div class="views-field views-field-title">        <span class="field-content"><a href="/report-a-typo?content_id=210437&amp;title=Annual%20Message%20to%20the%20Congress" class="report-typo" target="_blank"><h3>Report a Typo</h3></a></span>  </div>  </div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Needed to activate display suite support on forms -->
+
+</section>
+  </div>
+<!-- Content -->
+      </section>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+<footer class="site-footer no-print">
+  <div class="container">
+      <div class="region region-footer">
+    <section id="block-block-4" class="block block-block attribution clearfix">
+
+      
+  <p><span>The American Presidency Project</span><br />John Woolley and Gerhard Peters<br /><strong><a href="https://www.presidency.ucsb.edu/contact">Contact</a></strong></p>
+
+</section>
+<section id="block-block-6" class="block block-block foot ucsb clearfix">
+
+      
+  <p style="text-align: center;display:inline-block;"><a class="twitter" href="https://twitter.com/presidency_proj" target="_blank">Twitter</a> <a class="facebook" href="https://www.facebook.com/pg/american.presidency.project/" target="_blank">Facebook</a></p>
+
+</section>
+<section id="block-block-5" class="block block-block copyright clearfix">
+
+      
+  <p>Copyright &copy; The American Presidency Project<br /><a href="http://www.ucsb.edu/terms-of-use" target="_blank">Terms of Service</a> | <a href="http://www.policy.ucsb.edu/privacy-notification/" target="_blank">Privacy</a> | <a href="/accessibility">Accessibility</a></p><p><img alt="uc santa barbara logo" src="/sites/default/files/pictures/uc-santa-barbara-wordmark-white1x.svg" style="width: 197px; min-width: 150px; height: 14px;object-fit:cover;" /></p>
+</section>
+  </div>
+  </div>
+  </footer>
+  <script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_NKBfN5q_T2fdeVG6tE3pdNU7glYkyzgPuDTc4K3Ne1w.js"></script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_MRdvkC2u4oGsp5wVxBG1pGV5NrCPW3mssHxIn6G9tGE.js"></script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"dee899de70","applicationID":"80106271","transactionName":"bl1XYxNYWkVYVxFdWVcXdFQVUFtYFlAWa1NBTEdWEmZaWV1ROkRXXl1qQQhcQw==","queueTime":0,"applicationTime":545,"atts":"QhpUFVtCSUs=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title> | STV4030A - Spatial joins</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../spatial_data/basic_maps.html" rel="next">
+<link href="../spatial_data/reading_spatial_data.html" rel="prev">
+<link href="..//pics/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"> | STV4030A</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../spatial_data/what_is_spatial_data.html">Spatial data</a></li><li class="breadcrumb-item"><a href="../spatial_data/spatial_joins.html">Spatial joins</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A">
+            Source code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A/issues">
+            Report an error
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Working in R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/R_refresher.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R refresher</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics: functions and iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing your own functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/encoding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Locales and encoding</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Quarto documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/writing_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing Quarto documents</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/producing_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Producing Tables from R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/tidy_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wrangling in <code>dplyr</code> and <code>tidyr</code></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_in_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization in <code>ggplot2</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examples of different types of data visualizations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing regression models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_model_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing quantities of interest based on regression models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Text data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/text_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Political Text as Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/read_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Texts into R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/extracting_data_from_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extracting data from texts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Data gathering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Webscraping</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">APIs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Spatial data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/what_is_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What is spatial data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/reading_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading spatial data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/spatial_joins.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Spatial joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/basic_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating maps</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-a-spatial-join" id="toc-what-is-a-spatial-join" class="nav-link active" data-scroll-target="#what-is-a-spatial-join">What is a spatial join?</a></li>
+  <li><a href="#how-do-we-combine-spatial-data-frames" id="toc-how-do-we-combine-spatial-data-frames" class="nav-link" data-scroll-target="#how-do-we-combine-spatial-data-frames">How do we combine spatial data frames?</a></li>
+  <li><a href="#spatial-joins-procedure" id="toc-spatial-joins-procedure" class="nav-link" data-scroll-target="#spatial-joins-procedure">Spatial joins: procedure</a></li>
+  <li><a href="#to-which-data-frame-do-we-want-to-attach-ids" id="toc-to-which-data-frame-do-we-want-to-attach-ids" class="nav-link" data-scroll-target="#to-which-data-frame-do-we-want-to-attach-ids">1. To which data frame do we want to attach IDs?</a></li>
+  <li><a href="#perform-the-spatial-join" id="toc-perform-the-spatial-join" class="nav-link" data-scroll-target="#perform-the-spatial-join">2. Perform the spatial join</a></li>
+  <li><a href="#aggregate-to-polygon-level" id="toc-aggregate-to-polygon-level" class="nav-link" data-scroll-target="#aggregate-to-polygon-level">3. Aggregate to polygon level</a>
+  <ul class="collapse">
+  <li><a href="#join-aggregated-data-frame-back-into-the-polygon-data-frame" id="toc-join-aggregated-data-frame-back-into-the-polygon-data-frame" class="nav-link" data-scroll-target="#join-aggregated-data-frame-back-into-the-polygon-data-frame">Join aggregated data frame back into the polygon data frame</a></li>
+  </ul></li>
+  <li><a href="#map-and-analyze" id="toc-map-and-analyze" class="nav-link" data-scroll-target="#map-and-analyze">4. Map and analyze!</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Spatial joins</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="what-is-a-spatial-join" class="level1">
+<h1>What is a spatial join?</h1>
+<p>In previous lessons, you’ve learned about <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html#combining-datasets-with-dplyr">regular joins of data frames</a> using commands, such as <code>left_join()</code>. With regular joins you <em>combine</em> information from two datasets, using a joint ID or key variable that exists in both datasets and identifies observations in both datasets.</p>
+<p>A spatial join is similar to regular joins that it also describes a process to combine two datasets. But, in contrast to regular joins, we use spatial joins in a very special case, when two conditions are met:</p>
+<ol type="1">
+<li><strong>We don’t have a joint key variable in the two datasets we want to combine.</strong> Think of the Bosnia datasets we used before. We had two data frames: one with the location of the events (the <code>ged</code> dataset) and another dataset with the shapes of the Bosnian municipalities (the <code>bosnia_shp</code> dataset). The observations in the <code>ged</code> dataset (i.e.&nbsp;the conflict events) do NOT have an ID variable that tells us in which municipality each event happened.</li>
+<li><strong>We have two spatial data frames</strong>. If the two datasets we want to combine are spatial data frames (i.e.&nbsp;data frames that we’ve transformed into <code>sf</code> data frames), then we can combine the two without having joint IDs.</li>
+</ol>
+<p>If those two conditions are met, we can use spatial joins to combine the data.</p>
+</section>
+<section id="how-do-we-combine-spatial-data-frames" class="level1">
+<h1>How do we combine spatial data frames?</h1>
+<p>The core idea of a spatial join is to find out where the two spatial data frames overlap. The easiest way to visualize this is to consider the following map of the <code>ged</code> and the <code>bosnia_shp</code> data frames from the previous lesson:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read the Bosnia shapefile with st_read() =&gt; it's already an sf data frame</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># because of the .shp (shapefile) format!</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>bosnia_shp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"../data/spatial_data/datasets/bosnia_shapefile/bosnia.shp"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `bosnia' from data source 
+  `C:\Dropbox\Work\Lehre\2023\2023 - STV4030A Digital Data in Political Science\stv4030A_quarto_website\STV4030A\data\spatial_data\datasets\bosnia_shapefile\bosnia.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 109 features and 2 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 15.74059 ymin: 42.56583 xmax: 19.61979 ymax: 45.26595
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read the Bosnia GED events</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ged <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/spatial_data/datasets/ged.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># transform GED events into sf data frame</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ged <span class="ot">&lt;-</span> ged <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> bosnia_shp) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="spatial_joins_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Spatial join: main concept
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A spatial join is our main way of figuring out which points fall into which polygon. Put differently: spatial joins help us to create a joint key/ID variable (namely the ID of the underlying/overlapping polygon) to each point.</p>
+</div>
+</div>
+</section>
+<section id="spatial-joins-procedure" class="level1">
+<h1>Spatial joins: procedure</h1>
+<p>Each spatial join follows a simple procedure:</p>
+<ol type="1">
+<li>Figure out to which data frame you want to attach IDs.</li>
+<li>Run the spatial join command <code>st_join()</code></li>
+<li>Aggregate the point data to level of the polygon data &amp; join aggregate into shapefile.</li>
+<li>Plot/map data &amp; analyze!</li>
+</ol>
+</section>
+<section id="to-which-data-frame-do-we-want-to-attach-ids" class="level1">
+<h1>1. To which data frame do we want to attach IDs?</h1>
+<p>In our case, we want to attach to the <code>ged</code> data frame the IDs for each municipality in which they fall from the <code>bosnia_shp</code> data frame. Usually you want to attach polygon IDs (such as municipality IDs) to point data, but their might be cases where you want the opposite outcome.</p>
+<p>A key element of this step is to have an idea of the outcome data frame that we want. Consider the <code>ged</code> data frame:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 15.91861 ymin: 43.85 xmax: 19.29694 ymax: 44.87278
+Geodetic CRS:  WGS 84
+# A tibble: 6 × 4
+      id date_start  best            geometry
+   &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;         &lt;POINT [°]&gt;
+1 199885 1993-02-01     6 (18.80833 44.87278)
+2 199767 1994-03-03     1 (15.91861 44.84444)
+3 200575 1995-03-12     1    (18.38333 43.85)
+4 200731 1995-07-07     1 (19.29694 44.10639)
+5 200732 1995-07-08     1 (19.29694 44.10639)
+6 200733 1995-07-09     2 (19.29694 44.10639)</code></pre>
+</div>
+</div>
+<p>We want to add to these variables another variable, namely the <code>id</code> variable from the <code>bosnia_shp</code> data frame (the column with the values <code>108</code>, <code>17</code>, <code>116</code>, etc):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bosnia_shp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 2 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 17.57853 ymin: 42.56583 xmax: 18.57639 ymax: 43.22457
+Geodetic CRS:  WGS 84
+   id     name                       geometry
+1 108 Trebinje POLYGON ((18.02122 42.93654...
+2  17     Neum POLYGON ((17.83138 43.01822...
+3 116  Lubinje POLYGON ((18.15364 43.0523,...
+4 112   Bileca POLYGON ((18.41007 43.13096...
+5  13 Capljina POLYGON ((17.77296 43.17501...
+6  16   Stolac POLYGON ((17.97802 43.19037...</code></pre>
+</div>
+</div>
+</section>
+<section id="perform-the-spatial-join" class="level1">
+<h1>2. Perform the spatial join</h1>
+<p>Now that we know that we want to attach IDs to the <code>ged</code> data frame, we perform the spatial join. We use the <code>st_join()</code> function from the <code>sf</code> package to do so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>ged_munic <span class="ot">&lt;-</span> <span class="fu">st_join</span>(ged,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>                     bosnia_shp)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-annotation="1" data-code-lines="1" data-code-cell="annotated-cell-5">The first argument of the <code>st_join()</code> function is the dataset to which we want to add IDs</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-annotation="2" data-code-lines="2" data-code-cell="annotated-cell-5">The second argument of the <code>st_join()</code> function is the dataset from which we get the IDs.</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>The <code>st_join()</code> function itself simply checks which points from <code>ged</code> fall into which municipality polygon from <code>bosnia_shp</code> and attach all the information of that municipality polygon to each observation of <code>ged</code>.</p>
+<p>We assign the outcome to a new data frame <code>ged_munic</code>. This data frame has the same number of observation as <code>ged</code> but more variables, namely all the variables from <code>bosnia_shp</code> in which the respective observation (event) of <code>ged</code> falls.</p>
+<p>Let’s see how the result looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ged_munic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 5 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 15.91861 ymin: 43.85 xmax: 19.29694 ymax: 44.87278
+Geodetic CRS:  WGS 84
+# A tibble: 6 × 6
+    id.x date_start  best            geometry  id.y name         
+   &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;         &lt;POINT [°]&gt; &lt;int&gt; &lt;chr&gt;        
+1 199885 1993-02-01     6 (18.80833 44.87278)   115 Breko        
+2 199767 1994-03-03     1 (15.91861 44.84444)    26 Bihac        
+3 200575 1995-03-12     1    (18.38333 43.85)    70 Novo Sarajevo
+4 200731 1995-07-07     1 (19.29694 44.10639)   104 Srebrenica   
+5 200732 1995-07-08     1 (19.29694 44.10639)   104 Srebrenica   
+6 200733 1995-07-09     2 (19.29694 44.10639)   104 Srebrenica   </code></pre>
+</div>
+</div>
+<p>It worked! The last two columns are the respective variables from the <code>bosnia_shp</code> data frame, indicating the municipality ID and name in which the event took place.</p>
+<p>There was a slight complication though: since both the <code>ged</code> and the <code>bosnia_shp</code> data frames have the same variable name for the ID column (namely <code>id</code>), <code>st_join()</code> changes the names of those variables into <code>id.x</code> and <code>id.y</code>. Since this is a bit hard to read, we change the respective variable names, and perform the spatial join again.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ged <span class="ot">&lt;-</span> ged <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id_event =</span> id)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>bosnia_shp <span class="ot">&lt;-</span> bosnia_shp <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id_munic =</span> id)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>ged_munic <span class="ot">&lt;-</span> <span class="fu">st_join</span>(ged, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                     bosnia_shp) </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ged_munic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 5 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 15.91861 ymin: 43.85 xmax: 19.29694 ymax: 44.87278
+Geodetic CRS:  WGS 84
+# A tibble: 6 × 6
+  id_event date_start  best            geometry id_munic name         
+     &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;         &lt;POINT [°]&gt;    &lt;int&gt; &lt;chr&gt;        
+1   199885 1993-02-01     6 (18.80833 44.87278)      115 Breko        
+2   199767 1994-03-03     1 (15.91861 44.84444)       26 Bihac        
+3   200575 1995-03-12     1    (18.38333 43.85)       70 Novo Sarajevo
+4   200731 1995-07-07     1 (19.29694 44.10639)      104 Srebrenica   
+5   200732 1995-07-08     1 (19.29694 44.10639)      104 Srebrenica   
+6   200733 1995-07-09     2 (19.29694 44.10639)      104 Srebrenica   </code></pre>
+</div>
+</div>
+<p>Ok, this looks better.</p>
+</section>
+<section id="aggregate-to-polygon-level" class="level1">
+<h1>3. Aggregate to polygon level</h1>
+<p>Sometimes step (2) is all we want and we can continue analyzing data directly. This is the case, for instance, when our point data is survey data where each observation is one respondent. In such a case, we might be interested in e.g.&nbsp;the local economic performance of a municipality to use that value as a covariate in a regression.</p>
+<p>However, in our case, we’re interested in comparing not individual events, but municipalities. Recall our main research question: in which municipality where there the most conflict events during the war in Bosnia?</p>
+<p>To figure out the answer to this question, we need to aggregate the events to the municipality level. That means we need to <strong>count</strong> the number of events per municipality.</p>
+<p>To count the number of events in each municipality we rely on the <code>group_by()</code> and <code>summarize()</code> functions, <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html#grouping-data-using-group_by">we’ve encountered in previous lessons.</a>. Head back to that section for a refresher on how to do grouping and summarising before we apply it here. This chain of commands does the following things:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a>ged_munic_ag <span class="ot">&lt;-</span> ged_munic <span class="sc">%&gt;%</span> </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-2" class="code-annotation-target"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id_munic) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-4" class="code-annotation-target"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">conflict_event_count =</span> <span class="fu">n</span>())</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-annotation="1" data-code-lines="2" data-code-cell="annotated-cell-8">We drop the <code>geometry</code> column since we actually don’t need the spatial attributes of the points anymore. All the spatial magic happened in the <code>st_join()</code> command, the rest is now pretty basic (tidy) R commands.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-annotation="2" data-code-lines="3" data-code-cell="annotated-cell-8">We group by the <code>id_munic</code> variable, the variable that identifies the Bosnian municipality.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-annotation="3" data-code-lines="4" data-code-cell="annotated-cell-8">We count the number of events using the <code>n()</code> function. The <code>n()</code> function gives us the number of observation in each group specified by <code>group_by()</code>(so in this case in each <code>id_munic</code>)</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>Let’s look at the resulting data frame <code>ged_munic_ag</code>(<code>_ag</code> for “aggregated”).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ged_munic_ag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  id_munic conflict_event_count
+     &lt;int&gt;                &lt;int&gt;
+1        1                    1
+2        2                    7
+3        4                    1
+4        6                    1
+5        7                    8
+6       10                    1</code></pre>
+</div>
+</div>
+<p>It looks like we’ve achieved what we wanted: for each <code>id_munic</code>, we have a count of events that happened in that municipality.</p>
+<section id="join-aggregated-data-frame-back-into-the-polygon-data-frame" class="level2">
+<h2 class="anchored" data-anchor-id="join-aggregated-data-frame-back-into-the-polygon-data-frame">Join aggregated data frame back into the polygon data frame</h2>
+<p>Now we need to join the aggregated data back into the main <code>bosnia_shp</code> data frame, so we can plot the data and find an answer to our research question.</p>
+<p>This join is a simple <code>left_join()</code> that we know from the data wrangling lesson. No fancy spatial joins needed, since we now have two data frames with common IDs, namely the <code>ged_munic_ag</code> data frame and the <code>bosnia_shp</code> data frame.</p>
+<p>Let’s join the data…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bosnia_shp_ged <span class="ot">&lt;-</span> <span class="fu">left_join</span>(bosnia_shp, </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                            ged_munic_ag, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">by =</span> <span class="st">"id_munic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>…and look at the result:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bosnia_shp_ged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 3 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 17.57853 ymin: 42.56583 xmax: 18.57639 ymax: 43.22457
+Geodetic CRS:  WGS 84
+  id_munic     name conflict_event_count                       geometry
+1      108 Trebinje                    1 POLYGON ((18.02122 42.93654...
+2       17     Neum                   NA POLYGON ((17.83138 43.01822...
+3      116  Lubinje                   NA POLYGON ((18.15364 43.0523,...
+4      112   Bileca                   NA POLYGON ((18.41007 43.13096...
+5       13 Capljina                    1 POLYGON ((17.77296 43.17501...
+6       16   Stolac                    3 POLYGON ((17.97802 43.19037...</code></pre>
+</div>
+</div>
+<p>We see that we now have for every municipality a measure of the count of conflict events in that municipality–exactly what we wanted. But we also see that in same cases there is an <code>NA</code> for a municipality. That means that in this municipality there were no conflict events. Since we can only match municipality IDs to events, it’s logical that those municipalities are missing where we don’t have any events.</p>
+<p>We can replace the <code>NAs</code> with zero, since in this case, missing means actually zero.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>bosnia_shp_ged <span class="ot">&lt;-</span> bosnia_shp_ged <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="at">conflict_event_count =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ok, now we’re ready to…</p>
+</section>
+</section>
+<section id="map-and-analyze" class="level1">
+<h1>4. Map and analyze!</h1>
+<p>First, let’s do a quick map:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> bosnia_shp_ged, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">aes</span>(<span class="at">fill =</span> conflict_event_count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="spatial_joins_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>It looks like there is one municipality with a loooooot of conflict events, causing the automatic coloring of municipalities by the number of conflict events to become very difficult to see. We’ll talk about how to fix that problem in the next lesson on making maps.</p>
+<p>We can also look at the data frame itself and sort by the number of conflict events to find an answer to our initial research question, in which municipality we observe the highest number of conflict events:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>bosnia_shp_ged <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(conflict_event_count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 109 features and 3 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 15.74059 ymin: 42.56583 xmax: 19.61979 ymax: 45.26595
+Geodetic CRS:  WGS 84
+First 10 features:
+   id_munic          name conflict_event_count                       geometry
+1        70 Novo Sarajevo                  470 POLYGON ((18.39224 43.86301...
+2        54       Gorazde                   74 POLYGON ((19.02557 43.71326...
+3        26         Bihac                   65 POLYGON ((16.0562 44.89643,...
+4        47        Maglaj                   36 POLYGON ((18.15444 44.66654...
+5        64        Mostar                   35 POLYGON ((17.55677 43.63322...
+6       104    Srebrenica                   35 POLYGON ((19.4992 44.04367,...
+7        43         Tuzla                   30 POLYGON ((18.84032 44.56753...
+8        49        Tesanj                   28 POLYGON ((18.04103 44.57293...
+9        37      Gradacac                   25 POLYGON ((18.51522 44.81168...
+10      115         Breko                   24 POLYGON ((18.76979 44.94215...</code></pre>
+</div>
+</div>
+<p>Here we see the answer to the problem indicated by the map: the municipality of Sarajevo, Bosnia’s capital, had more than 400 conflict events, by far the most. The municipality with the second most conflict events, Gorazde, “only” experienced 74 events, a magnitude smaller than the number of events in Sarajevo.</p>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next steps</h1>
+<p>We’ve answered our research question and we’ve learned how to perform spatial joins to answer the question. However, our basic attempts at mapping the resulting data look a bit… basic. Let’s look at how to improve the design of the map and how mapping works with the <code>sf</code> and the <code>ggplot</code> packages in the next section.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../spatial_data/reading_spatial_data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Reading spatial data</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../spatial_data/basic_maps.html" class="pagination-link">
+        <span class="nav-page-text">Creating maps</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

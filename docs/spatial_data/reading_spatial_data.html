@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title> | STV4030A - Reading spatial data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../spatial_data/spatial_joins.html" rel="next">
+<link href="../spatial_data/what_is_spatial_data.html" rel="prev">
+<link href="..//pics/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"> | STV4030A</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../spatial_data/what_is_spatial_data.html">Spatial data</a></li><li class="breadcrumb-item"><a href="../spatial_data/reading_spatial_data.html">Reading spatial data</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A">
+            Source code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A/issues">
+            Report an error
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Working in R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/R_refresher.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R refresher</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics: functions and iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing your own functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/encoding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Locales and encoding</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Quarto documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/writing_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing Quarto documents</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/producing_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Producing Tables from R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/tidy_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wrangling in <code>dplyr</code> and <code>tidyr</code></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_in_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization in <code>ggplot2</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examples of different types of data visualizations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing regression models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_model_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing quantities of interest based on regression models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Text data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/text_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Political Text as Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/read_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Texts into R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/extracting_data_from_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extracting data from texts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Data gathering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Webscraping</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">APIs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Spatial data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/what_is_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What is spatial data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/reading_spatial_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Reading spatial data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/spatial_joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/basic_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating maps</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#important-packages" id="toc-important-packages" class="nav-link active" data-scroll-target="#important-packages">Important packages</a></li>
+  <li><a href="#reading-point-data" id="toc-reading-point-data" class="nav-link" data-scroll-target="#reading-point-data">Reading point data</a>
+  <ul class="collapse">
+  <li><a href="#converting-point-data-into-a-spatial-data-frame" id="toc-converting-point-data-into-a-spatial-data-frame" class="nav-link" data-scroll-target="#converting-point-data-into-a-spatial-data-frame">Converting point data into a spatial data frame</a></li>
+  </ul></li>
+  <li><a href="#reading-polygons-from-shapefiles" id="toc-reading-polygons-from-shapefiles" class="nav-link" data-scroll-target="#reading-polygons-from-shapefiles">Reading polygons from shapefiles</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Reading spatial data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Now that we know what spatial data looks like, how do we actually work with it in R?</p>
+<p>There are two main ways to read spatial in R: (1) reading point data from a regular data file (e.g.&nbsp;<code>.csv</code> or <code>.xslx</code>) and converting it into a spatial data frame or (2) reading “shapefiles,” the name for a collection of data files that represent some spatial feature, such as polygons.</p>
+<p>Let’s look at both ways in more detail. I’ll be using the example from <a href="https://www.cambridge.org/core/books/data-management-for-social-scientists/spatial-data/078F410D1D8BCF6C593E751E99589FF6">Nils Weidmann’s book</a> in which we try to figure out how many conflict events took place in which Bosnian municipalities during Bosnia and Herzegovina’s civil war in the 1990s. Essentially, we want to find out how conflict intensity varied across the country.</p>
+<section id="important-packages" class="level1">
+<h1>Important packages</h1>
+<p>We will be using the <code>sf</code> package (short for “simple features”) to read and manipulate spatial data. You can install it with <code>install.packages(sf)</code> and then load it with <code>library(sf)</code> before you start working with it. It’s good practice to call the <code>library(sf)</code> package at the beginning of your script, right after you’ve loaded <code>library(tidyverse)</code> to access the tidyverse packages.</p>
+<p>The <code>sf</code> integrates nicely with the <code>tidyverse</code> packages and philosophy of tidy data. You can learn more about the package and look at examples here. You can learn more about the package <a href="https://r-spatial.org/book/07-Introsf.html">here</a>.</p>
+</section>
+<section id="reading-point-data" class="level1">
+<h1>Reading point data</h1>
+<p>The point data in this example are <strong>conflict events.</strong> In this dataset, each observation (i.e.&nbsp;each row) refers to a distinct event in space and time during which lethal violence took place, either between a government and rebel organizations, or between governments (or rebels) and civilians.</p>
+<p>The data comes from the Uppsala Conflict Data Program (UCDP) Georeferenced Event Database (GED), or GED data for short. This data contains one of the most comprehensive collections on human violence during armed conflict world wide and is based at Uppsala University, Sweden. You can learn more about the data <a href="https://ucdp.uu.se/">here</a>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Data download: point data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Download the <code>ged.csv</code> data set <a href="../data/spatial_data/datasets/ged.csv">here</a> (using right click =&gt; save as…). Ideally, you create a new RStudio project, including the separate data and code subfolders for all the spatial data exercises we’re going to perform in this chapter.</p>
+</div>
+</div>
+<p>Here is how we read the data and how the dataset looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reading the data using read_csv() from the tidyverse</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ged <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/spatial_data/datasets/ged.csv"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># looking at the first couple of rows</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>ged</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,136 × 5
+       id date_start latitude longitude  best
+    &lt;dbl&gt; &lt;date&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+ 1 199885 1993-02-01     44.9      18.8     6
+ 2 199767 1994-03-03     44.8      15.9     1
+ 3 200575 1995-03-12     43.8      18.4     1
+ 4 200731 1995-07-07     44.1      19.3     1
+ 5 200732 1995-07-08     44.1      19.3     1
+ 6 200733 1995-07-09     44.1      19.3     2
+ 7 199829 1992-04-29     45.1      18.0     1
+ 8 200424 1992-05-17     43.8      18.4     1
+ 9 199360 1992-11-10     44.9      18.4    13
+10 200412 1992-11-22     43.8      18.4     4
+# ℹ 1,126 more rows</code></pre>
+</div>
+</div>
+<p>Each row has an event ID, a start date, latitude &amp; longitude (i.e.&nbsp;coordinates that tell us where the event happened) and the column <code>best</code> which is the data collectors’ best estimate how many people were killed during that event. In this example each row is an event that is represented by a point, other examples for point data could be cities, polling stations, mountain tops, football stadiums, etc.--anything that can be meaningfully simplified as a point geographically.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Simplified example!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that the original data has many more columns that provide information about a host of other features of a conflict event, such as sides to the conflict, end of the event (sometimes events last longer than a day), etc.. These columns are removed here for educational purposes and to make the example a bit simpler. The data is also already subset to events that took place in Bosnia and Herzegovina, whereas the full dataset spans all countries in which armed conflicts occurred. You find the original data <a href="https://ucdp.uu.se/downloads/">here.</a></p>
+</div>
+</div>
+<p>So far the data above is just like any other regular dataset that you’ve worked with before. But is has stored geographical information in the <code>longitude</code> and <code>latitude</code> columns. Those columns are <strong>coordinates,</strong> telling us where on the globe the event happened.</p>
+<p>Before we can work with this data in any spatially meaningful way, we need to tell R that the coordinates contain spatial information. We need to transform the data frame into a “spatial data frame.”</p>
+<section id="converting-point-data-into-a-spatial-data-frame" class="level2">
+<h2 class="anchored" data-anchor-id="converting-point-data-into-a-spatial-data-frame">Converting point data into a spatial data frame</h2>
+<p>To convert the <code>ged</code> data frame into a spatial data frame we use the <code>st_as_sf()</code> command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ged <span class="ot">&lt;-</span> ged <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There’s a couple of things going on in that command:</p>
+<ol type="1">
+<li>First you’ll see that we’re using the pipe <code>%&gt;%</code> command to manipulate the data set just like we would use it in the tidyverse using <code>mutate()</code> for example.</li>
+<li>The <code>coords =</code> argument takes the names of the longitude and latitude columns as argument. Note that the <code>longitude</code> column always comes before the <code>latitude</code> column.</li>
+<li>The <code>crs = 4326</code> argument assigns the coordinate reference system. The number <code>4326</code> is the name of the WGS 84 coordinate reference as specified by the <a href="https://epsg.io/">European Petroleum Survey Group</a>, an organization that classifies and defines different coordinate reference systems. Point data almost always comes in the WGS 84 CRS, so you usually add the <code>crs = 4326</code> argument when you convert regular data frames into spatial data frames.</li>
+</ol>
+<p>How does <code>st_as_sf()</code> change the <code>ged</code> dataset? Let’s have a look:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ged</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 1136 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 15.78194 ymin: 42.71194 xmax: 19.53556 ymax: 45.18944
+Geodetic CRS:  WGS 84
+# A tibble: 1,136 × 4
+       id date_start  best            geometry
+ *  &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;         &lt;POINT [°]&gt;
+ 1 199885 1993-02-01     6 (18.80833 44.87278)
+ 2 199767 1994-03-03     1 (15.91861 44.84444)
+ 3 200575 1995-03-12     1    (18.38333 43.85)
+ 4 200731 1995-07-07     1 (19.29694 44.10639)
+ 5 200732 1995-07-08     1 (19.29694 44.10639)
+ 6 200733 1995-07-09     2 (19.29694 44.10639)
+ 7 199829 1992-04-29     1  (17.98972 45.1375)
+ 8 200424 1992-05-17     1    (18.38333 43.85)
+ 9 199360 1992-11-10    13 (18.42694 44.88083)
+10 200412 1992-11-22     4    (18.38333 43.85)
+# ℹ 1,126 more rows</code></pre>
+</div>
+</div>
+<p>The output above now tells us that the data frame is a <strong>spatial data frame</strong> through the title “Simple feature collection.” It also tells us that this is a POINT data frame, which is useful (remember the <a href="./what_is_spatial_data.html#types_of_spatial_data">different types of spatial data we encountered in the previous section</a>. Finally the output shows that the data frame now has a <code>geometry</code> column. As we learned in the previous section, this indicates that we now are working with a “spatially enhanced” version of the GED conflict event data frame.</p>
+<p>But did it actually work? It is always a good idea to visually check whether converting the data frame into a spatial data frame actually worked. We can do that by simply running the following line. The <code>st_geometry()</code> reduces the data set only to its spatial information, i.e.&nbsp;the points and their location in space, which is what we want.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ged <span class="sc">%&gt;%</span> <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="reading_spatial_data_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This looks pretty decent! We have several points that cluster in space, which is what we would expect. There are more advanced ways to plot this, which we will learn about in the next chapter.</p>
+</section>
+</section>
+<section id="reading-polygons-from-shapefiles" class="level1">
+<h1>Reading polygons from shapefiles</h1>
+<p>Our original goal was to identify the geographical variation in Bosnia and Herzegovina’s municipalities, i.e.&nbsp;their smalles administrative unit. Administrative units, such as municipalities, federal states, Norwegian kommuner, or countries, are usually displayed and stored as polygons as we’ve <a href="what_is_spatial_data.html#types_of_spatial_data">discussed in the previous section.</a>.</p>
+<p>A shapefile actually consists of several distinct files that, taken together, store spatial information. Usually it makes sense to save the entire shapefile(s) as a subfolder in your <code>./data</code> subfolder in your RStudio project folder.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Data download: shapefile
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Download the <code>bosnia_shapefile.zip</code> data set <a href="../data/spatial_data/datasets/bosnia_shapefile.zip">here</a> (using right click =&gt; save as…). Save the <code>.zip</code> file in your <code>./data/</code> subfolder in your RStudio project that you use for your spatial analyses. Unzip the archive into a subfolder <code>./data/bosnia_shapefile/.</code> This folder has all the files that belong to the shapefile for Bosnia.</p>
+</div>
+</div>
+<p>Now, let’s read the shapefile into R using the <code>st_read()</code> command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read the shapefile with st_read()</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>bosnia_shp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"../data/spatial_data/datasets/bosnia_shapefile/bosnia.shp"</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>st_read()</code> works a lot like <code>read_csv()</code> or any of the other data reading functions you’ve probably seen <a href="../basics_refresh/R_refresher.html#sec-loading-data">before.</a></p>
+<p>You’ll notice that we’ve added the <code>crs = 4326</code> argument to the <code>st_read()</code> command. We need to do this because in this particular case, our shapefile does not already have a pre-specified CRS and we know that it is WG 84 (which has the <a href="https://epsg.io/4326">EPSG code 4326</a>).</p>
+<p>Often, shapefiles come with a pre-specified CRS, however. You can notice this, when you look into the shapefile folder, e.g.&nbsp;<code>data/bosnia_shapefile/</code> in this example case. When there’s a file that ends with <code>.prj</code> in this folder, alongside the other files, then you have a CRS pre-specified and you don’t need the <code>crs = ...</code> argument.</p>
+<p>This is how the data frame looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's look at the data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>bosnia_shp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 109 features and 2 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 15.74059 ymin: 42.56583 xmax: 19.61979 ymax: 45.26595
+Geodetic CRS:  WGS 84
+First 10 features:
+    id     name                       geometry
+1  108 Trebinje POLYGON ((18.02122 42.93654...
+2   17     Neum POLYGON ((17.83138 43.01822...
+3  116  Lubinje POLYGON ((18.15364 43.0523,...
+4  112   Bileca POLYGON ((18.41007 43.13096...
+5   13 Capljina POLYGON ((17.77296 43.17501...
+6   16   Stolac POLYGON ((17.97802 43.19037...
+7   15   Citluk POLYGON ((17.68818 43.29118...
+8   19 Ljubuski POLYGON ((17.48836 43.31638...
+9  113    Gacko POLYGON ((18.56262 43.32802...
+10  21    Grude POLYGON ((17.38755 43.41359...</code></pre>
+</div>
+</div>
+<p>We notice a couple of things:</p>
+<ol type="1">
+<li>It’s already a spatial data frame as indicated by the modified output, saying that we have <code>Simple feature collection...</code>. No transformation necessary! That’s because <code>st_read()</code> automatically knows that a shapefile is a spatial format.</li>
+<li>We see that each observation represents a municipality, as indicated by the <code>name</code> column.</li>
+<li>Again, we have a <code>geometry</code> column which stores the spatial features. In contrast to the points data set above, this column now stores a lot of points (which are omitted from the output), indicating the boundaries of the shape or polygon of each municipality.</li>
+</ol>
+<p>It seems like reading the shapefile worked, but it’s always better to visually confirm. So we run the code below in the R console. The code says that we take the <code>bosnia_shp</code> object, hand it over (<code>%&gt;%</code>) to the <code>st_geometry</code> function to only keep the spatial outline and then hand that outline over (<code>%&gt;%</code>) to the <code>plot()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>bosnia_shp <span class="sc">%&gt;%</span> <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="reading_spatial_data_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This looks good!</p>
+<p>As a final check, we can plot both the points data (conflict events) on top of the Bosnian municipalities polygons. The code below does this and gives you a small glimpse into how we can create maps in R–a topic we’ll return to in a later session.</p>
+<p>We use <code>ggplot()</code> to do this, a function you’re familiar with from earlier sessions and the special <code>geom_sf()</code> function that works very similar to other <code>geoms</code> such as <code>geom_point()</code> or <code>geom_line()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> bosnia_shp) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="reading_spatial_data_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Again, looking good! You’ll learn more about how to make maps with <code>ggplot</code> in the subsequent chapters.</p>
+</section>
+<section id="next-steps" class="level1">
+<h1>Next steps</h1>
+<p>Now that we have both the conflict events data (<code>ged</code>) and the spatial data on the Bosnian municipalities (<code>bosnia_shp</code>) we can continue with our initial research question: which municipalities were the most violent ones? Or, put differently, how many violent events took place in which municipality?</p>
+<p>To answer this question, we need <strong>spatial joins,</strong> the topic of the next chapter.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../spatial_data/what_is_spatial_data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">What is spatial data?</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../spatial_data/spatial_joins.html" class="pagination-link">
+        <span class="nav-page-text">Spatial joins</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><img src="..\pics/uio-logo-white.png" class="img-fluid" width="150"></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

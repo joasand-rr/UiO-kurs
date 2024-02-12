@@ -1,0 +1,67 @@
+---
+title: "Tidy Data"
+bibliography: "../STV4030A.bib"
+format: 
+  html:
+    code-link: true
+---
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=c21081ad-6a60-4982-b82f-b0310127b604&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay">
+
+</iframe>
+
+As quantitative political scientists gathering various forms of digital data, much of our time will be spent transforming our data into a format suitable for analysis. What do we mean by "a format suitable for analysis"? Well, we typically want our data to be what [@wickham2023r refer to as "tidy"](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data), meaning that:
+
+1.  Each variable is a column and each column is a variable.
+2.  Each observation is a row and each row is an observation
+3.  Each value is a cell and each cell is a single value.
+
+If we have different types of observational units, it is best to organize them in different `data.frame`s.  
+
+Unfortunately, our data will not always be provided to us in a tidy format. This is often true even when we work with existing, supposedly ready-for-analysis, data. Consider for instance the following dataset which contains data from the [World Bank](https://data.worldbank.org/) on the population of different countries and territories each year from 1960 to 2021. 
+
+```{r}
+#| message: false
+library(readr)
+wb_population_data <- read_delim("../data/WBpopulation.csv", delim = ",")
+head(wb_population_data)
+names(wb_population_data)
+```
+The tidy way of organizing this data would be to have different columns for the different variables: "country", "year", and "population" and  to have one row per country per year.  Using `head()` and `names()` we quickly see that the this dataset is not organized in this way. Instead, we have one row per country and multiple columns for the population variable, each of them measuring the population in the country in question in a particular year (In addition the variable names contain spaces and square brackets and sometimes start with numbers, which will also provide some problems). 
+
+The reason for why the data is structured in this way may be that it may appear as a convenient format for people working in spreadsheet, for instance using Microsoft Excel, but I will be inconvenient to work with in R so we will have to wrangle it into the right format. [We will show you how to do that shortly.](https://pages.github.uio.no/oyvinsti/STV4030A/Wrangling/wrangling_in_dplyr_and_tidyr.html) For now just consider the tidy version of the population dataset: 
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(janitor)
+library(tidyr)
+library(dplyr)
+wb_population_tidy <- wb_population_data %>% 
+  clean_names() %>% 
+  mutate(across(starts_with("x"), .fns = as.numeric)) %>% 
+  pivot_longer(cols = starts_with("x"), 
+               names_to = "year", 
+               values_to = "population") %>% 
+  mutate(year = sub(pattern = ".*?(\\d{4}).*","\\1", year))
+write_delim(wb_population_tidy, file = "../data/wb_population_tidy.csv", delim = ",")
+
+```
+
+```{r}
+#| message: false
+wb_population_tidy <- read_delim("../data/wb_population_tidy.csv", delim = ",")
+head(wb_population_tidy)
+names(wb_population_tidy)
+```
+In this `data.frame`, each variable has its own column and each observational unit (here the country-year) has its own row. Each cell contains the value of on one variable for one observation. This is what we want!
+
+While our goal is always to make our data tidy, to how our observations organized in rows and our variables organized in columns, how to get there will depend on the original structure of the data we are trying to make tidy. Tidying up the World Bank population data will look somewhat different than tidying up the dataset of European Court of Justice judgments that Louisa discusses in the video above. 
+
+However, even as the exact workflow of cleaning up a dataset will vary from case to case, some combination of the wrangling tools provided in the `dplyr` and `tidyr` packages will usually get the job done. It is to these tools that [we now turn](https://pages.github.uio.no/oyvinsti/STV4030A/Wrangling/wrangling_in_dplyr_and_tidyr.html). 
+
+
+
+
+

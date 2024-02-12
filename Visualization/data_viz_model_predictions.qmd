@@ -1,0 +1,466 @@
+---
+title: "Visualizing quantities of interest based on regression models"
+bibliography: "../STV4030A.bib"
+format: html
+execute: 
+  message: false
+  warning: false
+---
+We have seen how we can use coefficient plots to present the coefficients and associated confidence intervals from our regression models. Such coefficient plots are useful for presenting models and for comparing coefficients and confidence intervals across specifications. Plotting conditional coefficients is often crucial to understand models with interaction terms. 
+
+An important limitation is that coefficients from non-linear models (such as logistic and probit regressions) are often hard to interpret and are typically not on the same scale as the quantities of interest that we are actually interested. For instance, when estimating logistic  regression models we are typically more interested in how our independent variables correlate with the *probability* of our outcome than in how our independent variables influence the *logit* of the outcome. Similar considerations will apply to various other generalized linear models. 
+
+
+@king2000making therefore recommend that we calculate *quantities of interest* (such as predicted probabilities) based on our models and visualize these quantitative of interest. Typically, we can only calculate these quantities of interest when fixing the values on our covariates, requiring us to create interesting *scenarios* for illustrating results. Using statistical simulation techniques we can communicate the uncertainty surrounding our results. 
+
+Let's consider some examples. 
+
+Consider the logistic regression model estimated by @binder2018dodging ([which we replicated here](https://pages.github.uio.no/oyvinsti/STV4030A/Visualization/data_viz_models.html#coefficient-plots-for-a-single-regression-model)): 
+
+```{r}
+library(dplyr)
+library(haven)
+dodgingrules <- read_dta("../data/dodgingrules.dta")
+
+binder_model <- glm(filisave ~ running18 + gop + wings +  leader +
+                      stdrank + servedmin +  running18:gop, 
+                    data = dodgingrules, 
+                    family = binomial(link = "logit"))
+```
+We have already considered how we can present the coefficients from this model. But how can we how much greater the probability is republicans than ran for reelection in 2018 compared to republicans that didn't run for reelection in 2018? 
+
+Consider similarly the probit model estimated by @carrubba2008judicial ([which we replicated here](https://pages.github.uio.no/oyvinsti/STV4030A/Visualization/data_viz_models.html#plotting-conditional-coefficients-to-understand-interactions)): 
+
+```{r}
+load("../data/CarrubbaGabelHankla.RData")
+ecj_data <- table 
+ecj_probit <- glm(ECJPlAgree ~ 
+              normnetwobs *  govislit +
+              percham + 
+              CommIsPl + 
+              CommIsDef  + 
+              CommObsPl + 
+              CommObsDef, 
+            family = binomial(link = "probit"), 
+            data = ecj_data )
+```
+
+How much does the predicted probability of pro-plaintiff ruling increase with increases in the `normnetwobs` variable? 
+
+
+# Calculating quantities of interest 
+Neither of these questions can answered based on the coefficients alone. To calculate predicted probabilities, we need to: 
+
+1. Fix one or more scenarios. This simply means fixing the values for all the predictors included in the model. 
+2. Multiply our scenario(s) with the coefficients from the model to get the *linear predictors* 
+3. Convert the linear predictor to your quantity of interest using the formula appropriate for your model.  The specific formula will vary depending on the type of model. For logistic regression models, the formula will be `exp(x)/(1+exp(x))` (which people sometimes instead express as `1/(1+exp(-x)`).
+
+## Logistic regression with binary independent variable of interest
+We will start with our @binder2018dodging example. We are interested in fixing the `gop` variable (identifying Republicans) to 1 and vary the `running18` variable. This variable only takes the values 0 and 1, so we will vary it between those values. The interaction term is just `gop` multiplied with `running18` and will accordingly also vary between 0 and 1. We also need to fix the variables for other covariates. Here we will just the `median()` value for all other covariates but many different choices could be reasonable and the choices you make here will influence your predicted values. 
+
+We can use `cbind()` to create our two scenarios: 
+```{r}
+coefficients(binder_model) # <1> 
+binder_scenarios <- cbind( # <2>
+  1,   # <3>
+  c(0,1),  # <4>
+  1, # <5>
+  median(dodgingrules$wings, na.rm = TRUE), # <6>
+  median(dodgingrules$leader, na.rm = TRUE), # <6>
+  median(dodgingrules$servedmin, na.rm = TRUE), # <6>
+    median(dodgingrules$stdrank, na.rm = TRUE), # <6>
+  c(0,1)) # <7>
+```
+1. The order will matter, so we print out the coefficients to see the order. 
+2. Using `cbind()` will bind the values together in a `matrix`
+3. The intercept should be multiplied with 1, so we add we start with a 1 
+4. `running18` should vary between 0 and 1, so we add a vector `c(0,1)`. 
+5. We want `gop` fixed at 1, so add a 1 here. 
+6. We set `wings`, `leader`,`servedmin`, and `stdrank` to their `median()` values. 
+7. The interaction term should also vary between 0 and 1. 
+
+
+```{r}
+print(binder_scenarios) #<1>
+
+binder_linear_predictors <- coefficients(binder_model) %*% t(binder_scenarios) #<2>
+print(binder_linear_predictors) #<3>
+inverse_logit <- function(x){exp(x)/(1+exp(x))} #<4>
+
+binder_predicted_probabilities <- inverse_logit(binder_linear_predictors)#<5>
+print(binder_predicted_probabilities)#<5>
+```
+1. We now produced a `matrix` which looks like this. Each row is a scenario. To get the linear predictor for each row. we need to multiply the matrix with the vector of coefficients. This involves using [matrix multiplication](https://en.wikipedia.org/wiki/Matrix_multiplication), which you may not be intimately familiar with, but R will take care of all that for you as long as you remember to use `%*%` as the matrix multiplication operator and `t()` means taking the [*transpose*](https://en.wikipedia.org/wiki/Transpose) of the matrix flipping it on the side so that the rows becomes the columns and vice versa. 
+2. The linear predictors are simply the coefficients multiplied by the transpose of our scenarios.
+3. Printing them out we get two linear for signing the letter. The first (`r binder_linear_predictors[1]`) is the linear predictor of signing the letter for Republicans that didn't run for reelection in 2018 keeping all other variables at their median values and the second (`r binder_linear_predictors[2]`) is the linear predictor of signing the letter for Republicans that did run for reelection in 2018 keeping all other variables at their median values. 
+4. We define function for converting the linear predictors from logistic regressions to predicted probabilities (defining a function is useful as we will do this a lot). 
+5. Plugging in the linear probabilities to our function we get the predicted probabilities for our two scenarios. They are `r binder_predicted_probabilities[1]` for Republicans that didn't run for reelection in 2018 keeping all other variables at their median values and 
+`r binder_predicted_probabilities[1]` for Republicans that did run for reelection in 2018 keeping all other variables at their median values. 
+
+The above process could be simplified by simply using the `predict()` function: 
+
+```{r}
+binder_scenarios_df <- as.data.frame(binder_scenarios) #<1>
+colnames(binder_scenarios_df) <- names(coefficients(binder_model))#<2>
+predict(binder_model, newdata = binder_scenarios_df, type = "response")#<3>
+```
+1. `predict()` needs a `data.frame` rather than a `matrix`
+2. `predict()` will look for the variables in the `data.frame` so we need to give the variables names that match the coefficient names
+3. Setting the `newdata` to our scenarios and `type` to "response", we get predicted probabilities for our scenarios. 
+
+If you ever only the predicted probabilities, you should definitely use `predict()` rather than writing out the code for the calculations. However, writing out the code for the calculations will be necessary going forward as we also incorporate uncertainty using `MASS` to simulate coefficients. 
+
+## Probit regression with continuous independent variable of interest
+The @carrubba2008judicial example is different from the @binder2018dodging in two respects: 
+
+1. We are interested in a continuous independent variable (`normnetwobs`), so will need multiple scenarios with different values along the range of this variable. 
+2. We are dealing with a probit model rather than a logistic regression, so the formula for converting linear predictors into predicted probabilities will different. 
+
+```{r}
+ecj_scenarios <- cbind( #<1>
+  1,   #<2>
+  seq(min(ecj_data$normnetwobs, na.rm = TRUE),  #<3>
+      max(ecj_data$normnetwobs, na.rm = TRUE), #<3>
+      length.out = 10), #<3>
+  1, #<4>
+  median(ecj_data$percham, na.rm = TRUE), # <5>
+  median(ecj_data$CommIsPl, na.rm = TRUE), # <5>
+  median(ecj_data$CommIsDef, na.rm = TRUE), # <5>
+    median(ecj_data$CommObsPl, na.rm = TRUE), # <5>
+      median(ecj_data$CommObsDef, na.rm = TRUE), # <5>
+    seq(min(ecj_data$normnetwobs,na.rm = TRUE),  #<5>
+      max(ecj_data$normnetwobs, na.rm = TRUE), #<5>
+      length.out = 10)) #<6>
+
+print(ecj_scenarios) #<7>
+```
+1. Again, we use `cbind()` to create a matrix with our scenarios. 
+2. We add a 1 for the intercept. 
+3. Using `seq()` we can create a sequence of 10 values for the `normnetwobs` variable ranging from the `min()` to the `max()` value. 
+4. We set `govlit` to 1 (which means that our calculations will reflect a scenario in which a government is a litigant). 
+5. We set all the other variables to their median values. 
+6. Again we have an interaction term, which will be the value on `normnetwobs` multiplied by the value on `govlit` which we fixed to 1. So in other words, just the values on `normnetwobs` repeated. 
+7. We now have 10 different rows in our matrix and the only thing that varies between them is the value on `normnetwobs`. 
+
+```{r}
+ecj_linear_predictors <- coefficients(ecj_probit) %*% t(ecj_scenarios) #<1>
+ecj_predicted_probabilities <- pnorm(ecj_linear_predictors ) #<2>
+
+
+```
+1. Like before we multiply the coefficients with the transponse of the matrix with the scenarios. 
+2. Since we have a probit model, we can convert he linear predictors to probabilities using `pnorm()`.
+
+We can plot the predicted probabilities against the different values on `normnetwobs` to see how the predicted probability of a pro-plaintiff ruling varies depending on the net support from the member states. 
+
+```{r}
+#| label: fig-ecj_predicted1
+#| fig-cap: "Predicted probabilities of pro-plaintiff ruling at different levels of support for the plaintiff from EU member states." 
+library(dplyr)
+library(ggplot2)
+
+data.frame(probabilities = as.vector(ecj_predicted_probabilities), #<1>
+           normnetwobs = as.vector(ecj_scenarios[,2])) %>% #<1>
+  ggplot(aes(x = normnetwobs, 
+             y = probabilities)) +
+  geom_line()+
+  theme_classic()+
+  labs(y = "Predicted probability of pro-plaintiff ruling", 
+       x = "Net weighted observations for plaintiff",
+       caption = "A government is the litigant and other variables are kept at their median values")
+
+
+```
+1. `ggplot2` needs a `data.frame`. Both `ecj_predicted_probabilities` and the second column of `ecj_scenarios` which contains the sequence of `normnetwobs` are matrices, so we need to force them to become vectors as we add them to a `data.frame`
+
+
+While @fig-ecj_predicted1 is nice, it lacks uncertainty estimates! Communicating the estimated uncertainty surrounding our predictions is a crucial part of scientific communication. 
+
+# Simulations using the `MASS` package to get uncertainty estimates
+To get uncertainty estimates, we can exploit the fact that the coefficients from our maximum likelihood models follow a multivariate normal distribution with means given by the coefficients from the models and variance-covariance equal to the covariance-covariance matrix of the coefficients [see @ward2018maximum, 58--61]. Using the `MASS` package we can simulate this distribution and calculate our quantities of interest for different draws from the distribution. This will introduce variation in our quantities of interest that reflect the uncertainty in our model. 
+
+
+## Logistic regression with binary independent variable of interest
+Again, we will start with our @binder2018dodging example, which we now expand to include simulated confidence intervals. 
+
+```{r}
+library(MASS) 
+library(sandwich) 
+
+set.seed(4761) #<1>
+binder_sim_betas <- mvrnorm(n = 1000, #<2>
+                            mu = coefficients(binder_model), #<3>
+                            Sigma = vcovHAC(binder_model, cluster = dodgingrules$stateid)) #<4>
+
+
+binder_sim_linear_predictors <- binder_sim_betas %*% t(binder_scenarios) #<5>
+binder_sim_predicted_probabilities <- inverse_logit(binder_sim_linear_predictors)#<6>
+
+dim(binder_sim_predicted_probabilities)#<7>
+head(binder_sim_predicted_probabilities)#<7>
+
+```
+1. We will draw random numbers. We can ensure that the results reproduce by using `set.seed()`, which we just supply an arbitrary number. 
+2. We simulate coefficients using `mvrnorm()`. `n = 1000` means that we get 1000 different draws from the distribution (i.e. 1000 different sets of coefficients). 
+3. The mean (`mu`) values should be our estimated coefficients
+4. The variance-covariance (`Sigma`) should be given by our variance-covariance matrix. Here we use use the clustered variance covariance matrix using `vcovHAC()` from `sandwich`. 
+5. We calculated linear predictors like before, but now for all the different draws from the distribution
+6. We calculate predicted probabilities using our `inverse_logit()` function which we defined above. 
+7. Printing out dimensions and first rows of `binder_sim_predicted_probabilities`, we see that we now have matrix with 1000 rows and 2 columns. The rows are the different draws and the columns are the two different scenarios. 
+
+We need to summarize this information to make a visualization. Using `apply()` and `quantile()` we can get the median predictions and  confidence intervals. If we want a 95% confidence intervals, we need to discard 5/2 = 2.5 per cent of draws on each side of the distribution (so the borders of our confidence interval be at the 2.5% and the 97.5% lowest/highest values in the distribution, which correspond to the probabilities 0.025 and 0.975). 
+
+
+```{r}
+binder_plot_values <- apply(binder_sim_predicted_probabilities, #<1>
+                            MARGIN = 2, #<2>
+                            FUN = quantile, #<3>
+                            probs = c(.025,.5,.975)) #<4>
+```
+1. We want to apply a function across our matrix with predicted probabilities. 
+2. We want to apply the function across the (two columns). 
+3. The function to use is `quantile()`
+4. We can add additional arguments to the function. We want the 0.025, the 0.5, and the 0.975 quantiles of the distribution. 
+
+The resulting matrix looks like this: 
+```{r}
+print(binder_plot_values)
+
+```
+To use these values in `ggplot2`, we need to take the transpose and convert the matrix to a `data.frame`. It will also be helpful to add labels explaining what the different scenarios are: 
+
+```{r}
+binder_plot_values <- binder_plot_values %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  mutate(scenario = c("Republicans not running for reelection in 2018", 
+                      "Republicans running for reelection in 2018"))
+  
+```
+We are now ready to make a graph! 
+```{r}
+#| label: fig-binder-predicted1
+#| fig-cap: Predicted probabilities for signing the letter for Republicans running for election in 2018 and for Republicans not running for reelection in 2018. Error bars indicate 95% confidence intervals. 
+ggplot(binder_plot_values, 
+       aes(x = scenario, 
+           y = `50%`, #<1> 
+           ymin = `2.5%`, #<1> 
+           ymax = `97.5%`)) +#<1> 
+  geom_errorbar(width = 0)+ #<2> 
+  geom_point()+
+  ylim(0,1)+
+  labs(y = "Predicted probability of signing\nletter committing to save the filibuster", 
+       x = "", 
+       caption = "Other variables fixed at their median values")+
+  theme_classic()
+  
+
+```
+1. Recall that R doesn't like variable names that start with number and include symbols such as "%". Those are, however, the column names we got when transposing the matrix produced by `apply()`! We can circumvent the problem by wrapping the variable names with the \`\` sign. Alternatively we could have renamed the columns in the `data.frame` before supplying it to `ggplot()`. 
+2. We use `geom_errobar()` to create confidence intervals. The boundaries are defined by `ymin` and `ymax`. 
+
+@fig-binder-predicted1 adds important information compared to the coefficient plot or regression table. It shows that while the predicted probability of signing the letter is indeed lower for republicans running for election than for republicans not running, there is massive uncertainty surrounding both predictions. 
+
+
+## Probit regression with continuous independent variable of interest
+We can do the same for the @carrubba2008judicial. Since our independent variable of interest in this example is a continuous, we would want a curve with a "ribbon" indicating the confidence interval rather than points with error bars: 
+
+
+```{r}
+#| label: fig-ecj_predicted2
+#| fig-cap: "Predicted probabilities of pro-plaintiff ruling at different levels of support for the plaintiff from EU member states. Shaded areas indicate the 95% confidence intervals" 
+set.seed(315) #<1>
+ecj_sim_betas <- mvrnorm(n = 1000, 
+                            mu = coefficients(ecj_probit), 
+                            Sigma = vcovHAC(ecj_probit, cluster = ecj_data$caseid)) 
+ecj_sim_linear_predictors <- ecj_sim_betas %*% t(ecj_scenarios) 
+ecj_sim_predicted_probabilities <- pnorm(ecj_sim_linear_predictors) #<2>
+ecj_plot_values <- apply(ecj_sim_predicted_probabilities, 
+                            MARGIN = 2, 
+                            FUN = quantile, 
+                            probs = c(.025,.5,.975))
+ecj_plot_values<- ecj_plot_values%>% 
+  t() %>% 
+  as.data.frame() %>% 
+  mutate(normnetwobs = as.vector(ecj_scenarios[,2]))
+
+ggplot(ecj_plot_values, 
+  aes(x = normnetwobs, 
+           y = `50%`, 
+           ymin = `2.5%`, 
+           ymax = `97.5%`)) +
+  geom_ribbon(alpha = 0.2)+ #<3> 
+  geom_line(size = 1)+
+  theme_classic()+
+    labs(y = "Predicted probability of pro-plaintiff ruling", 
+      x = "Net weighted observations for plaintiff",
+       caption = "A government is the litigant and other variables are kept at their median values")
+
+```
+1. We set a different seed just to mix things up. 
+2. We remember to use the appropriate function for calculating predicted probabilities based on what kind of model we have. For a probit, you use `pnorm()`. 
+3.  `geom_ribbon()` can be used to add a confidence interval around a line. The `alpha` determines how "transparent" the confidence interval will be. 
+
+# Drawing from the posterior distributions of Bayesian models
+Some things are easier to do in a Bayesian framework and plotting quantities of interest and associated uncertainty estimates from our models is one of those things!  If estimating our models using `stan_glm()` [as recommended by @gelman2020regression and as discussed in [STV4022]()], the posterior distribution of all our coefficients will be saved as part of the model object. Using `posterior_line_pred` we can easily draw from the posterior distribution and calculate quantities of interest based on a scenario: 
+
+```{r}
+#| output: false
+library(rstanarm) #<1> 
+
+
+binder_stan_model <- stan_glm(filisave ~ running18 + gop + wings + leader + stdrank + #<2> 
+    servedmin + running18:gop, #<2> 
+    family = binomial(link = "logit"), #<2> 
+    data = dodgingrules)#<2> 
+
+binder_stan_predicted_probabilities <- posterior_linpred(binder_stan_model, #<3> 
+                                                         draws = 1000, #<4> 
+                                                         newdata = binder_scenarios_df, #<5> 
+                                                         transform = TRUE )#<6> 
+
+
+
+```
+1. Loading the `rstanarm` package. 
+2. Reestimating the @binder2018dodging model using `stan_glm()`. 
+3. We can use `posterior_linepred()` to draw from the posterior distribution of the linear predictors
+4. We want 1000 draws
+5. We need to supply the data as a `data.frame`, so we use the `data.frame` we already created above. 
+6. Setting `transform = TRUE` will transform each draw using the inverse link function. We thus get predicted probabilities rather than the linear predictor. `posterior_linpred` will do this based on the model type, so we don't need to specify the appropriate function ourselves. 
+
+
+Just like above, we get a matrix with 1000 rows and 2 columns. The rows are the different draws and the columns are the different scenarios. 
+
+```{r}
+dim(binder_stan_predicted_probabilities)
+
+head(binder_stan_predicted_probabilities)
+```
+
+
+We can manipulate it and make a graph exactly like we did before: 
+
+
+```{r}
+#| label: fig-binder-stan
+#| fig-cap: Predicted probabilities of signing the letter protecting the filibuster based on a replication of @binder2018dodging using `stan_glm()`
+binder_stan_plot_values <- apply(binder_stan_predicted_probabilities, 
+                            MARGIN = 2,
+                            FUN = quantile,
+                            probs = c(.025,.5,.975)) %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  mutate(scenario = c("Republicans not running for reelection in 2018", 
+                      "Republicans running for reelection in 2018"))
+
+ggplot(binder_stan_plot_values, 
+       aes(x = scenario,
+           y = `50%`,
+           ymin = `2.5%`, 
+           ymax = `97.5%`)) +
+  geom_errorbar(width = 0)+ 
+  geom_point()+
+  ylim(0,1)+
+  labs(y = "Predicted probability of signing\nletter committing to save the filibuster", 
+       x = "", 
+       caption = "Other variables fixed at their median values")+
+  theme_classic()
+```
+
+@fig-binder-stan looks very much like @fig-binder-predicted1 (which should come as no surprise as we just did the same things in the two different frameworks). 
+
+# `predictions()` from `marginaleffects`
+As usual [@arel2018countrycode; @arel2022modelsummary], Vincent Arel-Bundock has written an excellent R package that simplifies things for us. Using `predictions()` from the `marginaleffects` effects package [@arel2023marginaleffects], we can easily get predictions and uncertainty estimates for various models estimated using maximum likelihood (e.g. `glm()`) or in a Bayesian framework (e.g. `stan_glm()`). `marginaleffects` also has other functions for various other quantities of interest. 
+
+```{r}
+#| label: fig-binder-marginaleffects
+#| fig-cap: Predicted probabilities of signing the letter protecting the filibuster. Predictions and confidence intervals calculated using the `marginaleffects` package. 
+
+library(marginaleffects)
+
+binder_predictions <- predictions(binder_model, #<1> 
+            newdata = binder_scenarios_df, #<2> 
+            vcov = vcovHAC(binder_model,#<3> 
+                           cluster = binder_data$stateid))#<3>
+print(binder_predictions)#<4>
+names(binder_predictions)#<5>
+ggplot(binder_predictions, 
+       aes(x = as.factor(running18), #<6>
+           y = predicted, 
+           ymin = conf.low, 
+           ymax = conf.high)) +  
+    geom_errorbar(width = 0) + 
+  geom_point() +
+  scale_x_discrete(labels = c("Republican not running for reelection in 2018", #<7>
+                              "Republican running for reelection in 2018"))+#<7>
+  ylim(0,1) +
+  labs(y = "Predicted probability of signing\nletter committing to save the filibuster", 
+       x = "", 
+       caption = "Other variables fixed at their median values")+
+  theme_classic()
+
+```
+1. We use the function `predictions()` from the `marginaleffects` package. We first supply the model. 
+2. The we supply our scenarios to the `newdata` argument. The scenarios need to be `data.frame` with column names that match the coefficient names for the model. 
+3. If we want we can change the variance covariance-matrix. Here we clustered the variance covariance matrix by state, using `vcovHAC()` from the `sandwich` package. 
+4. We get the results printed in a nice `data.frame`
+5. `estimate` is the column with the point estimate and `conf.low` and `conf.high` contain the lower and upper bounds of the confidence inteval. The dataset also contains columns with all the variables and the values they have in each scenario. 
+6. The `running18` variable is numeric in the `data.frame`, but we can make `ggplot()` treat it as a categorical variable by using `as.factor()`. 
+7. We adjust the value labels on the x-axis to get informative labels rather than 0 and 1. 
+
+
+
+@fig-binder-marginaleffects again looks very much like @fig-binder-predicted1, which is what we would expect as we are doing exactly the same thing. However, using the `marginaleffects` package saves us from writing quite a bit of code! 
+
+
+If we want to the same thing with the @carrubba2008judicial example, we just have to remember to turn our scenarios into a `data.frame` with appropriately named columns (i.e. column names that match the coefficient names):  
+
+
+```{r}
+#| label: fig-ecj-marginaleffects
+#| fig-cap: Predicted probabilities of pro-plaintiff ruling. Predictions and confidence intervals calculated using the `marginaleffects` package. 
+
+library(marginaleffects)
+
+ecj_scenarios_df <- as.data.frame(ecj_scenarios)
+colnames(ecj_scenarios_df) <- names(coefficients(ecj_probit))
+
+ecj_predictions <- predictions(ecj_probit,
+            newdata = ecj_scenarios_df,
+            vcov = vcovHAC(ecj_probit,
+                           cluster = ecj_data$caseid))
+names(ecj_predictions)
+ggplot(ecj_predictions, 
+       aes(x = normnetwobs, 
+           y = predicted, 
+           ymin = conf.low, 
+           ymax = conf.high)) +  
+    geom_ribbon(alpha = 0.2, fill = "pink") + 
+  geom_line(color = "red") +
+  ylim(0,1) +
+  labs(y = "Predicted probability of pro-plantiff ruling", 
+       x = "", 
+       caption = "A government as litigant. Other variables fixed at their median values")+
+  theme_classic()
+
+```
+
+
+::: callout-tip
+## Other functions in the `marginaleffects` package
+The `marginaleffects` also contains a variety of other functions for calculating and visualizing other quantities of interest based on your regression models. We recommend having a look at the [documentation, which is available here](https://vincentarelbundock.github.io/marginaleffects/articles/marginaleffects.html), to explore all the possibilities!
+::: 
+
+
+
+
+
+
+
+
+
+
+
+
+

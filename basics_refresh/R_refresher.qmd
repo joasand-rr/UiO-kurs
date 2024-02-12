@@ -1,0 +1,1145 @@
+---
+title: "R refresher"
+bibliography: "../STV4030A.bib"
+format: html 
+---
+
+This is a refresher on materials we expect you to be familiar with from your previous methods training.
+
+If you feel comfortable working in R, you may skip this content (or parts of it that you find too easy) and [move on to the more advanced topics](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/Beyond_the_basics.html). 
+
+If your R skills are feeling a little rusty or you just want to make sure you are up to speed before progressing to the new topics, this is definitely the place to start!
+
+# Installing R and RStudio
+
+First things first. You will need the following software installed in your computer:
+
+1.  A recent installation of R. [You can get the latest version of R here](https://cloud.r-project.org/).
+
+2.  The latest version of RStudio. [You can get the latest version of RStudio here](https://posit.co/download/rstudio-desktop/).
+
+If it has been a while since you last updated R and RStudio, it is a good idea to update both programs before proceeding. New versions of R are released quite regularly and it will be useful to ensure that your R installation is up-to-date.
+
+Alternatively, [you may use RStudio in your browser using the University of Oslo RStudio Workbench](https://www.uio.no/tjenester/it/utdanning/rstudioworkb/). For the RStudio Workbench you will not need to install anything locally on your computer. 
+
+# Working in RStudio
+
+Open RStudio. The window that opens should look something like this:
+
+![](/pics/rstudio_startup.PNG){fig-align="center"}
+
+## Projects
+
+Before we start working in R (e.g writing R scripts, saving output data, figures, tables, etc.), it is typically a good idea to start a new RStudio project. For instance, you may create a project called "STV4030A", "DigitalData" or something similar if you would like to work in the same project throughout this course:
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=07b98ca6-bb9f-4ca9-9441-b0340085b638&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=false&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay">
+
+</iframe>
+
+Alternatively, you could choose to create different projects for the five different assignments you will complete during this course. Once you are finished with this course and proceed to work on something else, e.g. your MA thesis (!), you would want to do so in a new project.
+
+In either case, working in "RStudio projects" will allow you to keep track of the different files that belong to the project you are working on and to have a specific directory on the computer where those files will be saved. It will also enable you to easily switch between different projects that you may be working on simultaneously. 
+
+## Directories and paths
+
+Files on your computer are saved in different *directories*. You can find out which directory you are currently working in by running the following line of R code:
+
+```{r}
+#| eval: false
+getwd()
+```
+
+The above line will print the *path* to the location you are currently working in. If you created a project and are working in that project, it should be the path to the directory where your project lives.
+
+We may want to store different types of files in different subdirectories. For instance, you may create a new folder called "Data" where you will save your datasets and another folder called "Figures" where you will save all the figures you create with R. Having such subdirectories is a good idea! However, it means you will need to keep track of the correct path to the folder when you load/save files from/to those folders. If our project working directory has a folder called "Data" which contains a dataset called "example_data.RData", the code for loading the dataset would be:
+
+```{r}
+#| eval: false
+load("Data/example_data.RData")
+```
+
+If, "example_data.RData" had been saved in the working directly (i.e. not in a subdirectory), the code would have been
+
+```{r}
+#| eval: false
+load("example_data.RData")
+```
+
+If you are not working in an RStudio project, you will need to set the working directory manually using `setwd()`. You will need to specify the directory you would like to work in. For instance:
+
+```{r}
+#| eval: false
+setwd("C:/Users/oyvinsti/OneDrive - Universitetet i Oslo/Documents/STV4030A")
+```
+
+If you don't set the working directory. You will end up working in the default directory. We don't recommend working in the default directory as it will likely end up being very messy!
+
+If you want to load data from or save output to some directory that is not subdirectory of your working directory, you may do so by writing out the full path. For instance, the following line will load "example_data.RData" from the specified directory no matter what working directory you are currently working in (assuming that the specified directory and file exist on your computer):
+
+```{r}
+#| eval: false
+load("C:/Users/oyvinsti/OneDrive - Universitetet i Oslo/Documents/STV4030A/Data/example_data.RData")
+```
+
+Avoiding such long (and computer-specific) paths is yet another reason to do all your work in RStudio projects!
+
+## Working in R-scripts/Quarto documents
+
+You should be writing your code in R-scripts (or in Quarto-documents [(which we will introduce later)](https://pages.github.uio.no/oyvinsti/STV4030A/Quarto_documents/writing_quarto.html)). You can open a new script by clicking "New file" and then selecting "R script":
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=b63c5df3-7c10-4ba4-8d89-b034008afa22&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=false&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay">
+
+</iframe>
+
+Writing R scripts (or Quarto documents) helps making your work organized and reproducable. To this end, make sure that the code is written in the right sequence: a line of code may depend on code that is above it in the script (but not on code that comes below it).
+
+Think of your script as the recipe for re-creating your analysis. Just as when cooking, the order in which you do things may matter.
+
+Save your R script with an informative name and `.R` at the end of the file name. The informative file name will help you remember what the script does and the `.R` will help your computer know that your file is an R script.
+
+When working on your script, you may execute an individual line of code by placing the cursor anywhere on that line and pressing `Ctrl+Enter` on a PC or `Cmd+Enter` on a Mac. Executing lines of code line-by-line is great for working interactively in RStudio.
+
+You may also run the entire script or some part of it by highlighting everything/what you would like to run, before pressing `Ctrl+Enter`/`Cmd+Enter`. You can also run the entire script by pressing `Ctrl+Alt+Enter`/`Cmd+Alt+Enter`.
+
+Alternatively if you have the script saved as a `.R`-file on your computer, you may run it using the `source()` function in R:
+
+```{r}
+#| eval: false
+source("hello_world.R")
+```
+
+Your complete scripts should run without errors when you open them in a fresh RStudio session and press `Ctrl+Alt+Enter`/`Cmd+Alt+Enter`. For your scripts to run without error, you will need to make sure that the code is written in the correct sequence, that all the packages you use are installed on your computer and loaded in the script, that you load data from the right directories, and that any code that doesn't run is edited/commented out (we will explain what *commenting out* something means in a moment).
+
+## The console
+
+When you run/execute the code, the code and the results will be printed in the "console" (by default located in the lower left corner in the RStudio window). It is also possible to write the code directly in the console (this may be a good idea for instance for installing packages), but you shouldn't write the code for anything you later would want to reproduce in the console. Write your code in R-scripts or Quarto documents, so that you can reproduce your work later!
+
+![](/pics/script_console.png)
+
+## Your (global) environment
+
+The pane called "Environment" (by default located in the upper-right corner of RStudio), lists all the objects currently stored in your global environment. We will talk about such objects later (they might be datasets, individual vectors, regression models, or whatever). You can store something in the environment by using the assignment operator. For instance, we can store the text string "hello world!" in an object called `message`:
+
+```{r}
+message <- "hello world"
+```
+
+In the console we will then only see an *echo* of this code (it doesn't print any output) and an object called message will appear in the environment pane.
+
+![](/pics/environment.PNG)
+
+The object is listed under values as it is a character vector. We can also see a preview of what the vector contains. Since our vector only has a single value ("hello world!"), the preview just displays this value.
+
+You can print out a list of everything stored in your global environment using the `ls()` function:
+
+```{r}
+ls()
+```
+
+Storing "hello world!" in the object `message` has the advantage that we can now refer to the object name in our subsequent code (rather than retyping the value(s) each time we want to do something with out message), so we can:
+
+```{r}
+print(message)
+```
+
+or perhaps we would rather:
+
+```{r}
+print(toupper(message))
+```
+
+All the objects in your global environment should be created from your script and in the sequence in which you will be needing them (so don't create new objects from the console!). This ensures the reproducability of your work. Whenever you close and reopen RStudio, you can just rerun your script to reproduce your objects.
+
+It is possible to save everything in the current environment like this:
+
+```{r}
+#| eval: false
+save.image(file = "environment_containing_hello_world_message.RData")
+```
+
+When exiting RStudio, you will be asked whether you want to save what is in your environment (unless you turn this feature off in the RStudio settings).
+
+It is usually better to **not save** what is in your environment and instead re-run your script which should reproduce the all the objects to the environment when you close and reopen RStudio.
+
+To make sure that their scripts are not affected by whatever is already in the global environment, some people like to start their R scripts with the following line, which will remove everything from the global environment:
+
+```{r}
+rm(list = ls())
+```
+
+While the above line removes all objects from the global environment. The code you run may, however, still be affected by what you have previously done while working in the same R session, for instance, by packages you have loaded. It is therefore usually better to close and reopen RStudio (without saving what is in the environment) whenever you want to rerun your code in a fresh session.
+
+::: callout-tip
+## Global vs. local environment
+
+So far, we have only dealt with  the *global* environment. This might make you wonder if there are also *local* environments. There are, but these are not so important just yet. We will get back to local environments, when we start [defining our own functions](Beyond_the_basics.qmd).
+:::
+
+## Commenting your code and organizing your script
+
+It is useful to add *comments* in your script to explain your code. Such comments make it easier both for others and for your future self to understand what your code does.
+
+You can add comments using the hashtag (`#`) symbol. Everything that follows the hashtag will be ignored when the code is executed.
+
+```{r}
+message <- "hello world" # This line assigns the string "hello world" to an object called "message"
+
+print(message) # This line prints out whatever is stored in the object called "message"
+```
+
+As your scripts grow long, it may be a good idea to organize them in different sections with headers. Comments are useful also for this purpose. You make a header using four hashtags on each side of the text of your header:
+
+```{r}
+#### This code just prints out the hello world message ####
+message <- "hello world" # This line assigns the string "hello world" to an object called message
+
+print(message) # This line prints out whatever is stored in the object called message
+```
+
+Alternatively, you can include a single hashtag, followed by a label and some dashes:
+
+```{r}
+#This is another way of making a header--------
+message <- "hello world" # This line assigns the string "hello world" to an object called message
+
+print(message) # This line prints out whatever is stored in the object called message
+```
+
+Finally, comments can be useful when you have code that doesn't run (and therefore produces errors when you run your script) but that you  don't want to delete just yet (you are still working on it! Or maybe you just find it hard to let go...). In such cases, *commenting out* the code is useful:
+
+```{r}
+new_message <- "you can also print other messages"
+
+#print(new_massage) this code doesn't run, but I don't know why. Must be a typo or something... I will have another look at it tomorrow
+```
+
+# The basics of R programming
+
+Now that we have installed R and Rstudio and repeated the basics of how to organize our work in RStudio, it is time to repeat the basics of R programming.
+
+## R as a calculator
+
+An easy way to get started in R is to try using it as a calculator. Try doing some simple calculations such as:
+
+```{r}
+14+65
+
+78*5
+
+15/(6-1)
+
+2^-10
+```
+
+When executing the code above, the result of each calculation will be printed in the console, but not stored anywhere. If you want to store the results, you will need to [assign them to objects](#sec-assigning). 
+
+## Relational operators and logical conditions 
+We can use relational operators to make R evaluate logical conditions (i.e. statements that are either `TRUE` or `FALSE`). For instance, we can ask if 14 is greater than 5: 
+
+```{r}
+14 > 5
+```
+Because 14 is in fact greater than 5, R will return the value `TRUE`. 
+
+If we ask whether 14 is equal to 5, R will return `FALSE`: 
+```{r}
+14 == 5
+```
+However, if we ask if whether 14 is greater or equal to 5, the result will be `TRUE`: 
+```{r}
+14 >= 5
+```
+If we ask if 14 is *not equal* to 5, the result will be `TRUE`: 
+```{r}
+14 != 5
+```
+If we ask if 14 is smaller than 5, the result will be `FALSE`: 
+```{r}
+14 < 5
+```
+
+We can ask whether 5 is the sequence of integers from 1 to 14, which it is so the result will be `TRUE`
+
+```{r}
+5 %in% 1:14
+```
+
+
+Using such logical conditions will be incredibly useful for instance when we want to recode variables, subset our dataset to only contain observations that satisfy specific conditions, etc. 
+
+## Logical operators
+The logical operators AND (`&`) and OR (`|`) are often useful, in particular to write more complex logical conditions. We may for instance ask if 14 is greater than 5 AND 5 is smaller than 2: 
+
+```{r}
+14 > 5 & 5 < 2
+```
+The above code evaluates to  `FALSE` because only one of the two statements are true. 
+
+If we instead ask whether 14 is greater than 5 OR 5 is smaller than 2, we get that this is true because one of the statements is true: 
+```{r}
+14 > 5 | 5 < 2
+```
+
+## Assigning values to objects {#sec-assigning}
+
+As we have already seen, we may store values in objects. To *assign* something to an object, we use the *assignment operator*, `<-`:
+
+```{r}
+a <- 15/(6-1)
+```
+
+Running the above line, will print an echo of the code in the console, but not the result of the calculation. Instead, an object called `a` containing the result will be saved in our environment. You may print out the value using `print()` or use it in new calculations
+
+```{r}
+print(a) #printing whatever is stored in a to the console. 
+
+a+5 #adding 5 to whatever is stored in a. 
+```
+
+The object "a" is a vector containing only a single element. If we want to create longer vectors with multiple elements we can use the `c()` function:
+
+```{r}
+results <- c(14+65, 78*5, 15/(6-1), 2^-10) # storing the results of various calculations in the vector called "results"
+```
+
+
+::: callout-tip
+## Object names
+
+Object names in R must start with a letter and may only include letters, numbers, underscores (`_`) and periods (`.`). Letters may be upper and lower case (and R distinguishes between lower and upper case, so if you really want to, you may have multiple objects called "results", "Results", "RESULTS", etc. We don't recommend this as it may be hard for you to remember the differences between objects called very similar things).
+
+It is useful to have informative object names that describe what is contained in the object. We recommend the *snake_case* convention for combining multiple words in a object name. This simply means using lowercase letters and separating different words with `_`. For instance, you you may name a regression model something like `linear_regression_with_all_controls`.
+
+There, however, also other conventions, such as *camelCase* in which you you capitalize the first letter of each word. If you prefer this style, you could name your regression model something like `linearRegressionWithAllControls`.
+:::
+
+
+## Do operations on each element of a vector: 
+We can do operations on all elements of a vector at the same time. For instance, the following line of code, will add 1 to all elements in the vector results:
+
+```{r}
+results + 1
+```
+
+Notice that because we didn't assign the output of the above code to an object, the results are just printed out in the console. If we instead run the code
+
+```{r}
+results <- results + 1
+```
+
+we will overwrite the object "results" with the new vector in which 1 is added to each element.
+
+
+## Functions
+
+When we are working in R, we are constantly using different functions. For instance, we have already used the function `print()` to print values to the console. Functions take some input (given in the form of arguments that the function accepts), perform some operation(s), and then returns some output.
+
+Functions have a name followed by a parenthesis. Inside the parenthesis, we can specify one or more arguments. Based on the values on these arguments, the function will produce some result. For instance the function `mean()` calculates the arithmetic mean (or *the average*) value of a vector. Let's try it out:
+
+```{r}
+some_numbers <- c(15, 3, 66, 8, 800) # just creating a vector containing some numbers
+mean(x = some_numbers) # taking the mean of the vector some_numbers
+```
+
+We have used the function `mean()`, which takes the argument `x` and calculates the mean of `x`. When *calling the function* we specified that we want the argument `x` to take the value `some_numbers`. Since x is the first argument of `mean()` we could skip the `x =` part of the function call. The following code will produce exactly the same result:
+
+```{r}
+mean(some_numbers)
+```
+
+The function `mean()` also takes two other arguments. The first of these is `trim`, which specifies "the fraction (0 to 0.5) of observations to be trimmed from each end of x before the mean is computed." `trim` defaults to 0, meaning that we take the mean of the entire vector `x`. We can however, set it to something else, such as 0.2:
+
+```{r}
+mean(some_numbers, trim = 0.2)
+```
+
+We now removed 20 per cent of the values on each end of the some_numbers before calculating the mean. We will very rarely have use of the `trim` argument (in fact, Øyvind used this argument for the first time in his life when writing this page!).
+
+The second additional argument of the function `mean()` will, however, often prove useful! `na.rm` takes a "logical evaluating to `TRUE` or `FALSE` indicating whether `NA` values should be stripped before the computation proceeds". In other words, this argument specifies whether missing values should be removed before we calculate the mean. If the vector we calculate the mean of contains missing values and we don't set `na.rm = TRUE` our output will just be `NA`:
+
+```{r}
+some_numbers_with_missing <- c(15, 3,NA, 66, 8, 800) ## just creating a vector containing some numbers
+mean(some_numbers_with_missing) ## this will result in NA as na.rm defaults to FALSE
+mean(some_numbers_with_missing, na.rm = TRUE)
+```
+
+We are using functions in R all the time and not just to do mathematical operations such as taking the mean. We use functions to load datasets, fit regression models, export outputs, make graphs, or scrape data from the web. Understanding functions is thus key to mastering R!
+
+::: callout-tip
+## Read the documentation!
+
+If you wonder exactly what a function does, what arguments it takes,  and what it produces, it is very useful to look at the documentation. You can find the documentation either by running `?function_name` or by typing `help(topic = function_name)`. For instance, if we want to look up the documentation for the function `mean()`, we would run:
+
+```{r}
+#| eval: false
+?mean
+```
+
+or alternatively:
+
+```{r}
+#| eval: false
+help(topic = mean)
+```
+
+The help page containing the documentation for the function should then show up in the "help" pane in RStudio (by default locating in the lower-right corner).
+:::
+
+## Installing and Loading Packages
+
+When you open a new R session, you immediately have access to some functions, such as `mean()` or `print()`, which we have already used. These functions included in  "base R" are quite powerful and may suffice for many purposes. However, we can vastly extend the capabilities of R by making use of the thousands of *packages*, which contains additional functions (and sometimes data).
+
+Some of these packages are distributed with R, meaning that they are automatically installed when you install R (but are still not automatically loaded when you start a new R session). One example is the `survival` package, which contains functions for something called ["event history" or "survival" analysis](https://academic.oup.com/edited-volume/28340/chapter/215161682?login=true) (which we will not really get into in this course). Before we can use the functions included in such packages, we will need to load them. We load packages using the `library()` function:
+
+```{r}
+library(survival) # this loads the survival package. 
+```
+
+Other packages are not distributed with R and need to be downloaded from the internet and installed on your computer before we can use them. One example is the `haven` package ([which we will be using shortly](#sec-loading-data)). We can download and install (most) packages using the `install.packages()` function:
+
+```{r}
+#| eval: false
+install.packages("haven") # this will install the haven package
+```
+
+:::callout-warning
+## Don't reinstall packages every time you run your code!
+You only need to install a package once (that is, at least until you update R and may need to also update your packages). You therefore don't want to include the calls to `install.packages()` in your scripts! Including these calls in your scripts will make R reinstall the packages every time you run the script, both slowing down the script and likely causing problems that occur when you try to reinstall packages that are already loaded. It is good practice to install the packages directly in the console, delete the lines installing packages once the packages are installed, or commenting out the lines that install packages if you insist on keeping the code for later use:
+
+```{r}
+#install.packages("haven") # I commented out this line, because haven is already installed
+```
+
+:::
+Installing the package is not sufficient, we also need to load it. Once the package is installed on our computer, we can load it using the `library()` function:
+
+```{r}
+library(haven) # this loads the haven package
+```
+
+While we only need to install the packages once, we need to load them every time we want to use them in a new R session. It is useful to load all the packages you are using at the beginning of your scripts. This allows you to discover problems (for instance that a package is not installed) already when you run the first lines of the script later. You may then have a first section of the script that looks something like this:
+
+```{r}
+#### Loading packages that I will be using ####
+library(haven) 
+library(survival)
+```
+
+::: callout-tip
+## Functions from different packages that share the same name!
+
+Anyone can develop and publish R packages with new functions. While this is generally a great thing, it also means that there will be many functions from different packages that share the same names. Some function names, such as `select()`, may be very tempting for developers to use and there will therefore be many functions with names such as `select()`. If you load different packages that contain functions named `select()`, you may accidentally be using a different function than you intended to!
+
+There are (at least) two ways of dealing with this problem. First, you can write `package_name::function_name` to specify which package the function is from. So, if you want to use the function `select()` from the package `dplyr`, you write `dplyr::select()`. This approach is fine if you are only invoking this function once, but it can get a bit tedious if you are repeatedly using `select()` from `dplyr`.
+
+A second approach is to use the package `conflicted` to specify how conflicts between different packages should be resolved. This code will tell R that it should always use `select()` from `dplyr`:
+
+```{r}
+library(conflicted)
+conflict_prefer(name = "select", winner = "dplyr")
+```
+:::
+
+::: callout-tip
+## Different package repositories
+
+Most of the packages you will be installing from the internet are available from a package repository called "The Comprehensive R Archive Network"( CRAN). These packages can simply be installed without specifying any other arguments than the package name when running `install.packages()` as the default behavior of this function is to install packages from CRAN. 
+
+Occasionally, packages may be available only through other repositories. In such cases, we will need to specify the "repos" argument. One example is the package `countreg` which is only available through a repository called R-Forge. We therefore need to install this package like this:
+
+```{r}
+#| eval: false
+
+
+install.packages("countreg", repos = "http://R-Forge.R-project.org") 
+```
+
+Other packages will only be available as development versions, for instance through GitHub. One example is the [`vdemdata` package](https://github.com/vdeminstitute/vdemdata) which contains the most recent version of the [Varieties of Democracy dataset](https://v-dem.net/). To install packages available from GitHub you will need to first install the `devtools` package (which is available from CRAN!). Note that to install `devtools` on Windows, you will also need something called [RTools installed on your system](https://cran.r-project.org/bin/windows/Rtools/) To install `devtools` on Mac, you will  similarly need something called [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) or [XQuartz](https://www.xquartz.org/).
+
+You can install the `vdemdata` package from GitHub like this:
+
+```{r}
+#| eval: false
+
+#install.packages("devtools") # if you haven't already installed devtools, you will need to run this line
+library(devtools)
+install_github("vdeminstitute/vdemdata")
+```
+:::
+
+## Loading Data {#sec-loading-data}
+
+Now that we know how to use R functions, assign values to objects, and install and load packages, we are ready to start loading datasets into R (and thus also making the political science relevance of what we are up to more obvious!).
+
+We will load the WhoGov dataset which provides  "bibliographic information, such as gender and party affiliation, on cabinet members in July every year in the period 1966-2021 in all countries with a population of more than 400,000 citizens". [You can read more about this dataset and get some ideas for what such data can be used for here!](https://doi.org/10.1017/S0003055420000490). We downloaded the data from <https://politicscentre.nuffield.ox.ac.uk/whogov-dataset/> and saved local copies, which you may also want to do if you would like to test the code below.
+
+How we will load the data depends on the format (the type of file). You know what type of file it is by looking at the end of the file name (whether it ends in `.csv`, `.rds`, or something else).
+
+### `.rds`-files
+
+One of the formats that the WhoGov dataset is supplied in is `.rds`. We can load `.rds`-files using the `read_rds()` function from the package `readr`. The `read_rds()` takes the argument `file` which we use to specify the location of the file on our computer:
+
+```{r}
+library(readr)
+who_gov <- read_rds(file = "../data/WhoGov_within_V2.0.rds")
+```
+
+Because `file` is the first argument, we don't have to name it in the function call, so we could also run:
+
+```{r}
+#| eval: false
+who_gov <- read_rds("../data/WhoGov_within_V2.0.rds")
+```
+
+The nice WhoGov people have also made the file available as a comma-separated values files (`.csv`). This is a very nice format to work with. `.csv`-files are just plain text files in which different columns are separated by commas. You can load `.csv`-file using the `read_delim()` function from the `readr` package (Since we already loaded this packages, we don't need to reload it):
+
+### `.csv`-files
+
+```{r}
+who_gov <- read_delim(file = "../data/WhoGov_within_V2.0.csv", delim = ",")
+```
+
+In addition to the `file` argument, we also specified the `delim` argument which tells R how the columns are separated in the file. When columns are separated using `,`, we could also use `read_csv()` which works in exactly the same way as `read_delim()` except that it will assume that the delimiter is a comma:
+
+```{r}
+who_gov <- read_csv(file = "../data/WhoGov_within_V2.0.csv")
+```
+
+The delimiter is, however, not always a comma. Sometimes people use a semicolon or the tabulator to separate the columns. Using `read_delim()` and specifying the delimiter is useful in such cases. `read_delim()` also has a number of other arguments you can specify. For instance, you can specify whether white space at the beginning and end of each cell should be removed (`trim_ws`), whether the first row of the dataset contains variable names (`col_names`), or whether R should skip some lines in the file when loading it (`skip`). These arguments have default options that will work well for most dataset, but if you run into trouble loading a `.csv`-file, it is a good idea to check out these options. You can see the full list options by looking up the documentation:
+
+```{r}
+#| eval: false
+?read_delim
+```
+
+By default, `read_delim()` spits out some information about the variables included in the dataset and whether they are read as numbers or as character strings ([we will discuss data types later](@sec-data-types)). If you find this behavior annoying, you can turn it off using the `show_col_types` argument:
+
+```{r}
+who_gov <- read_delim(file = "../data/WhoGov_within_V2.0.csv", delim = ",", show_col_types = FALSE)
+```
+
+### `.xlsx`-files
+
+Finally, WhoGov is made available in Microsoft Excel (`xlsx`) format. To load a `.xlsx`-file, you can use the `read_excel()` function from the `readxl` package:
+
+```{r}
+#| eval: false
+
+
+library(readxl)
+who_gov <- read_excel(file = "../data/WhoGov_within_V2.0.xlsx")
+```
+
+Sometimes Excel-files will contain data in different sheets. The `read_excel()` function has a `sheet` argument which allows you to specify which sheet you are interested in.
+
+### `.dta`-files
+
+You will frequently encounter datasets saved in the Stata dataset format (`.dta`). While WhoGov is not published in this format, we have saved it locally as a `.dta`-file to illustrate how such files can be loaded.
+
+```{r}
+#| eval: false
+#| echo: false
+who_gov[,1] <- NULL
+haven::write_dta(who_gov, path = "../data/WhoGov_within_V2.dta")
+```
+
+We can load `.dta`-files using the `read_dta()` function from the `haven` package:
+
+```{r}
+#| eval: false
+
+library(haven)
+who_gov <- read_dta("../data/WhoGov_within_V2.dta")
+```
+
+### `.sav`-files
+
+Similarly, we can load SPSS (`.sav`) files using the `read_sav()` function which is also available from the `haven` package:
+
+```{r}
+#| eval: false
+#| echo: false
+
+write_sav(who_gov, path = "../data/WhoGov_within_V2.sav")
+```
+
+```{r}
+#| eval: false
+
+who_gov <- read_sav("../data/WhoGov_within_V2.sav", encoding = "latin1")
+```
+
+To load the SPSS version of the file, we had to specify correct [encoding](https://en.wikipedia.org/wiki/Character_encoding). The "encoding" is just how variables containing text is stored in the file. If you encounter error messages like this one: "Unable to convert string to the requested encoding (invalid byte sequence)", the problem is typically that R doesn't recognize the encoding of the file and that you therefore need to specify it. [We discuss encoding in more detail here](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/encoding.html). 
+
+### `.rda` and `.RData`-files
+
+`.rda` and `.RData` are R data formats. You can load `.rda`- and `.RData`- files using the function `load()`:
+
+```{r}
+#| eval: false
+#| echo: false
+
+save(who_gov, file = "../data/WhoGov_within_V2.rda")
+save(who_gov, file = "../data/WhoGov_within_V2.RData")
+```
+
+```{r}
+
+load(file = "../data/WhoGov_within_V2.rda")
+```
+
+or
+
+```{r}
+
+load(file = "../data/WhoGov_within_V2.RData")
+```
+
+## Saving Data
+
+You may save your data in any of the formats we encountered above (as well as many others). However, we will recommend saving your data either as plain text `.csv`-files or as R datasets (`.rda` or `.RData`).
+
+To save a dataset as a `.csv`-file, we can use the function `write_csv()` from the package `readr`:
+
+```{r}
+write_csv(x = who_gov, file = "../data/who_gov_copy.csv")
+```
+
+When saving datasets, we both need to specify the data frame that we would like to save (using the `x` argument) and the file name (and directory) we want to save the data to (using the `file` argument).
+
+To save a dataset as an R dataset, we can use the `save()` function:
+
+```{r}
+save(who_gov, file = "../data/who_gov_copy.rda")
+```
+
+We can save multiple objects at the same time using `save()` and these objects don't necessarily have to be `data.frame`s. [We created some other objects above](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/R_refresher.html#sec-assigning), such as the vectors `a` and `results`. We can save them in `.rda`-file together with the `who_gov` `data.frame` if we want to:
+
+```{r}
+save(who_gov,a, results, file = "../data/who_gov_copy_and_other_stuff.rda")
+```
+
+If we then `load()` this file, we will load all these three objects to our environment.
+
+```{r}
+load(file = "../data/who_gov_copy_and_other_stuff.rda")
+```
+
+::: callout-tip
+## Saving data in other formats
+
+Functions for saving data to other formats are generally available in the same packages as the functions for loading data. Their function names typically start with `write_` followed by the format. To save a dataset as a Stata (`.dta`) file, you may for instance use `write_dta()` from `haven`.
+:::
+
+## Exploring `data.frame`s and other R objects
+
+```{r}
+#| echo: false
+
+who_gov <- read_rds("../data/WhoGov_within_V2.0.rds")
+```
+
+The WhoGov data was loaded to R as a `data.frame` and we assigned it to the object we called `who_gov`. You will see that `who_gov` stored under the header "Data" in the Environment pane.
+
+![](/pics/environment_with_data_frame.PNG){width="822"}
+
+We generally want to store our datasets as `data.frame`s (or as `tibble`s. The `tibble` format is just a somewhat modernized version of the traditional R `data.frame`). `data.frame`s should be organized with the observations (our units of analysis) as rows and variables as columns. We can get a quick glimpse of what the dataset looks like by printing out the first six rows in the console using the function `head()`
+
+```{r}
+head(who_gov)
+```
+
+What is the unit-of-analysis in the `who_gov` dataset? Well, we see that the first six rows all cover the country Afghanistan and the year 1966. So, clearly, we are not dealing with a country-year dataset (if so, we would only have one row per country per year). The different observations from the same country-year appear to be different people holding different cabinet positions, so maybe the unit of analysis is the "country-year-position".
+
+Since we are not sure, we should look up the documentation for the article. @nyrup2020governs write that the dataset "contains yearly data on members of cabinets in 177 countries", so our impression that the unit of analysis is the country-year-position appears to be correct.
+
+A few other functions are useful for getting a quick overview of how a specific `data.frame` is structured. First, `names()` will print out the names of all the variables in the dataset:
+
+```{r}
+names(who_gov)
+```
+
+To know what these different variables are and how they are coded, we have to look up the codebook or other documentation. This information is not generally available in R. [The codebook for the WhoGov dataset is available online.](https://static.cambridge.org/content/id/urn:cambridge.org:id:article:S0003055420000490/resource/name/S0003055420000490sup001.pdf)
+
+Second, we can use `dim()` to get the dimensions of the `data.frame`: the number of rows and columns
+
+```{r}
+dim(who_gov)
+```
+
+We can see that there are `r nrow(who_gov)` rows (the observations) and `r ncol(who_gov)` columns (the variables). If we prefer, we could also get this information separately using the `nrow()` and `ncol()` functions:
+
+```{r}
+nrow(who_gov) # the number of rows
+ncol(who_gov) # the number of columns
+```
+
+Third, we can use `summary()` to get summary statistics for all the variables in the dataset: 
+
+```{r}
+summary(who_gov)
+```
+
+
+
+
+### Inspecting the variables in a `data.frame`
+
+You can use the `$` symbol to refer to specific variables inside a `data.frame`. Your code will look something like `data_frame$variable`. For instance, we may continue exploring the dataset by looking at how long the time series is (which years are covered by the data) and how many unique countries are included. Let's start with the year variable, which available as `who_gov$year`. We can use `range()` to learn when the time series starts and ends:
+
+```{r}
+range(who_gov$year)
+```
+Or we could use summary to get summary statistics for this variable: 
+```{r}
+summary(who_gov$year)
+```
+
+The first observation is from `r min(who_gov$year, na.rm = TRUE)` and the last observation is from `r max(who_gov$year, na.rm = TRUE)`. Maybe we want to get a sense of how many observations there are from each year in the time series? If so, we could use `table()` to get a frequency table showing the number of observations per year:
+
+```{r}
+table(who_gov$year)
+```
+
+The table that R spits out in the console is a little ugly, but it is organized as follows: below each unique value on the variable (here `year`) it shows the number of observations with that value. So for instance, there are 5239 observations from the year 1999.
+
+We notice that the first year is 1963 and that there are only 14 observations each year for 1963, 1964, and 1965. Combined with our sense that there must have been more than 14 cabinet ministers in the world also in these years and the fact that @nyrup2020governs write that their dataset starts in 1966, this information should make us somewhat suspicious! We will investigate this more below.
+
+For now, we move on to exploring coverage of different countries. The name of the country of each observation is stored in `who_gov$country_name`. We first want to know how many unique countries there are. Using `unique()` we can print out all the unique values on `who_gov$country_name`:
+
+```{r}
+unique(who_gov$country_name)
+```
+
+Typically, we are not interested in reading this full list. We just want to know how many different countries there are. We can use `length()` to find out how long a vector is. Using `unique()` will create vector with all the unique values and finding the length of this vector will tell us how many unique countries there are in the dataset:
+
+```{r}
+length(unique(who_gov$country_name))
+
+```
+
+We learn that there are 178 unique country names in the dataset.[^1]
+
+[^1]: This is actually one more than @nyrup2020governs report, so, again, something we might want to investigate further: it turns out that if we instead look at the variable called `who_gov$country_isocode`, which is the numeric country code, there are only 177 countries (but one of them appears with two different names. Can you find out which?).
+
+If we want to get a sense of what types of positions the people in the WhoGov dataset held, we can similarly use `table()` on the `who_gov$portfolio_1` which contains a standardized coding of the different types of positions (There was no way for us to know this in advance. We had to look up the [WhoGov codebook](https://static.cambridge.org/content/id/urn:cambridge.org:id:article:S0003055420000490/resource/name/S0003055420000490sup001.pdf), which is generally what you should do if you wonder how to use a dataset created by others. )
+
+```{r}
+table(who_gov$portfolio_1)
+```
+## Changing or adding variables 
+Just as we can use the assignment operator,`<-` to create objects, we can use it to create or change variables inside a `data.frame`. If you run the following line, you will create a new column in the `who_gov`, which always takes the value of 1.
+
+```{r}
+who_gov$ones <- 1
+```
+ This variable is obviously not super interesting. We would rather have a variable that actually varies. Let's try to make create a variable called `who_gov$female` which will take the value 1 if the person is female and 0 otherwise. We will base this variable on the variable `who_gov$gender` which is already in the dataset and which takes the values "Male",  "Female", "Other", and "Unknown". The function `ifelse()` is very useful for creating a new variable based on some conditions (for example based on e values on some existing variable):
+
+```{r}
+who_gov$female <- ifelse(who_gov$gender == "Female", #<1>
+                         1, #<2>
+                         0) #<3>
+```
+1. check if the value on  `who_gov$gender is  "Female"
+2. Give those cases the value 1. 
+3. Giv other cases the value 0. 
+
+
+We now created a new variable called `who_gov$female`. Since this variable is based on the variable `who_gov$gender`, we can compare the two variables against each other to verify that the `who_gov$female` was created correctly. We can use `table()` to create a cross table: 
+```{r}
+table(who_gov$female, who_gov$gender)
+```
+We see that all the observations with "Female" as the value on the `who_gov$gender` variable has the value 1 on the `who_gov$female` variable and that all those with other values on the `who_gov$gender` variable has the value 0 on `who_gov$female` variable. Woot!
+
+Perhaps we don't want observations with "Unknown" on `who_gov$gender` to be coded 0 on the `who_gov$female` variable? Perhaps giving these a missing value (`NA`) would be more accurate. If so, we can overwrite the `who_gov$female` variable like this: 
+
+```{r}
+who_gov$female <- ifelse(who_gov$gender == "Unknown", #<1>
+                         NA,#<2>
+                         who_gov$female) #<3>
+```
+1. Check if the value on `whogov$gender is "Unknown"
+2. Give those cases the value NA
+3. Give other cases the value they already have on `who_gov$female`
+
+
+Let's check that this did what we intended it to do: 
+```{r}
+table(who_gov$female, who_gov$gender)
+```
+This looks like expected. However, the people with "Unknown" on `who_gov$gender` are no longer displayed in the table. This has to do with how R treats missing values. To be absolutely sure, we can use `is.na()` to find out what values observations that now have `NA` on `who_gov$female` have on `who_gov$gender`: 
+
+```{r}
+table(is.na(who_gov$female), who_gov$gender)
+```
+This confirms that the 177 people with "Unknown" `who_gov$gender` now have `NA` on `who_gov$female` (and there are no other observations with `NA` on `who_gov$female`). 
+
+::: callout-tip 
+## ifelse()
+`ifelse()` is incredibly useful for creating and recoding variables. `ifelse()` takes three arguments. The first argument should be a logical condition. For example is the value on `who_gov$gender` equal to "Female". The second argument tells R what should happen if the logical condition is true. In our case, we want to return the value 1 if the condition is true. The third argument tells R what should happen if the condition is false. In our case, we want the value 0 if the condition is false: 
+
+
+```{r}
+#| eval: false
+
+who_gov$female <- ifelse(who_gov$gender == "Female",  # <1> 
+                         1,  # <2> 
+                         0) # <3> 
+
+
+```
+1. Is `who_gov$gender` equal to "Female" (This will be evaluated for each row in the dataset)
+2. If so, we want the value 1. 
+3. If not, we want the value 0. 
+:::
+
+
+
+## Different data types {#sec-data-types}
+
+Variables stored in a `data.frame` are vectors. More specifically, they are so-called "atomic vectors" meaning that all their values need to be of the same *type*. What do we mean by *type*?
+
+In the `who_gov` `data.frame`, there are variables of two different types:
+
+1.  Some of the variables are integers. They are numbers and more specifically "whole numbers" (not fractions/without decimals). We have already seen one example: the variable `who_gov$year` . Another example is the variable `who$leader` which takes the value of 1 if the person in question was the country leader in the relevant country year and 0 otherwise. Because integers are numbers, we can do various calculations with them. For instance, we can use `mean()` to calculate the share of observations that are of country leaders:
+
+```{r}
+mean(who_gov$leader)
+```
+
+The mean of this binary variable is `r mean(who_gov$leader)`, which means that about `r round(mean(who_gov$leader),2)` or `r round(mean(who_gov$leader),2)*100` per cent of the observations are of leaders.
+
+2.  Some of the variables are character vectors. They are just interpreted by R as text. Often, we will refer to such character vectors as "strings".  We have already seen two examples, the `who_gov$portfolio_1` and `who_gov$country_name`. The values in character vectors surrounded by quotation marks (`""`), which is how R stores text.  We cannot do mathematical operations on character vectors.  We can, however, do other stuff such as creating frequency tables, using `table()`. There are a bunch of functions for manipulating strings in R, such as `toupper()` which changes all the characters in the vector to UPPER CASE (we use `head()` to avoid printing out the full vector): 
+
+```{r}
+head(toupper(who_gov$country_name))
+```
+While these are two types of variables available in `who_gov`, they are not the only possible data types. Let's look at some more types:
+
+3.  Numbers obviously don't have to be integers. We can also have the data type, "numeric", which also allows for fractions. For instance, we may calculate the share of office holders within each year that are country leaders and add this variable to the dataset. There are many ways of calculating this variable, but one approach would be: 
+```{r}
+who_gov$leader_share_in_year <- ave(who_gov$leader, #<1>
+                                    who_gov$year, # <2>
+                                    FUN = mean) # <3>
+```
+1. `ave()` allows you to apply a function to variable within each "group" on another variable. We are applying some function to the variable `who_gov$leader`. 
+2. We are going to group the data by `who_gov$year` so that we apply the function separately for groups observations that share the same value on `who_gov$year`. 
+3. The function that we  apply to `who_gov$leader` within each group is `mean()`
+
+
+Don't worry too much about the above code yet. Instead look at at the first six rows of the `who_gov$leader_share_in_year` variable (The first six values are all the same, reflecting that all these observations are from the same year): 
+```{r}
+head(who_gov$leader_share_in_year)
+```
+
+In contrast to the integers we saw before, this variable is a numeric vector, which means that it can consists of fractions (of course, in this instance, it only consists of fractions). Since, these are also numbers, we can do mathematical operations and apply functions that do these, just as we did for integers: 
+```{r}
+mean(who_gov$leader_share_in_year)
+```
+4. Logical vectors only take the values `TRUE` and  `FALSE`. We can  abbreviate `TRUE` as `T` and `FALSE` as `F`, but our code generally becomes more readable if we write out the full values   `TRUE` and  `FALSE`.  For instance, we can create a variable that takes the value `TRUE` if the person is older than 70 years and `FALSE` otherwise, using the variables `who_gov$birthyear` and `who_gov$year`:  
+```{r}
+who_gov$older_than_70 <- ifelse(who_gov$year - who_gov$birthyear > 70, #<1>
+                                TRUE, #<2>
+                                FALSE ) #<3>
+```
+1. Take year minus birth year to calculate the age and check whether the age is greater than 70
+2. If so, give the value `TRUE`
+3. If not, give the value `FALSE`
+
+We can use `table()` to see how many of observations that are of people older than 70 in the year they were observed: 
+```{r}
+table(who_gov$older_than_70)
+```
+R can treat logical vectors as numeric. If we try to apply arithmetic operations on a logical vector, R will treat  `TRUE` as 1s and  `FALSE` as 0. Thus, we can calculate the share observations older than 70, using `mean()` (Because we don't know the birth year of all the observations, we have `NA` values in the `who_gov$older_than_70` variable and we must remember to specify the `na.rm = TRUE` argument): 
+
+```{r}
+mean(who_gov$older_than_70, na.rm = TRUE)
+```
+
+There are also some other types of variables that we will encounter, such as dates and factors, but these will be based on the four categories discussed above. 
+ 
+### Checking which type a variable is
+You can check the data type of a variable using the  or `class()` function. For instance: 
+
+```{r}
+class(who_gov$country_name)
+class(who_gov$year)
+class(who_gov$leader_share_in_year)
+class(who_gov$older_than_70)
+```
+
+You can also `class()` on other types of R objects to find out what kinds of objects they are. For instance: 
+
+```{r}
+class(who_gov)
+```
+There are also functions for checking if an object is of a specific type: 
+```{r}
+is.data.frame(who_gov)
+```
+
+### Changing the data type
+We can change the types of variables. Maybe we don't want `who_gov$older_than_70` to be stored as a logical vector, but would prefer it to be stored as an integer vector. If so, we can use `as.integer()`
+```{r}
+who_gov$older_than_70 <- as.integer(who_gov$older_than_70)
+class(who_gov$older_than_70)
+table(who_gov$older_than_70)
+```
+`TRUE` has now been replaced with 1 and `FALSE` has been replaced with 0 in `who_gov$older_than_70` and the class has changed to "integer". 
+
+We can also force it to become a character vector: 
+
+```{r}
+who_gov$older_than_70 <- as.character(who_gov$older_than_70)
+class(who_gov$older_than_70)
+```
+If so, 1 will be changed into "1" and 0 will be changed into "0". For us, this may seem like a small change, but since R is now treating these values as text, we can no longer do mathematical operations. For instance, calculating the mean will just return an `NA` and a warning message: 
+```{r}
+mean(who_gov$older_than_70, na.rm = TRUE)
+```
+
+We can force numbers to be text and if numbers are stored as text, we can turn them back to numbers: 
+```{r}
+who_gov$older_than_70 <- as.numeric(who_gov$older_than_70)
+mean(who_gov$older_than_70, na.rm = TRUE)
+```
+However, not all conversions from text to numbers are possible. For instance, R has no idea how to make a numeric variable based on the country names. Attempting this will just return a bunch of missing values: 
+
+```{r}
+who_gov$country_name_numeric <- as.numeric(who_gov$country_name)
+head(who_gov$country_name_numeric)
+```
+
+### Missing values
+Missing values are stored in R as `NA`. It is not possible to do any computations on missing values and we have to exclude them before we can do most operations. You can check if a vector includes missing values by using `is.na()`. If you want to see how many `NA`s there are, you can combine `is.na()` with `table()`
+
+```{r}
+table(is.na(who_gov$older_than_70))
+```
+
+## Subsetting `data.frame`s and vectors
+You can select specific elements of a `data.frame` or vector in R using square brackets(`[]`). Vectors are one-dimensional, so we just need a number of range of numbers inside the square brackets. For instance, if we want the sixth element of `who_gov$country_name` we can write: 
+
+```{r}
+who_gov$country_name[6]
+```
+or we could get a the sixth, the 7900th and the 25000th element like this:  
+```{r}
+who_gov$country_name[c(6, 7900, 25000)]
+```
+If we want to, we can overwrite specific elements: 
+```{r}
+who_gov$country_name[6] <- "Just to illustrate"
+```
+We can specify ranges of observations we want, using `:`: 
+```{r}
+who_gov$country_name[4:8]
+```
+
+`data.frame`s are two-dimensional, so we need to specify whether we want to select rows or columns or both. We use square brackets with a comma that separates between rows (before the comma) and columns (after the comma) `[,]`. For instance, we can get the 6th row of the 4th column in `who_gov` like this: 
+
+```{r}
+who_gov[6,4]
+```
+Since the columns are named, we can also use the column names to subset: 
+
+
+```{r}
+who_gov[6,"country_name"]
+```
+
+We can leave either the rows or the columns empty inside the square brackets to select all rows or columns: 
+
+```{r}
+who_gov[6,]
+```
+
+We can use logical conditions to select specific rows or columns. For instance, we can select all rows from Norway like this: 
+
+
+```{r}
+Norway <- who_gov[who_gov$country_name == "Norway",] 
+```
+
+
+
+We now have the tools we need to further investigate the suspicious observations from before 1966 that we discovered above. We can create a new `data.frame` with only these observations to investigate: 
+
+```{r}
+before_1966 <- who_gov[who_gov$year < 1966, ]
+
+```
+A quick investigation of the `before_1966` reveals that these are all observations from the United States. 
+```{r}
+table(before_1966$country_name)
+```
+Perhaps it doesn't make sense for our analysis to include a longer time series just for the United States. If so, we may remove these observations from the dataset like this: 
+
+```{r}
+who_gov <- who_gov[who_gov$year >= 1966,]
+```
+## Lists 
+We will often find it useful to store information in lists. Lists are also a type of vector, [but unlike the atomic vectors which can only contain elements of the same data type](@sec-data-types), lists can contain elements of any types. The elements of a list may themselves be vectors. This is a simple example of a list: 
+
+```{r}
+example_list <- list(products = c("apple", "milk", "bread"), 
+                     price = c(5, 18, 25), 
+                     store = "kiwi")
+```
+
+The list wouldn't have to be named, we could just as well have created: 
+
+```{r}
+example_list_2 <- list(c("apple", "milk", "bread"), 
+                    c(5, 18, 25), 
+                    "kiwi")
+```
+In either case, we could use the double square brackets to extract the different parts of the list: 
+```{r}
+example_list_2[[1]] # this will you the first element, which is a character vector
+```
+If the list is named, we can use the `$` to refer to its elements: 
+```{r}
+example_list$products
+```
+Using subsetting, we can find elements within each element of the list: 
+
+```{r}
+example_list_2[[1]][3]
+```
+And  we can use the assignment operator to overwrite any value: 
+
+```{r}
+example_list_2[[1]][3] <- "white bread"
+print(example_list_2)
+```
+
+
+## Checking what is stored inside any object
+We will encounter many different types of objects in R and sometimes we don't really know how information is stored inside them. The function `str()` can show you the structure of any R object: 
+
+```{r}
+str(who_gov)
+
+str(example_list)
+```
+
+
+# Estimating regression models
+Quantitative political science projects typically involve estimating some kind of regression model. We expect you to be familiar with regression analysis from your previous methods training and will not cover the statistics of regression analysis in this course. We will, however, spend some time on how to present the results of regression models, so let's briefly review how to estimate regression models in R: 
+
+We will consider one of the regression models reported in a recent article by @grewal2023military. Grewal is interested in what accounts for the variation in whether the Algerian military engages in repression or exercises restraint when facing protesters. To this end, he used Facebook to conduct a survey of 2,235 self-reported military personnel. His dependent variable is the item:  “Suppose, hypothetically, that military personnel are ordered to repress the protesters. Do you think the military would agree or refuse to repress the protesters?”, which respondents answered on a five-point scale from  “very likely to refuse” to “very likely to agree.” 
+
+One of the factors that @grewal2023military hypothesized would lead to restrain is whether protesters were perceived as nonviolent or as violent. His first independent variable is therefore a binary measure of whether the respondent perceived the protesters as non-violent. 
+
+He also includes a range of other independent and control variables in his model. You can read all about them in the article if you are interested. [You can also find his data here](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910%2FDVN%2FOIJ5ZD). We will limit ourselves to re-estimating his first model: 
+
+
+## `lm()`
+@grewal2023military estimated a linear regression model, which you can do in R using the `lm()` function. The function first takes a formula argument, which you can think as the regression equation. The basic structure is like this: 
+
+```{r}
+#| eval: false
+dependent_variable ~ independent_variable1 + independent_variable2 + independent_variable3
+
+```
+You first add your dependent variable followed by a the tilde sign (`~`). You then add one or more independent variables and you separate each independent variable by a `+` sign. 
+
+Next you need to specify the `data` argument. Here you just specify the dataset that you are using. 
+
+`lm()` also takes a number of other arguments that sometimes may be useful, such as `weights` where you can specify weights if you are estimated a weighted regression. `subset` which you can use to subset the dataset and so on. We will not specify any of these additional arguments here. 
+
+Using `lm()`, we can thus reestimate Grewal's first model like this: 
+
+```{r}
+#| message: false
+library(readr) #<1> 
+grewal_data <- read_delim("../data/algeria_military_survey.csv", delim = ",") #<1>
+
+grewal_model_1 <- lm(restraint ~  #<2>
+                       nonvio2 + prime_frat + prime_future + prime_RU + #<3>
+                       prime_UN + oppose92coup2 + civwar + islamist + #<3>
+                       supp_sharia + active + conscript + soldier + junoff + #<3>
+                       senoff + branch2 + train_west + train_russia + #<3>
+                       train_china + young + sex + edu + urban_area + #<3>
+                       employed + student + arabic + econ1 + corr1 + #<3>
+                       dem + supp_opp_parties + continue + protested + #<3>
+                       preboutef + post_exp + mon + #<3>
+                       as.factor(fgov), #<4>
+                     data = grewal_data) #<5>
+```
+1. His dataset comes in a `.csv`-format so we will load the `readr` package and use `read_delim()` to load the data. 
+2. We estimate the regression model using `lm()` and assign the results to an object `grewal_model_1` so that we can do stuff with it later. We start the formula by adding the dependent variable (`restraint`) followed by a `~`. 
+3. We add all the independent variables/covariates separated by the `+` sign. 
+4. `fgov` measures which governorate the respondent is from. Grewal included governorate *fixed effects* which just means one dummy variable for each governorate. You can include these in your model formula using `as.factor()` around the variable that you want fixed effects on. When we are done specifying the formula, we end this argument using a `,`. 
+5. Finally, we specify the data argument. 
+
+
+```{r}
+summary(grewal_model_1 )#<1>
+```
+1. `summary()` prints out a summary of the regression model in the console. This summary is good for us making sense of the the model when we are working in Rstudio, but is not how the model should be reported in your MA thesis or STV4030A assignments. We will show you how to generate [publication quality regression tables](https://pages.github.uio.no/oyvinsti/STV4030A/Quarto_documents/producing_tables.html) in your Quarto documents and how to use [visualizations to present your regression models](https://pages.github.uio.no/oyvinsti/STV4030A/Visualization/data_viz_models.html). The summary is printed below: 
+
+
+## `glm()`
+`lm()` only estimates linear regressions. You can use `glm()` to estimate generalized linear  models (such as logistic regressions). With `glm()`, we need to estimate an additional argument, which tells R what kind of generalized linear model we would like to estimate. If we want a binomial logistic regression the `family` argument should be set to `family = binomial(link = "logit")`. We can also use `glm()` to estimate linear regressions by setting `family = "gaussian"`. The following code should therefore produce exactly the same model as we estimated using `lm()` above: 
+
+```{r}
+grewal_model_1_glm <- glm(restraint ~  #<1>
+                       nonvio2 + prime_frat + prime_future + prime_RU + 
+                       prime_UN + oppose92coup2 + civwar + islamist + 
+                       supp_sharia + active + conscript + soldier + junoff + 
+                       senoff + branch2 + train_west + train_russia + 
+                       train_china + young + sex + edu + urban_area + 
+                       employed + student + arabic + econ1 + corr1 + 
+                       dem + supp_opp_parties + continue + protested + 
+                       preboutef + post_exp + mon +
+                       as.factor(fgov), 
+                     data = grewal_data, 
+                     family = "gaussian") #<2>
+```
+1. we use `glm()` instead of `lm()`
+2. We remember to specify the `family` argument. 
+
+You can verify that this is the same model by comparing the coefficients to those we estimated above (they should be identical!): 
+
+```{r}
+summary(grewal_model_1_glm)
+```
+
+## `stan_glm()`
+We can also estimate linear and generalized linear regressions using `stan_glm()` from the package `rstanarm`, which is how @gelman2020regression introduce regression models in the text book for [STV4022](https://www.uio.no/studier/emner/sv/statsvitenskap/STV4022/index.html). The difference is that while `glm()` estimates the models using [maximum likelihood](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation), `stan_glm()` uses [Bayesian methods](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo). 
+
+We can re-estimate the model using `stan_glm()` like this: 
+
+```{r}
+#| message: false
+#| output: false
+
+
+library(rstanarm) #<1>
+grewal_model_1_stan_glm <- stan_glm(restraint ~  #<2>
+                       nonvio2 + prime_frat + prime_future + prime_RU + 
+                       prime_UN + oppose92coup2 + civwar + islamist + 
+                       supp_sharia + active + conscript + soldier + junoff + 
+                       senoff + branch2 + train_west + train_russia + 
+                       train_china + young + sex + edu + urban_area + 
+                       employed + student + arabic + econ1 + corr1 + 
+                       dem + supp_opp_parties + continue + protested + 
+                       preboutef + post_exp + mon +
+                       as.factor(fgov), 
+                     data = grewal_data, 
+                     family = "gaussian") 
+```
+1. We must remember to load the `rstanarm` package. 
+2. We use `stan_glm()` instead of `lm()` or `glm()`
+
+We can use `print()` to print out a summary of the model: 
+
+```{r}
+print(grewal_model_1_stan_glm, digits = 3)
+```
+
+When comparing the coefficients from `grewal_model_1_stan_glm` and `grewal_model_1_glm`, we see some slight differences, but the differences are very small and completely inconsequential!
+
+# References

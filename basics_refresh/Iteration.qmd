@@ -1,0 +1,363 @@
+---
+title: "Iteration"
+bibliography: "../STV4030A.bib"
+format: html
+---
+
+# Motivation
+We often need to apply the same functions to multiple values. Most of our time working in R, we will do this without giving a second thought as functions are *vectorized*: when we apply the function to a vector it will actually apply the function to each element of the vector.  
+
+For instance, let's say we have this vector which consists of all integers starting at 1 and ending at 10000: 
+```{r}
+numbers <- 1:10000
+```
+Let's say we want to take the [natural logarithm](https://en.wikipedia.org/wiki/Natural_logarithm) of each of these numbers. We would simply run: 
+
+```{r}
+log_numbers <- log(numbers)
+```
+The function `log()` is vectorized so it operates on each element of `number` and creates a new vector, which we decided to call `log_numbers`. This feature is an important strength of R as it makes our code fast to write and run and easy to both write and read. 
+
+
+Alas, sometimes we still need to repeatedly run the same functions. 
+
+Consider, for instance, the function `read_dta()` from the package `haven`. This function takes a single Stata (`.dta`) file  and loads it to R as `data.frame`. But what if we have many `.dta`-files? 
+
+```{r}
+#| eval: false
+#| echo: false
+library(vdemdata)
+library(dplyr)
+library(haven)
+vdem <- vdemdata::vdem %>% 
+  select(country_name,country_id, year,v2x_polyarchy, e_gdppc) %>% 
+  filter(year < 1849) %>% 
+  drop_na()
+
+for(i in 1789:1848){
+  tmp <- vdem %>% 
+    filter(year == i) 
+  write_dta(tmp, 
+            path = paste("../data/wealth_and_democracy/wealth_and_democracy_in_",
+                         i, 
+                         ".dta",
+                         sep = ""))
+}
+
+```
+
+In the directory "..data/wealth_and_democracy" we have 60 `.dta`-files each containing data for one of the years in the period 1789 to 1848. Each file contains all countries included in the Historical Varieties of Democracy data [@knutsen2019introducing] for that particular year, the country's score on the polyarchy index in that year, and an estimate of its gross domestic product per capita. We can load the  file for 1789 like this:  
+
+```{r}
+#| message: false
+library(haven)
+countries_1789 <- read_dta("../data/wealth_and_democracy/wealth_and_democracy_in_1789.dta")
+head(countries_1789)
+```
+
+It is also straightforward to get a vector of all the file names in the directory using the `dir()` function: 
+
+```{r}
+file_names <- dir("../data/wealth_and_democracy/")
+print(file_names)
+```
+However, loading all these files is not as straightforward. If we try to read multiple `.dta`-files at once using 
+
+
+```{r}
+#| error: true
+paths <- paste("../data/wealth_and_democracy/", file_names, sep = "") #<1>
+all_years <- read_dta(paths) #<2>
+```
+1. Here we use `paste()` to create a vector with the paths to all the different `.dta`-files
+2. We attempt to load all the files in one go, but this fails!
+
+How then can we load all the different files? We could start with the code we used to load the file for 1789, copy-paste it 60 times, and edit the different file names. This process is, however, both cumbersome and error prone. 
+
+A much better would be to use one of the different *iteration* tools in R. 
+
+
+# `for`-loops
+
+A `for`-loop does the  operation(s) you tell it to do ***for*** all the elements in a vector. For instance, we can write a `for`-loop to print all the integers between -5 and 5: 
+
+```{r}
+for(i in -5:5){ #<1> 
+  print(i) #<2>
+} #<3> 
+```
+1. We write that we want to something `for` all elements `i` in the vector `-5:5`. After the curly bracket (`{`), we can start defining what to do. 
+2. Here we define what to do. We simply want to `print(i)`. 
+3. The curly bracket closes the loop, meaning that we are done defining what should happen to each element i. 
+
+:::callout-tip
+## You don't have loop over `i`
+There is nothing magical about `i`, we could have just as well written: 
+```{r}
+for(number in -5:5){ 
+  print(number) 
+} 
+``` 
+or whatever we find intuitive. Using `i` is just a  convention. 
+::: 
+
+
+Now that we know the basic of `for`-loops, let's see if we can write a loop that loads all our 60 `.dta`-files. To that we need a vector with the paths to all the files. We already have the `paths` vector, which we can use. A loop that only loads the files would then look like this: 
+
+```{r}
+#| eval: false
+for(i in paths){ #<1>
+  read_dta(i) #<2>
+} #<3>
+```
+1. For each element `i` in `paths`, 
+2. read the `.dta`-file for the element `i`. 
+3. That's it. Go back to the top and do the next element `i` if there are more of them.
+
+Of course, just loading all the files is not terribly useful unless we also assign them to objects. For that we we will need a vector of object names: 
+
+```{r}
+object_names <- paste("countries", 1789:1848, sep = "_")
+print(object_names)
+```
+Since `object_names` is a character vector, we cannot use `<-` to assign each file to the right object in the loop. Instead we will use the function `assign()` which takes an object name, `x`, in the form of a character string and a `value`. It will then assign whatever is in `value` to whatever name is in `x` in the global environment. 
+
+Since we are now working with two vectors (`paths` and `object_names`) in the loop, we will loop over integer from 1 to their `length()` (which should be 60 for both vectors) and use indexing to grab the right element in each iteration of the loop: 
+
+```{r}
+for(i in 1:length(paths)){
+  assign(x = object_names[i], 
+         value = read_dta(paths[i]))
+}
+```
+
+When running the loop above, 60 different datasets are loaded and assigned to objects in our global environment. For instance, we will now have an object called `countries_1802`: 
+
+```{r}
+head(countries_1802)
+```
+
+
+We probably didn't load all these datasets just for the fun of it. 
+
+Perhaps our reason for loading all these different `.dta` files was that we want to estimate linear regression model for the bivarate relationship between wealth (as captured by log(gross domestic product per capita)) and democracy (as captured by the polyarchy index)). We will consider wealth as the independent variable and democracy as the independent variable (although this relationship could arguably also work in the opposite direction). For each regression we want to save the coefficient for log(gross domestic product per capita) and its standard error. 
+
+Again, we don't want to write  out the code for a regression model 60 times only changing which dataset it is estimated on. It would be great if we also could estimate model and retrieve the coefficient of interest inside the loop. Can we? 
+
+A good way to start is to write out the code for what we would like to do for a single dataset. Let's do the year 1814: 
+
+
+```{r}
+library(broom) #<1>
+dataset <- read_dta("../data/wealth_and_democracy/wealth_and_democracy_in_1814.dta") #<2>
+regression_model <- lm(v2x_polyarchy ~ log(e_gdppc), data = dataset) #<3>
+tidy(regression_model) #<4>
+tidy(regression_model)[2, c("estimate", "std.error")] #<5>
+```
+1. The `broom` package is great for converting the objects of regression models into `data.frame`s that are easy to work with in R
+2. We load the data
+3. We estimate the model
+4. Just to illustrate: `tidy()` from `broom` produces a nice little `data.frame` (or technically, a `tibble`, but that's just a type of `data.frame`) based on our model. This `data.frame` is easy to work with. 
+5. We can subset the `data.frame` produced by `tidy()` from `broom` to grab the coefficient and standard error we are interested in. 
+
+A next useful step is to see if we can rewrite this code just from the `paths` vector and save the result in a convenient way. 
+
+```{r}
+estimates <- data.frame(coefficient = rep(NA, times = length(paths)), #<1>
+                        standard_error = rep(NA, times = length(paths)))  #<1>
+dataset <- read_dta(paths[26]) #<2>
+regression_model <- lm(v2x_polyarchy ~ log(e_gdppc), data = dataset) #<3>
+
+estimates[26,] <- tidy(regression_model)[2, c("estimate", "std.error")] #<4>
+
+```
+1. We create a `data.frame` to store the results in. We want one row per element in `paths` so we use `length(path)` to determine the number of rows. We want to variables `coefficient` and `standard_error`. We don't know what values are yet (that's what we are trying to figure out!), so we just fill the `data.frame` with `NA`s for now. 
+2. We load `paths[26]`, i.e. the 26th element of `paths` and assign it to `dataset`
+3. We estimate the regression model, using `dataset` as the data. 
+4. We store the coefficient and standard error for `log(e_gdppc)` to the 26th row of `estimates`. 
+
+```{r}
+for(i in 1:nrow(estimates)){ #<1>
+  dataset <- read_dta(paths[i]) #<2>
+  regression_model <- lm(v2x_polyarchy ~ log(e_gdppc), data = dataset) #<3>
+  estimates[i,] <- tidy(regression_model)[2, c("estimate", "std.error")] #<4>
+}
+```
+1. We loop over all the numbers from 1 to the number of rows in `estimates` (we could also have used the length of `paths`). 
+2. We load the element `i` of `paths` and save it to `dataset`. We did this for every iteration, so we will continuously overwrite `dataset`. 
+3. We estimate the model using whatever data is currently stored as `dataset` and assign it `regression_model`. `regression_model` will also be overwritten for each iteration. 
+4. Finally we save the coefficient and standard error to the `i`th row of `estimates`. Because `i` is changing for each iteration. These results will **not** be overwritten. Instead they will be saved in `estimates`
+
+The first rows of `estimates` look like this: 
+```{r}
+head(estimates)
+```
+
+We can now use this `data.frame` to, let's say,  make a [Barbie-themed](https://github.com/MatthewBJane/theme_barbie/) [@JaneBarbie2023] coefficient plot displaying the coefficient and 95% confidence interval for each year from 1789 to 1848. [We will cover how to make such plots later](https://pages.github.uio.no/oyvinsti/STV4030A/Visualization/data_viz_in_ggplot.html), so for now we have hidden the code (if you wish, you may, however, click on the "Code" button to display the code for the plot). 
+```{r}
+#| message: false
+#| warning: false
+#| code-fold: true
+library(ggplot2)
+library(ThemePark)
+estimates$year <- 1789:1848
+estimates$lower <- estimates$coefficient - 1.96 * estimates$standard_error
+estimates$upper <- estimates$coefficient + 1.96 * estimates$standard_error
+ggplot(estimates, 
+       aes(x = coefficient, 
+           xmin = lower, 
+           xmax = upper, 
+           y = year))+
+  geom_vline(xintercept = 0, linetype = "dashed")+
+  geom_errorbar()+
+  geom_point()+
+  xlab("Coefficient for log(gdp per capita)")+
+  ylab("Year")+
+  xlim(-0.10, 0.25)+
+  theme_barbie(barbie_font = TRUE) 
+
+```
+
+# The `apply()` family of functions
+`for`-loops run relatively slowly in R. This doesn't matter if you are only looping over a few element and each step doesn't take a lot of time for your computer to complete, but `for`-loops don't scale all that well. 
+
+What is R is good at is applying functions to vectors. So, it will be useful to consider alternatives to `for`-loops that play on this strength: 
+
+
+One such alternative is the `apply` family of function, which is available in base R. The function `lapply()` will take a list or vector, apply some function to all elements in that list or vector, and return a list with the results. 
+
+So let's say we again have the vector `-5:5` consisting all integers from -5 to 5. We want to divide all of them by 2. Using `lapply()` we may: 
+
+```{r}
+lapply(X = -5:5, FUN = function(x){x/2})
+```
+The result will be a list of the same length as `-5:5` and each element will contain the corresponding element in the original vector divided by 2. On its own, this is not terribly impressive, we might as well have run `-5:5/2`. But just like for a `for`-loop the advantage is found in how we can extend the logic to other types of inputs. 
+
+We could for write a function that given a path, will load a `.dta`-file found in that path, estimate a regression model with `v2x_polyarchy` as the dependent variable and `log(e_gdppc)` and extract the coefficient and standard error for `log(e_gdppc)`. We can `lapply` this function to all the elements of our vector `paths`: 
+
+
+```{r}
+coefficients_and_standard_errors <- lapply(X = paths, #<1>
+                                           FUN = function(x){ #<2>
+                                             dataset <- read_dta(x) #<3>
+                                             regression_model <- lm(v2x_polyarchy ~ #<3>
+                                                                      log(e_gdppc), data = dataset) #<3>
+                                             tidy(regression_model)[2, c("estimate", "std.error")]#<3>
+                                           })
+```
+1. We need to specify the argument `X` (notice the upper case X), which should be a list or atomic vector to apply the function to. 
+2. We need to specify the argument `FUN` we specify the function that should be applied to all elements in `X`. We can define our own function, which is what we use here ([using the skills we already picked up here](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/Functions.html))
+3. Our function, takes the argument `x` and for each `x` loads a dataset using `read_dta()`, estimates or regression model on that dataset using `lm()`, extracts the coefficient of interest using `tidy()` from `broom` and some basic subsetting. 
+
+The object `coefficients_and_standard_errors` is a list and each element of the list is a `data.frame` with the one coefficient and one standard error. For instance, we will find our coefficient and standard error for the year 1814 in the 26th element like before: 
+```{r}
+coefficients_and_standard_errors[26]
+```
+
+Using the functions `do.call()` and `rbind()`, we may combine all the elements of list together in one `data.frame`. `do.call()` takes two functions: a function and a list of elements to apply the function to. Here we will supply the function `rbind` that binds different `data.frames` together by the rows and our list (`coefficients_and_standard_errors`) of `data.frame`s we would like to combine: 
+```{r}
+estimates2 <- do.call(rbind, #<1>
+                       coefficients_and_standard_errors) #<2>
+
+head(estimates2)
+```
+1. First we specify what function should applied. Here we use `rbind()` which binds `data.frame`s together. [It is the base R equivalent of the `dplyr::bind_rows` which we will spend more time on later.](https://pages.github.uio.no/oyvinsti/STV4030A/Wrangling/wrangling_in_dplyr_and_tidyr.html#combining-datasets-with-dplyr)
+2. We then specify the list of arguments to the function (here `rbind`). Since each element in the list is a `data.frame`, what we are doing here is to tell R to bind all these `data.frame`s together. 
+
+Thus, we managed to do exactly what we did in the `for`-loop above using `lapply()`. This is great news as using the `apply` functions can be much more efficient than writing `for`-loops in R. 
+
+`lapply()` is not the only `apply()` function. `apply` will take a `data.frame` or `matrix` and apply some function across the rows or across the columns. This can be useful for instance when computing summary statistics. Let's calculate the `mean()` for both `v2x_polyarchy` and `e_gdppc` in `countries_1814`
+
+```{r}
+apply(countries_1814[,c("v2x_polyarchy", "e_gdppc")], #<1>
+      2, #<2>
+      mean) #<3>
+```
+1. give `apply()` a `data.frame` or `matrix`. Here we subset `countries_1814` to only contain the variables `v2x_polyarchy` and `e_gdppc`. 
+2. We specify 1 if we want the function to be done by the rows and 2 if it should be done by columns. Here we specify 2 because we want the `mean()` for each column
+3. Finally we specify the function we want to `apply()`, here we use `mean()`. 
+
+`sapply()` is like `lapply()` but will simplify the result to be an atomic vector or a matrix instead of a list. Thus, if we had written the code dividing all the integers in `-5:5` by 2 using `sapply()` instead of `lapply()`, we would have produced a nice numeric vector instead of a list: 
+
+
+```{r}
+sapply(X = -5:5, FUN = function(x){x/2})
+```
+If our goal is to produce a variable for a `data.frame`, making a vector with `sapply()` is often better than making a list with `lapply()`. 
+
+
+# The `purrr` package
+The [`purrr` package](https://purrr.tidyverse.org/reference/map.html) provides an even more comprehensive set of tools for using functions to do various iterative tasks in R (and thus avoiding `for`-loops). 
+
+The workhorse function of `purrr` is the `map()`-function which works very similarly to the `apply`-functions in base R. `map()` takes the argument `.x` which should be provided a list or atomic vector and `.f` which should be function. The function will be applied to each element of `.x` and `map()` will retun a list with the results. 
+
+Let's try to take all the integers in `-5:5` and divide by 2: 
+
+```{r}
+library(purrr) #<1>
+map(.x = -5:5, #<2>
+    .f = function(x){#<3>
+      x/2}#<3>
+)
+```
+1. Remember to load the `purrr` package!
+2. Supply your vector to `.x`!
+3. Supply your function to `.f`. You can define your own function as we do here or provide the name of a function. 
+
+
+It is sometimes inconvenient that `map()` returns a list. Often we want an atomic vector (like an numeric or character vector) instead. `purrr` also has a series of `map_*`-functions that return specific types of vectors. For instance, `map_dbl` will return a numeric vector (the numeric data type is also called "double"): 
+
+```{r}
+map_dbl(.x = -5:5, 
+    .f = function(x){
+      x/2}
+)
+```
+Similarly, `map_chr` will return a character vector (but `purrr` doesn't like it when we implicitly coerce a numeric vector to a character vector and will spit out a warning to complain) : 
+```{r}
+map_chr(.x = -5:5, 
+    .f = function(x){
+      x/2}
+)
+```
+The function `map_vec` will work with any kind of vector and return a vector of the same data type as it was supplied. 
+```{r}
+map_vec(.x = -5:5, 
+    .f = function(x){
+      x/2}
+)
+```
+
+
+So can we load our datasets and estimate our regression models using `purrr` Of course we can! Using only map, we can create a list with all the coefficients and standard errors (just like we did with `lapply()`)
+
+```{r}
+coefficients_and_standard_errors_from_map <- map(.x = paths, #<1>
+                                        .f = function(x){ #<2>
+                                             dataset <- read_dta(x) #<2>
+                                             regression_model <- lm(v2x_polyarchy ~ #<2>
+                                                                      log(e_gdppc), data = dataset) #<2>
+                                             tidy(regression_model)[2, c("estimate", "std.error")]#<2>
+                                           })
+
+
+```
+1. We supply our `paths` vector to `.x`
+2. We supply our function for loading the data, estimating the model, and retrieving the output we care about to `.f`
+`coefficients_and_standard_errors_from_map` is a list with each element containing a `data.frame` the coefficient and standard error for one of the 60 models we just ran.  
+
+The `purrr` package also contains a set of functions for working with the lists that we will tend to produce when using `map()`. For instance, `reduce()` will combine all the elements of a list you provide (to its `.x` argument) using some function (that you supply to its `.f` argument). So, we can use `reduce()` together with `rbind()` to produce a single `data.frame`: 
+
+```{r}
+coefficients_and_standard_errors_from_map <- reduce(.x = coefficients_and_standard_errors_from_map, #<1>
+                                                    .f = rbind) #<2>
+
+head(coefficients_and_standard_errors_from_map)
+```
+1. We use `reduce()` to combine all the elements of a list into a single value. We supply the list to `.x`. 
+2. And we supply the function we will use to combine the elements to `.f`.
+
+
+
+
+

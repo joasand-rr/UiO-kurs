@@ -1,0 +1,29 @@
+require('ggplot2')
+
+text_color_barbie    <- '#a62675ff'
+panel_color_barbie   <- '#fdf6faff'
+border_color_barbie  <- '#d74ea2ff'
+light_color_barbie   <- '#eeb4d7ff'
+medium_color_barbie  <- '#d74ea2ff'
+dark_color_barbie    <- '#bf2986ff'
+
+
+theme_barbie <- function(){
+  ggplot2::theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(),
+    text = element_text(color = text_color_barbie),
+    panel.background = element_rect(fill = panel_color_barbie),
+    panel.border = element_rect(fill = NA, color = border_color_barbie,linewidth=1.2),
+    axis.title = element_text(size=14),
+    axis.text = element_text(size=12),
+    axis.ticks = element_line(color = border_color_barbie,linewidth=1),
+    legend.background = element_rect(fill = panel_color_barbie, color = NA)
+  )
+}
+
+
+scale_fill_barbie <- ggplot2::scale_fill_gradient(low = '#eeb4d7ff', high = '#bf2986ff')
+scale_color_barbie <- ggplot2::scale_color_gradient(low = '#eeb4d7ff', high = '#bf2986ff')
+
+

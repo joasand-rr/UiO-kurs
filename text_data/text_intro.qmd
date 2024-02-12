@@ -1,0 +1,43 @@
+---
+title: "Political Text as Data"
+---
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=bcbcb4ab-6551-4ab3-9371-b02f00def1d8&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay"></iframe>
+
+
+We have experienced how powerful models of language can be over the last year  
+with the popularization of large language models (LLM). In this section, we
+will discuss how to work with text in R both in terms of reading text data
+into R, matching text patterns with regex, extracting data from text, and 
+how do preprocess text.
+
+
+We will utilize the `stringr` package and [Regular Expressions](./regex.qmd) 
+extensively. 
+The `stringr` package is a core component of the 
+`tidyverse` and has a wide range of functions for working with text. Most of 
+these start with `str_*`, in the sense that it says "string [something]"
+(`str_detect()` means "string detect"):
+
+```{r}
+#| label: str_funcs
+#| echo: false
+
+library(stringr)
+str_funcs <- ls("package:stringr")
+
+str_funcs[which(grepl("^str\\_", str_funcs))]
+
+```
+
+Some of these have `base` equivalent functions. Some examples are:
+
+| **`stringr`**  | **`base`**   |
+|:---------------|:-------------|
+| `str_c()`      | `paste()`    |
+| `str_detect()` | `grepl()`    |
+| `str_sub()`    | `substr()`   |
+| `str_replace()`| `gsub()`     |
+| `str_split()`  | `strsplit()` |
+| `str_conv()`   | `iconv()`    |
+| ...            | ...          |

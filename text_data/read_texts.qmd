@@ -1,0 +1,208 @@
+---
+title: "Reading Texts into R"
+---
+
+In the 
+[loading data section](../basics_refresh/R_refresher.qmd#sec-loading-data), we
+outlined various ways for reading data into R. In this section, we will delve
+deeper into one specific type of data and how to load this into R, namely raw
+text data. We will cover plain text files (`.txt`), word documents (`.docx`), 
+and PDF documents (`.pdf`). Do remember, however, that text data can also be
+provided in the file formats covered in the 
+[loading data section](../basics_refresh/R_refresher.qmd#sec-loading-data).
+
+The data used in this section are gathered from the `quanteda` package, and 
+includes presidential inaugural speeches from 1789. There are 6 variables in 
+the data:
+
+| Variable  | Description                                |
+|:----------|:-------------------------------------------|
+| doc_id    | Id of the document                         |
+| text      | Speech transcript                          |
+| Year      | Year of inaugural speech                   |
+| President | Surname of President holding the speech    |
+| FirstName | First name of President holding the speech |
+| Party     | Party of the President holding the speech  |
+
+We can load the data into R initially by using the `data()` function, change 
+the object name (as it was annoyingly long), and `convert()` the corpus format 
+to a `data.frame`:
+
+```{r}
+#| label: load_inaug_data
+#| message: false
+#| warning: false
+library(tidyverse)
+library(quanteda)
+
+data(data_corpus_inaugural, package = "quanteda")
+
+pres_inaug <- data_corpus_inaugural # just making a shorter name for the object
+rm(data_corpus_inaugural)
+
+pres_inaug <- pres_inaug %>% 
+  quanteda::convert(., to = "data.frame") %>% 
+  mutate(text = str_replace_all(text, "\\s{2}", " "))
+
+glimpse(pres_inaug)
+
+```
+
+## Raw textfiles (.txt)
+
+Raw text files is a common format for working with text data. The format does 
+not have any overhead, which makes the files relatively small in size and they 
+are flexible to work with. A common way to structure `.txt` files is to have 
+each file be a document with a file name that indicates which document we are 
+looking at. For example, we can store the titles in our `pres_inaug` dataset 
+into text files with their `id` as file names (here only with the first 10 
+rows of the data):
+
+```{r}
+#| label: save_txt
+#| eval: true
+#| output: false
+lapply(1:10, function(x) writeLines(pres_inaug$text[x], 
+                                    paste0("../data/inaug_txt/", 
+                                           pres_inaug$doc_id[x],
+                                           ".txt")))
+
+```
+
+We can now check if the files are stored as expected:
+
+```{r}
+#| label: list_files
+
+inaug_files <- list.files("../data/inaug_txt", 
+                             full.names = TRUE, 
+                             pattern = ".txt")
+inaug_files
+
+```
+
+If we want to read these files back into R, we can use the `readLines()` 
+function:
+
+```{r}
+#| label: read_lines
+
+inaugs <- lapply(inaug_files, readLines)
+
+class(inaugs) # lapply always returns a list
+
+str_sub(inaugs[[1]], 1, 65) # This is the first inaugural speech
+
+```
+
+We can now put the texts into a data frame by using `unlist()` on the `inaugs` 
+object:
+
+```{r}
+#| label: txt_dataframe
+
+inaug_txt <- data.frame(id = inaug_files, 
+                        text = unlist(inaugs))
+
+# Trying to (sort of) reengineer the original data
+inaug_txt %>% 
+  mutate(id = str_extract(inaug_files, "[0-9]+\\-[A-Za-z]+"), # <1>
+         text = str_sub(text, 1, 50)) %>% 
+  select(id, text) %>% 
+  glimpse()
+```
+
+1. See the [section on Regular Expressions](./regex.qmd)
+
+We can also work directly with the list by giving the elements within the list names:
+
+
+```{r}
+#| label: txt_list_names
+names(inaugs) <- str_extract(inaug_files, "[0-9]+\\-[A-Za-z]+")
+names(inaugs)
+
+```
+
+<!-- Deretter kan vi enkelt gjøre om tekstene til en vektor med `unlist()` og putte det inn i en `data.frame()` sammen med en `id` variabel, som vi henter fra navnene i lista: -->
+
+
+
+```{r}
+#| label: txt_dataframe2
+inaug_txt <- data.frame(text = unlist(inaugs),
+                        id = names(inaugs))
+
+glimpse(inaug_txt)
+```
+
+It will often be a good idea to work with the data, especially in cases of large and many texts, in list format before converting to a data frame. List objects use slightly less resources in terms of RAM, but are also a bit more flexible to work with through parallelization functions such as `mclapply()`.^[Windows users will not me able to use this function because it relies on the [forking method](https://www.r-bloggers.com/2019/06/parallel-r-socket-or-fork/)]. In our small example, the difference in object size is small, but still there:
+
+```{r}
+#| label: list_vs_df_objsize
+object.size(inaug_txt) - object.size(inaugs)
+```
+
+## Textfiles with overhead
+
+A `.txt` file is as it is; there are no hidden attributes within the file. That is not necessarily the case with other text file formats. A MS-Word (`.docx`) file, for instance, is really just a compressed archive of `.html` and `.xml` files that give pointers to how this file should appear in programs that can read such files. Let's look at an example^[This is Martin Søyland's BA-thesis.]:
+
+```{r}
+#| label: msw_zip
+
+unzip("../data/ba_thesis.docx", exdir = "../data/wordfiles")
+
+list.files("../data/wordfiles/")
+
+```
+
+
+The consequence is that these files are a lot harder to read for R than `.txt` files, and we get weird outputs when we try to use `readLines()`:
+
+```{r}
+#| label: read_msw_feil
+#| warning: false
+readLines("../data/ba_thesis.docx", n = 2)
+```
+
+In other words, we need different methods for reading files with overhead. Below are some examples with `.docx` and `.pdf`, which are the most used types of files, but there are of course a plethora of other formats you might bump into at some point.
+
+### .docx
+
+Fortunately for us, R has a large community of package builders that usually have solved our problem for us. In this case, we use the `officer` package, which has read functions for MS-office files (word, excel, and powerpoint). We first have to read the document with the `read_docx` function, and then convert the resulting object to a data frame using the `docx_summary()` function.
+
+```{r}
+#| label: read_docx
+#| eval: true
+library(officer)
+
+ba_docx <- read_docx("../data/ba_thesis.docx")
+
+ba_docx <- docx_summary(ba_docx)
+
+ba_docx$text[45:48]
+
+```
+
+It is, of course, always useful to inspect the data thoroughly before continuing with our analyses. For instance, there could be mistakes in how the data was read because of encoding issues.
+
+### .pdf
+
+The same goes for `.pdf` files, although the package is now `pdftools` and the function is `pdf_text()`:
+
+```{r}
+#| label: read_pdf
+library(pdftools)
+
+ba_pdf <- pdf_text("../data/ba_thesis.pdf")
+
+ba_pdf <- ba_pdf[4] %>%
+  strsplit("\\n") %>%
+  unlist() %>% 
+  .[which(. != "")]
+
+ba_pdf[11:14]
+
+```
+
+An honorable mention to historical documents that have been scanned in `.pdf` format: these are often just pictures that needs to be ran through *Optical Character Recognition* (OCR) before we can utilize the text.

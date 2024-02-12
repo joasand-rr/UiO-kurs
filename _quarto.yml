@@ -1,0 +1,91 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: |
+    ![](/pics/uio-logo-white.png){width=150} | STV4030A
+  favicon: /pics/favicon.png
+  page-navigation: true
+  page-footer:
+    background: "#B60000"
+    center: |
+      ![](/pics/uio-logo-white.png){width=150}
+  navbar: 
+    background: "#B60000"
+    foreground: "#ffffff"
+    search: true
+  sidebar:
+    title: "STV4030A"
+    style: docked
+    type: dark
+    alignment: right
+    background: "#000000"
+    foreground: "#ffffff"
+    contents:
+      - href: index.qmd
+        text: "Home"
+      - text: "----"
+      - section: "Working in R"
+        contents: 
+          - basics_refresh/R_refresher.qmd
+          - basics_refresh/Beyond_the_basics.qmd
+          - basics_refresh/Functions.qmd
+          - basics_refresh/Iteration.qmd
+          - basics_refresh/encoding.qmd
+      - text: "----"
+      - section: "Quarto documents"
+        contents: 
+        - Quarto_documents/writing_quarto.qmd
+        - Quarto_documents/producing_tables.qmd
+      - section: "Data Wrangling"
+        contents: 
+        - Wrangling/tidy_data.qmd
+        - Wrangling/wrangling_in_dplyr_and_tidyr.qmd
+        
+      - text: "----"
+      - section: "Data Visualization"
+        contents: 
+        - Visualization/data_viz_in_ggplot.qmd
+        - Visualization/data_viz_examples.qmd
+        - Visualization/data_viz_models.qmd
+        - Visualization/data_viz_model_predictions.qmd
+      - text: "----"
+      - section: "Text data"
+        contents:
+          - text_data/text_intro.qmd
+          - text_data/read_texts.qmd
+          - text_data/regex.qmd
+          - text_data/extracting_data_from_texts.qmd
+          - text_data/preprocessing.qmd
+          # - text_data/text_modelling.qmd
+          # - text_data/text_viz.qmd
+      - text: "----"
+      - section: "Data gathering"
+        contents: 
+          - data_gather/webscraping.qmd
+          - data_gather/apis.qmd
+      - text: "----"
+      - section: "Spatial data"
+        contents: 
+        - spatial_data/what_is_spatial_data.qmd
+        - spatial_data/reading_spatial_data.qmd
+        - spatial_data/spatial_joins.qmd
+        - spatial_data/basic_maps.qmd
+
+    tools:
+      - icon: github
+        menu:
+          - text: "Source code"
+            url:  https://github.uio.no/oyvinsti/STV4030A
+          - text: "Report an error"
+            url:  https://github.uio.no/oyvinsti/STV4030A/issues
+
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    mainfont: arial

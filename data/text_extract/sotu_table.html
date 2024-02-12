@@ -1,0 +1,1268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta charset="utf-8"><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"dee899de70",applicationID:"80106271"};;/*! For license information please see nr-loader-rum-1.237.1.min.js.LICENSE.txt */
+(()=>{"use strict";var e,t,n={5763:(e,t,n)=>{n.d(t,{P_:()=>f,Mt:()=>p,C5:()=>s,DL:()=>m,OP:()=>j,lF:()=>E,Yu:()=>y,Dg:()=>g,CX:()=>c,GE:()=>b,sU:()=>_});var r=n(8632),i=n(9567);const a={beacon:r.ce.beacon,errorBeacon:r.ce.errorBeacon,licenseKey:void 0,applicationID:void 0,sa:void 0,queueTime:void 0,applicationTime:void 0,ttGuid:void 0,user:void 0,account:void 0,product:void 0,extra:void 0,jsAttributes:{},userAttributes:void 0,atts:void 0,transactionName:void 0,tNamePlain:void 0},o={};function s(e){if(!e)throw new Error("All info objects require an agent identifier!");if(!o[e])throw new Error("Info for ".concat(e," was never set"));return o[e]}function c(e,t){if(!e)throw new Error("All info objects require an agent identifier!");o[e]=(0,i.D)(t,a),(0,r.Qy)(e,o[e],"info")}var d=n(7056);const u=()=>{const e={blockSelector:"[data-nr-block]",maskInputOptions:{password:!0}};return{allow_bfcache:!0,privacy:{cookies_enabled:!0},ajax:{deny_list:void 0,block_internal:!0,enabled:!0,harvestTimeSeconds:10},distributed_tracing:{enabled:void 0,exclude_newrelic_header:void 0,cors_use_newrelic_header:void 0,cors_use_tracecontext_headers:void 0,allowed_origins:void 0},session:{domain:void 0,expiresMs:d.oD,inactiveMs:d.Hb},ssl:void 0,obfuscate:void 0,jserrors:{enabled:!0,harvestTimeSeconds:10},metrics:{enabled:!0},page_action:{enabled:!0,harvestTimeSeconds:30},page_view_event:{enabled:!0},page_view_timing:{enabled:!0,harvestTimeSeconds:30,long_task:!1},session_trace:{enabled:!0,harvestTimeSeconds:10},harvest:{tooManyRequestsDelay:60},session_replay:{enabled:!1,harvestTimeSeconds:60,sampleRate:.1,errorSampleRate:.1,maskTextSelector:"*",maskAllInputs:!0,get blockClass(){return"nr-block"},get ignoreClass(){return"nr-ignore"},get maskTextClass(){return"nr-mask"},get blockSelector(){return e.blockSelector},set blockSelector(t){e.blockSelector+=",".concat(t)},get maskInputOptions(){return e.maskInputOptions},set maskInputOptions(t){e.maskInputOptions={...t,password:!0}}},spa:{enabled:!0,harvestTimeSeconds:10}}},l={};function f(e){if(!e)throw new Error("All configuration objects require an agent identifier!");if(!l[e])throw new Error("Configuration for ".concat(e," was never set"));return l[e]}function g(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");l[e]=(0,i.D)(t,u()),(0,r.Qy)(e,l[e],"config")}function p(e,t){if(!e)throw new Error("All configuration objects require an agent identifier!");var n=f(e);if(n){for(var r=t.split("."),i=0;i<r.length-1;i++)if("object"!=typeof(n=n[r[i]]))return;n=n[r[r.length-1]]}return n}const h={accountID:void 0,trustKey:void 0,agentID:void 0,licenseKey:void 0,applicationID:void 0,xpid:void 0},v={};function m(e){if(!e)throw new Error("All loader-config objects require an agent identifier!");if(!v[e])throw new Error("LoaderConfig for ".concat(e," was never set"));return v[e]}function b(e,t){if(!e)throw new Error("All loader-config objects require an agent identifier!");v[e]=(0,i.D)(t,h),(0,r.Qy)(e,v[e],"loader_config")}const y=(0,r.mF)().o;var w=n(385),A=n(6818);const x={buildEnv:A.Re,bytesSent:{},queryBytesSent:{},customTransaction:void 0,disabled:!1,distMethod:A.gF,isolatedBacklog:!1,loaderType:void 0,maxBytes:3e4,offset:Math.floor(w._A?.performance?.timeOrigin||w._A?.performance?.timing?.navigationStart||Date.now()),onerror:void 0,origin:""+w._A.location,ptid:void 0,releaseIds:{},session:void 0,xhrWrappable:"function"==typeof w._A.XMLHttpRequest?.prototype?.addEventListener,version:A.q4,denyList:void 0},D={};function j(e){if(!e)throw new Error("All runtime objects require an agent identifier!");if(!D[e])throw new Error("Runtime for ".concat(e," was never set"));return D[e]}function _(e,t){if(!e)throw new Error("All runtime objects require an agent identifier!");D[e]=(0,i.D)(t,x),(0,r.Qy)(e,D[e],"runtime")}function E(e){return function(e){try{const t=s(e);return!!t.licenseKey&&!!t.errorBeacon&&!!t.applicationID}catch(e){return!1}}(e)}},9567:(e,t,n)=>{n.d(t,{D:()=>i});var r=n(50);function i(e,t){try{if(!e||"object"!=typeof e)return(0,r.Z)("Setting a Configurable requires an object as input");if(!t||"object"!=typeof t)return(0,r.Z)("Setting a Configurable requires a model to set its initial properties");const n=Object.create(Object.getPrototypeOf(t),Object.getOwnPropertyDescriptors(t)),a=0===Object.keys(n).length?e:n;for(let o in a)if(void 0!==e[o])try{"object"==typeof e[o]&&"object"==typeof t[o]?n[o]=i(e[o],t[o]):n[o]=e[o]}catch(e){(0,r.Z)("An error occurred while setting a property of a Configurable",e)}return n}catch(e){(0,r.Z)("An error occured while setting a Configurable",e)}}},6818:(e,t,n)=>{n.d(t,{Re:()=>i,gF:()=>a,q4:()=>r});const r="1.237.1",i="PROD",a="CDN"},385:(e,t,n)=>{n.d(t,{FN:()=>o,IF:()=>d,Nk:()=>l,Tt:()=>s,_A:()=>a,il:()=>r,pL:()=>c,v6:()=>i,w1:()=>u});const r="undefined"!=typeof window&&!!window.document,i="undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self.navigator instanceof WorkerNavigator||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis.navigator instanceof WorkerNavigator),a=r?window:"undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis),o=""+a?.location,s=/iPad|iPhone|iPod/.test(navigator.userAgent),c=s&&"undefined"==typeof SharedWorker,d=(()=>{const e=navigator.userAgent.match(/Firefox[/\s](\d+\.\d+)/);return Array.isArray(e)&&e.length>=2?+e[1]:0})(),u=Boolean(r&&window.document.documentMode),l=!!navigator.sendBeacon},1117:(e,t,n)=>{n.d(t,{w:()=>a});var r=n(50);const i={agentIdentifier:"",ee:void 0};class a{constructor(e){try{if("object"!=typeof e)return(0,r.Z)("shared context requires an object as input");this.sharedContext={},Object.assign(this.sharedContext,i),Object.entries(e).forEach((e=>{let[t,n]=e;Object.keys(i).includes(t)&&(this.sharedContext[t]=n)}))}catch(e){(0,r.Z)("An error occured while setting SharedContext",e)}}}},8e3:(e,t,n)=>{n.d(t,{L:()=>u,R:()=>c});var r=n(2177),i=n(1284),a=n(4322),o=n(3325);const s={};function c(e,t){const n={staged:!1,priority:o.p[t]||0};d(e),s[e].get(t)||s[e].set(t,n)}function d(e){e&&(s[e]||(s[e]=new Map))}function u(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"feature";if(d(e),!e||!s[e].get(t))return o(t);s[e].get(t).staged=!0;const n=[...s[e]];function o(t){const n=e?r.ee.get(e):r.ee,o=a.X.handlers;if(n.backlog&&o){var s=n.backlog[t],c=o[t];if(c){for(var d=0;s&&d<s.length;++d)l(s[d],c);(0,i.D)(c,(function(e,t){(0,i.D)(t,(function(t,n){n[0].on(e,n[1])}))}))}delete o[t],n.backlog[t]=null,n.emit("drain-"+t,[])}}n.every((e=>{let[t,n]=e;return n.staged}))&&(n.sort(((e,t)=>e[1].priority-t[1].priority)),n.forEach((e=>{let[t]=e;o(t)})))}function l(e,t){var n=e[1];(0,i.D)(t[n],(function(t,n){var r=e[0];if(n[0]===r){var i=n[1],a=e[3],o=e[2];i.apply(a,o)}}))}},2177:(e,t,n)=>{n.d(t,{ee:()=>d});var r=n(8632),i=n(2210),a=n(1284),o=n(5763),s="nr@context";let c=(0,r.fP)();var d;function u(){}function l(){return new u}function f(){d.aborted=!0,d.backlog={}}c.ee?d=c.ee:(d=function e(t,n){var r={},c={},g={},p=!1;try{p=16===n.length&&(0,o.OP)(n).isolatedBacklog}catch(e){}var h={on:b,addEventListener:b,removeEventListener:y,emit:m,get:A,listeners:w,context:v,buffer:x,abort:f,aborted:!1,isBuffering:D,debugId:n,backlog:p?{}:t&&"object"==typeof t.backlog?t.backlog:{}};return h;function v(e){return e&&e instanceof u?e:e?(0,i.X)(e,s,l):l()}function m(e,n,r,i,a){if(!1!==a&&(a=!0),!d.aborted||i){t&&a&&t.emit(e,n,r);for(var o=v(r),s=w(e),u=s.length,l=0;l<u;l++)s[l].apply(o,n);var f=j()[c[e]];return f&&f.push([h,e,n,o]),o}}function b(e,t){r[e]=w(e).concat(t)}function y(e,t){var n=r[e];if(n)for(var i=0;i<n.length;i++)n[i]===t&&n.splice(i,1)}function w(e){return r[e]||[]}function A(t){return g[t]=g[t]||e(h,t)}function x(e,t){var n=j();h.aborted||(0,a.D)(e,(function(e,r){t=t||"feature",c[r]=t,t in n||(n[t]=[])}))}function D(e){return!!j()[c[e]]}function j(){return h.backlog}}(void 0,"globalEE"),c.ee=d)},5546:(e,t,n)=>{n.d(t,{E:()=>r,p:()=>i});var r=n(2177).ee.get("handle");function i(e,t,n,i,a){a?(a.buffer([e],i),a.emit(e,t,n)):(r.buffer([e],i),r.emit(e,t,n))}},4322:(e,t,n)=>{n.d(t,{X:()=>a});var r=n(5546);a.on=o;var i=a.handlers={};function a(e,t,n,a){o(a||r.E,i,e,t,n)}function o(e,t,n,i,a){a||(a="feature"),e||(e=r.E);var o=t[a]=t[a]||{};(o[n]=o[n]||[]).push([e,i])}},3239:(e,t,n)=>{n.d(t,{bP:()=>s,iz:()=>c,m$:()=>o});var r=n(385);let i=!1,a=!1;try{const e={get passive(){return i=!0,!1},get signal(){return a=!0,!1}};r._A.addEventListener("test",null,e),r._A.removeEventListener("test",null,e)}catch(e){}function o(e,t){return i||a?{capture:!!e,passive:i,signal:t}:!!e}function s(e,t){let n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0;window.addEventListener(e,t,o(n,r))}function c(e,t){let n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0;document.addEventListener(e,t,o(n,r))}},4402:(e,t,n)=>{n.d(t,{Rl:()=>o,ky:()=>s});var r=n(385);const i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";function a(e,t){return e?15&e[t]:16*Math.random()|0}function o(){const e=r._A?.crypto||r._A?.msCrypto;let t,n=0;return e&&e.getRandomValues&&(t=e.getRandomValues(new Uint8Array(31))),i.split("").map((e=>"x"===e?a(t,++n).toString(16):"y"===e?(3&a()|8).toString(16):e)).join("")}function s(e){const t=r._A?.crypto||r._A?.msCrypto;let n,i=0;t&&t.getRandomValues&&(n=t.getRandomValues(new Uint8Array(31)));const o=[];for(var s=0;s<e;s++)o.push(a(n,++i).toString(16));return o.join("")}},7056:(e,t,n)=>{n.d(t,{Bq:()=>r,Hb:()=>a,oD:()=>i});const r="NRBA",i=144e5,a=18e5},7894:(e,t,n)=>{function r(){return Math.round(performance.now())}n.d(t,{z:()=>r})},50:(e,t,n)=>{function r(e,t){"function"==typeof console.warn&&(console.warn("New Relic: ".concat(e)),t&&console.warn(t))}n.d(t,{Z:()=>r})},2587:(e,t,n)=>{n.d(t,{N:()=>c,T:()=>d});var r=n(2177),i=n(5546),a=n(8e3),o=n(3325);const s={stn:[o.D.sessionTrace],err:[o.D.jserrors,o.D.metrics],ins:[o.D.pageAction],spa:[o.D.spa],sr:[o.D.sessionReplay,o.D.sessionTrace]};function c(e,t){const n=r.ee.get(t);e&&"object"==typeof e&&(Object.entries(e).forEach((e=>{let[t,r]=e;void 0===d[t]&&(s[t]?s[t].forEach((e=>{r?(0,i.p)("feat-"+t,[],void 0,e,n):(0,i.p)("block-"+t,[],void 0,e,n),(0,i.p)("rumresp-"+t,[Boolean(r)],void 0,e,n)})):r&&(0,i.p)("feat-"+t,[],void 0,void 0,n),d[t]=Boolean(r))})),Object.keys(s).forEach((e=>{void 0===d[e]&&(s[e]?.forEach((t=>(0,i.p)("rumresp-"+e,[!1],void 0,t,n))),d[e]=!1)})),(0,a.L)(t,o.D.pageViewEvent))}const d={}},2210:(e,t,n)=>{n.d(t,{X:()=>i});var r=Object.prototype.hasOwnProperty;function i(e,t,n){if(r.call(e,t))return e[t];var i=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:i,writable:!0,enumerable:!1}),i}catch(e){}return e[t]=i,i}},1284:(e,t,n)=>{n.d(t,{D:()=>r});const r=(e,t)=>Object.entries(e||{}).map((e=>{let[n,r]=e;return t(n,r)}))},4351:(e,t,n)=>{n.d(t,{P:()=>a});var r=n(2177);const i=()=>{const e=new WeakSet;return(t,n)=>{if("object"==typeof n&&null!==n){if(e.has(n))return;e.add(n)}return n}};function a(e){try{return JSON.stringify(e,i())}catch(e){try{r.ee.emit("internal-error",[e])}catch(e){}}}},3960:(e,t,n)=>{n.d(t,{K:()=>o,b:()=>a});var r=n(3239);function i(){return"undefined"==typeof document||"complete"===document.readyState}function a(e,t){if(i())return e();(0,r.bP)("load",e,t)}function o(e){if(i())return e();(0,r.iz)("DOMContentLoaded",e)}},8632:(e,t,n)=>{n.d(t,{EZ:()=>d,Qy:()=>c,ce:()=>a,fP:()=>o,gG:()=>u,mF:()=>s});var r=n(7894),i=n(385);const a={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net"};function o(){return i._A.NREUM||(i._A.NREUM={}),void 0===i._A.newrelic&&(i._A.newrelic=i._A.NREUM),i._A.NREUM}function s(){let e=o();return e.o||(e.o={ST:i._A.setTimeout,SI:i._A.setImmediate,CT:i._A.clearTimeout,XHR:i._A.XMLHttpRequest,REQ:i._A.Request,EV:i._A.Event,PR:i._A.Promise,MO:i._A.MutationObserver,FETCH:i._A.fetch}),e}function c(e,t,n){let i=o();const a=i.initializedAgents||{},s=a[e]||{};return Object.keys(s).length||(s.initializedAt={ms:(0,r.z)(),date:new Date}),i.initializedAgents={...a,[e]:{...s,[n]:t}},i}function d(e,t){o()[e]=t}function u(){return function(){let e=o();const t=e.info||{};e.info={beacon:a.beacon,errorBeacon:a.errorBeacon,...t}}(),function(){let e=o();const t=e.init||{};e.init={...t}}(),s(),function(){let e=o();const t=e.loader_config||{};e.loader_config={...t}}(),o()}},7956:(e,t,n)=>{n.d(t,{N:()=>i});var r=n(3239);function i(e){let t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=arguments.length>2?arguments[2]:void 0,i=arguments.length>3?arguments[3]:void 0;return void(0,r.iz)("visibilitychange",(function(){if(t)return void("hidden"==document.visibilityState&&e());e(document.visibilityState)}),n,i)}},3081:(e,t,n)=>{n.d(t,{gF:()=>a,mY:()=>i,t9:()=>r,vz:()=>s,xS:()=>o});const r=n(3325).D.metrics,i="sm",a="cm",o="storeSupportabilityMetrics",s="storeEventMetrics"},7633:(e,t,n)=>{n.d(t,{Dz:()=>i,OJ:()=>o,qw:()=>a,t9:()=>r});const r=n(3325).D.pageViewEvent,i="firstbyte",a="domcontent",o="windowload"},9251:(e,t,n)=>{n.d(t,{t:()=>r});const r=n(3325).D.pageViewTiming},5938:(e,t,n)=>{n.d(t,{W:()=>a});var r=n(5763),i=n(2177);class a{constructor(e,t,n){this.agentIdentifier=e,this.aggregator=t,this.ee=i.ee.get(e,(0,r.OP)(this.agentIdentifier).isolatedBacklog),this.featureName=n,this.blocked=!1}}},9144:(e,t,n)=>{n.d(t,{j:()=>v});var r=n(3325),i=n(5763),a=n(5546),o=n(2177),s=n(7894),c=n(8e3),d=n(3960),u=n(385),l=n(50),f=n(3081),g=n(8632);function p(){const e=(0,g.gG)();["setErrorHandler","finished","addToTrace","inlineHit","addRelease","addPageAction","setCurrentRouteName","setPageViewName","setCustomAttribute","interaction","noticeError","setUserId"].forEach((t=>{e[t]=function(){for(var n=arguments.length,r=new Array(n),i=0;i<n;i++)r[i]=arguments[i];return function(t){for(var n=arguments.length,r=new Array(n>1?n-1:0),i=1;i<n;i++)r[i-1]=arguments[i];let a=[];return Object.values(e.initializedAgents).forEach((e=>{e.exposed&&e.api[t]&&a.push(e.api[t](...r))})),a.length>1?a:a[0]}(t,...r)}}))}var h=n(2587);function v(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},v=arguments.length>2?arguments[2]:void 0,m=arguments.length>3?arguments[3]:void 0,{init:b,info:y,loader_config:w,runtime:A={loaderType:v},exposed:x=!0}=t;const D=(0,g.gG)();y||(b=D.init,y=D.info,w=D.loader_config),(0,i.Dg)(e,b||{}),(0,i.GE)(e,w||{}),y.jsAttributes??={},u.v6&&(y.jsAttributes.isWorker=!0),(0,i.CX)(e,y);const j=(0,i.P_)(e);A.denyList=[...j.ajax?.deny_list||[],...j.ajax?.block_internal?[y.beacon,y.errorBeacon]:[]],(0,i.sU)(e,A),p();const _=function(e,t){t||(0,c.R)(e,"api");const g={};var p=o.ee.get(e),h=p.get("tracer"),v="api-",m=v+"ixn-";function b(t,n,r,a){const o=(0,i.C5)(e);return null===n?delete o.jsAttributes[t]:(0,i.CX)(e,{...o,jsAttributes:{...o.jsAttributes,[t]:n}}),A(v,r,!0,a||null===n?"session":void 0)(t,n)}function y(){}["setErrorHandler","finished","addToTrace","inlineHit","addRelease"].forEach((e=>g[e]=A(v,e,!0,"api"))),g.addPageAction=A(v,"addPageAction",!0,r.D.pageAction),g.setCurrentRouteName=A(v,"routeName",!0,r.D.spa),g.setPageViewName=function(t,n){if("string"==typeof t)return"/"!==t.charAt(0)&&(t="/"+t),(0,i.OP)(e).customTransaction=(n||"http://custom.transaction")+t,A(v,"setPageViewName",!0)()},g.setCustomAttribute=function(e,t){let n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if("string"==typeof e){if(["string","number"].includes(typeof t)||null===t)return b(e,t,"setCustomAttribute",n);(0,l.Z)("Failed to execute setCustomAttribute.\nNon-null value must be a string or number type, but a type of <".concat(typeof t,"> was provided."))}else(0,l.Z)("Failed to execute setCustomAttribute.\nName must be a string type, but a type of <".concat(typeof e,"> was provided."))},g.setUserId=function(e){if("string"==typeof e||null===e)return b("enduser.id",e,"setUserId",!0);(0,l.Z)("Failed to execute setUserId.\nNon-null value must be a string type, but a type of <".concat(typeof e,"> was provided."))},g.interaction=function(){return(new y).get()};var w=y.prototype={createTracer:function(e,t){var n={},i=this,o="function"==typeof t;return(0,a.p)(m+"tracer",[(0,s.z)(),e,n],i,r.D.spa,p),function(){if(h.emit((o?"":"no-")+"fn-start",[(0,s.z)(),i,o],n),o)try{return t.apply(this,arguments)}catch(e){throw h.emit("fn-err",[arguments,this,e],n),e}finally{h.emit("fn-end",[(0,s.z)()],n)}}}};function A(e,t,n,i){return function(){return(0,a.p)(f.xS,["API/"+t+"/called"],void 0,r.D.metrics,p),i&&(0,a.p)(e+t,[(0,s.z)(),...arguments],n?null:this,i,p),n?void 0:this}}function x(){n.e(439).then(n.bind(n,7438)).then((t=>{let{setAPI:n}=t;n(e),(0,c.L)(e,"api")})).catch((()=>(0,l.Z)("Downloading runtime APIs failed...")))}return["actionText","setName","setAttribute","save","ignore","onEnd","getContext","end","get"].forEach((e=>{w[e]=A(m,e,void 0,r.D.spa)})),g.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),(0,a.p)(f.xS,["API/noticeError/called"],void 0,r.D.metrics,p),(0,a.p)("err",[e,(0,s.z)(),!1,t],void 0,r.D.jserrors,p)},u.il?(0,d.b)((()=>x()),!0):x(),g}(e,m);return(0,g.Qy)(e,_,"api"),(0,g.Qy)(e,x,"exposed"),(0,g.EZ)("activatedFeatures",h.T),_}},3325:(e,t,n)=>{n.d(t,{D:()=>r,p:()=>i});const r={ajax:"ajax",jserrors:"jserrors",metrics:"metrics",pageAction:"page_action",pageViewEvent:"page_view_event",pageViewTiming:"page_view_timing",sessionReplay:"session_replay",sessionTrace:"session_trace",spa:"spa"},i={[r.pageViewEvent]:1,[r.pageViewTiming]:2,[r.metrics]:3,[r.jserrors]:4,[r.ajax]:5,[r.sessionTrace]:6,[r.pageAction]:7,[r.spa]:8,[r.sessionReplay]:9}}},r={};function i(e){var t=r[e];if(void 0!==t)return t.exports;var a=r[e]={exports:{}};return n[e](a,a.exports,i),a.exports}i.m=n,i.d=(e,t)=>{for(var n in t)i.o(t,n)&&!i.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},i.f={},i.e=e=>Promise.all(Object.keys(i.f).reduce(((t,n)=>(i.f[n](e,t),t)),[])),i.u=e=>(({78:"page_action-aggregate",147:"metrics-aggregate",193:"session_trace-aggregate",242:"session-manager",317:"jserrors-aggregate",348:"page_view_timing-aggregate",412:"lazy-feature-loader",439:"async-api",538:"recorder",590:"session_replay-aggregate",675:"compressor",786:"page_view_event-aggregate",873:"spa-aggregate",898:"ajax-aggregate"}[e]||e)+"."+{78:"467f8594",147:"b86cefcf",193:"ac30a1f3",242:"d080e4cc",317:"319b8300",348:"7b2a53ee",412:"c1052c27",439:"e9f77430",538:"9c5c1546",590:"8b420469",646:"9e7a6b8d",675:"9614fd62",786:"4988d952",860:"95a91211",873:"550eec7b",898:"d95c640e"}[e]+"-1.237.1.min.js"),i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),e={},t="NRBA:",i.l=(n,r,a,o)=>{if(e[n])e[n].push(r);else{var s,c;if(void 0!==a)for(var d=document.getElementsByTagName("script"),u=0;u<d.length;u++){var l=d[u];if(l.getAttribute("src")==n||l.getAttribute("data-webpack")==t+a){s=l;break}}s||(c=!0,(s=document.createElement("script")).charset="utf-8",s.timeout=120,i.nc&&s.setAttribute("nonce",i.nc),s.setAttribute("data-webpack",t+a),s.src=n),e[n]=[r];var f=(t,r)=>{s.onerror=s.onload=null,clearTimeout(g);var i=e[n];if(delete e[n],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach((e=>e(r))),t)return t(r)},g=setTimeout(f.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=f.bind(null,s.onerror),s.onload=f.bind(null,s.onload),c&&document.head.appendChild(s)}},i.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.j=4,i.p="https://js-agent.newrelic.com/",(()=>{var e={4:0,465:0};i.f.j=(t,n)=>{var r=i.o(e,t)?e[t]:void 0;if(0!==r)if(r)n.push(r[2]);else{var a=new Promise(((n,i)=>r=e[t]=[n,i]));n.push(r[2]=a);var o=i.p+i.u(t),s=new Error;i.l(o,(n=>{if(i.o(e,t)&&(0!==(r=e[t])&&(e[t]=void 0),r)){var a=n&&("load"===n.type?"missing":n.type),o=n&&n.target&&n.target.src;s.message="Loading chunk "+t+" failed.\n("+a+": "+o+")",s.name="ChunkLoadError",s.type=a,s.request=o,r[1](s)}}),"chunk-"+t,t)}};var t=(t,n)=>{var r,a,[o,s,c]=n,d=0;if(o.some((t=>0!==e[t]))){for(r in s)i.o(s,r)&&(i.m[r]=s[r]);if(c)c(i)}for(t&&t(n);d<o.length;d++)a=o[d],i.o(e,a)&&e[a]&&e[a][0](),e[a]=0},n=window.webpackChunkNRBA=window.webpackChunkNRBA||[];n.forEach(t.bind(null,0)),n.push=t.bind(null,n.push.bind(n))})();var a={};(()=>{i.r(a);var e=i(50);class t{addPageAction(t,n){(0,e.Z)("Call to agent api addPageAction failed. The session trace feature is not currently initialized.")}setPageViewName(t,n){(0,e.Z)("Call to agent api setPageViewName failed. The page view feature is not currently initialized.")}setCustomAttribute(t,n,r){(0,e.Z)("Call to agent api setCustomAttribute failed. The js errors feature is not currently initialized.")}noticeError(t,n){(0,e.Z)("Call to agent api noticeError failed. The js errors feature is not currently initialized.")}setUserId(t){(0,e.Z)("Call to agent api setUserId failed. The js errors feature is not currently initialized.")}setErrorHandler(t){(0,e.Z)("Call to agent api setErrorHandler failed. The js errors feature is not currently initialized.")}finished(t){(0,e.Z)("Call to agent api finished failed. The page action feature is not currently initialized.")}addRelease(t,n){(0,e.Z)("Call to agent api addRelease failed. The agent is not currently initialized.")}}var n=i(3325),r=i(5763);const o=Object.values(n.D);function s(e){const t={};return o.forEach((n=>{t[n]=function(e,t){return!1!==(0,r.Mt)(t,"".concat(e,".enabled"))}(n,e)})),t}var c=i(9144);var d=i(5546),u=i(385),l=i(8e3),f=i(5938),g=i(3960);class p extends f.W{constructor(e,t,n){let r=!(arguments.length>3&&void 0!==arguments[3])||arguments[3];super(e,t,n),this.auto=r,this.abortHandler,this.featAggregate,this.onAggregateImported,r&&(0,l.R)(e,n)}importAggregator(){let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(this.featAggregate||!this.auto)return;const n=u.il&&!0===(0,r.Mt)(this.agentIdentifier,"privacy.cookies_enabled");let a;this.onAggregateImported=new Promise((e=>{a=e}));const o=async()=>{let r;try{if(n){const{setupAgentSession:e}=await Promise.all([i.e(860),i.e(242)]).then(i.bind(i,3228));r=e(this.agentIdentifier)}}catch(t){(0,e.Z)("A problem occurred when starting up session manager. This page will not start or extend any session.",t)}try{if(!this.shouldImportAgg(this.featureName,r))return(0,l.L)(this.agentIdentifier,this.featureName),void a(!1);const{lazyFeatureLoader:e}=await i.e(412).then(i.bind(i,8582)),{Aggregate:n}=await e(this.featureName,"aggregate");this.featAggregate=new n(this.agentIdentifier,this.aggregator,t),a(!0)}catch(t){(0,e.Z)("Downloading and initializing ".concat(this.featureName," failed..."),t),this.abortHandler?.(),a(!1)}};u.il?(0,g.b)((()=>o()),!0):o()}shouldImportAgg(e,t){return e!==n.D.sessionReplay||!!r.Yu.MO&&(!1!==(0,r.Mt)(this.agentIdentifier,"session_trace.enabled")&&(!!t?.isNew||!!t?.state.sessionReplay))}}var h=i(7633),v=i(7894);class m extends p{static featureName=h.t9;constructor(e,t){let i=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];if(super(e,t,h.t9,i),("undefined"==typeof PerformanceNavigationTiming||u.Tt)&&"undefined"!=typeof PerformanceTiming){const t=(0,r.OP)(e);t[h.Dz]=Math.max(Date.now()-t.offset,0),(0,g.K)((()=>t[h.qw]=Math.max((0,v.z)()-t[h.Dz],0))),(0,g.b)((()=>{const e=(0,v.z)();t[h.OJ]=Math.max(e-t[h.Dz],0),(0,d.p)("timing",["load",e],void 0,n.D.pageViewTiming,this.ee)}))}this.importAggregator()}}var b=i(1117),y=i(1284);class w extends b.w{constructor(e){super(e),this.aggregatedData={}}store(e,t,n,r,i){var a=this.getBucket(e,t,n,i);return a.metrics=function(e,t){t||(t={count:0});return t.count+=1,(0,y.D)(e,(function(e,n){t[e]=A(n,t[e])})),t}(r,a.metrics),a}merge(e,t,n,r,i){var a=this.getBucket(e,t,r,i);if(a.metrics){var o=a.metrics;o.count+=n.count,(0,y.D)(n,(function(e,t){if("count"!==e){var r=o[e],i=n[e];i&&!i.c?o[e]=A(i.t,r):o[e]=function(e,t){if(!t)return e;t.c||(t=x(t.t));return t.min=Math.min(e.min,t.min),t.max=Math.max(e.max,t.max),t.t+=e.t,t.sos+=e.sos,t.c+=e.c,t}(i,o[e])}}))}else a.metrics=n}storeMetric(e,t,n,r){var i=this.getBucket(e,t,n);return i.stats=A(r,i.stats),i}getBucket(e,t,n,r){this.aggregatedData[e]||(this.aggregatedData[e]={});var i=this.aggregatedData[e][t];return i||(i=this.aggregatedData[e][t]={params:n||{}},r&&(i.custom=r)),i}get(e,t){return t?this.aggregatedData[e]&&this.aggregatedData[e][t]:this.aggregatedData[e]}take(e){for(var t={},n="",r=!1,i=0;i<e.length;i++)t[n=e[i]]=D(this.aggregatedData[n]),t[n].length&&(r=!0),delete this.aggregatedData[n];return r?t:null}}function A(e,t){return null==e?function(e){e?e.c++:e={c:1};return e}(t):t?(t.c||(t=x(t.t)),t.c+=1,t.t+=e,t.sos+=e*e,e>t.max&&(t.max=e),e<t.min&&(t.min=e),t):{t:e}}function x(e){return{t:e,min:e,max:e,sos:e*e,c:1}}function D(e){return"object"!=typeof e?[]:(0,y.D)(e,j)}function j(e,t){return t}var _=i(8632),E=i(4402),T=i(4351);var k=i(7956),N=i(3239),P=i(9251);class C extends p{static featureName=P.t;constructor(e,t){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,P.t,n),u.il&&((0,r.OP)(e).initHidden=Boolean("hidden"===document.visibilityState),(0,k.N)((()=>(0,d.p)("docHidden",[(0,v.z)()],void 0,P.t,this.ee)),!0),(0,N.bP)("pagehide",(()=>(0,d.p)("winPagehide",[(0,v.z)()],void 0,P.t,this.ee))),this.importAggregator())}}var I=i(3081);class S extends p{static featureName=I.t9;constructor(e,t){let n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2];super(e,t,I.t9,n),this.importAggregator()}}new class extends t{constructor(t){let n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:(0,E.ky)(16);super(),u._A?(this.agentIdentifier=n,this.sharedAggregator=new w({agentIdentifier:this.agentIdentifier}),this.features={},this.desiredFeatures=new Set(t.features||[]),this.desiredFeatures.add(m),Object.assign(this,(0,c.j)(this.agentIdentifier,t,t.loaderType||"agent")),this.start()):(0,e.Z)("Failed to initial the agent. Could not determine the runtime environment.")}get config(){return{info:(0,r.C5)(this.agentIdentifier),init:(0,r.P_)(this.agentIdentifier),loader_config:(0,r.DL)(this.agentIdentifier),runtime:(0,r.OP)(this.agentIdentifier)}}start(){const t="features";try{const r=s(this.agentIdentifier),i=[...this.desiredFeatures];i.sort(((e,t)=>n.p[e.featureName]-n.p[t.featureName])),i.forEach((t=>{if(r[t.featureName]||t.featureName===n.D.pageViewEvent){const i=function(e){switch(e){case n.D.ajax:return[n.D.jserrors];case n.D.sessionTrace:return[n.D.ajax,n.D.pageViewEvent];case n.D.sessionReplay:return[n.D.sessionTrace];case n.D.pageViewTiming:return[n.D.pageViewEvent];default:return[]}}(t.featureName);i.every((e=>r[e]))||(0,e.Z)("".concat(t.featureName," is enabled but one or more dependent features has been disabled (").concat((0,T.P)(i),"). This may cause unintended consequences or missing data...")),this.features[t.featureName]=new t(this.agentIdentifier,this.sharedAggregator)}})),(0,_.Qy)(this.agentIdentifier,this.features,t)}catch(n){(0,e.Z)("Failed to initialize all enabled instrument classes (agent aborted) -",n);for(const e in this.features)this.features[e].abortHandler?.();const r=(0,_.fP)();return delete r.initializedAgents[this.agentIdentifier]?.api,delete r.initializedAgents[this.agentIdentifier]?.[t],delete this.sharedAggregator,r.ee?.abort(),delete r.ee?.get(this.agentIdentifier),!1}}addToTrace(t){(0,e.Z)("Call to agent api addToTrace failed. The page action feature is not currently initialized.")}setCurrentRouteName(t){(0,e.Z)("Call to agent api setCurrentRouteName failed. The spa feature is not currently initialized.")}interaction(){(0,e.Z)("Call to agent api interaction failed. The spa feature is not currently initialized.")}}({features:[m,C,S],loaderType:"lite"})})(),window.NRBA=a})();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+<link rel="canonical" href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union" />
+<link rel="shortlink" href="/node/324107" />
+<link rel="prev" href="/documents/presidential-documents-archive-guidebook" />
+<link rel="up" href="/documents/presidential-documents-archive-guidebook" />
+<link rel="next" href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union-3" />
+<link rel="shortcut icon" href="https://www.presidency.ucsb.edu/sites/default/files/favicon-app_0.png" type="image/png" />
+  <title>1 Annual Messages to Congress on the State of the Union (Washington 1790 - the present) | The American Presidency Project</title>
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,400italic,800,700,600,300|Dosis:400,200,300,500,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_lQaZfjVpwP_oGNqdtWCSpJT1EMqXdMiU84ekLLxQnc4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_uuQd0L7qawhKpY0MHO8pVG2W6LSQqS5w9XHZMk3vO2U.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_Cq1R3m_ERXC2ynYnp57HZ-O7ehprd9pvLTuV32DY_ow.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_rSQFFfhgRJzGFfW0daS6ZK63sOQRV3kJbjkJYD6QIk4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_gsVew5cLoW8YoOz5wlq-MSojac7Ph5f6cujHg4HQfcM.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://www.presidency.ucsb.edu/sites/default/files/css/css_DW59q6nX-P3-D4cA08_V2iLlMJIaFdPFYT8X6nSFpV8.css" media="print" />
+  <!-- HTML5 element support for IE6-8 -->
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+<script>window.jQuery || document.write("<script src='/sites/default/modules/contrib/jquery_update/replace/jquery/1.11/jquery.min.js'>\x3C/script>")</script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_Hfha9RCTNm8mqMDLXriIsKGMaghzs4ZaqJPLj2esi7s.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
+<script>window.jQuery.ui || document.write("<script src='/sites/default/modules/contrib/jquery_update/replace/ui/ui/minified/jquery-ui.min.js'>\x3C/script>")</script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_Tik8PIaz_eQ5I4FMzmjkWoPEs9jKBgTSauo1jgsNa6g.js"></script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_waP91NpgGpectm_6Y2XDEauLJ8WCSCBKmmA87unpp2E.js"></script>
+<script src="https://www.googletagmanager.com/gtag/js?id=UA-86410002-1"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};gtag("js", new Date());gtag("set", "developer_id.dMDhkMT", true);gtag("config", "UA-86410002-1", {"groups":"default","linker":{"domains":["dev-wwwpresidencyucsbedu.pantheonsite.io","www.presidency.ucsb.edu"]},"anonymize_ip":true});gtag("config", "G-86B9KEYGFJ", {"groups":"default","linker":{"domains":["dev-wwwpresidencyucsbedu.pantheonsite.io","www.presidency.ucsb.edu"]},"anonymize_ip":true});</script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_gvpxcPEErmaiJn8qGSGx2O87lReivTR09hs10gIG3Yg.js"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"ajaxPageState":{"theme":"app","theme_token":"EkpFhLWRvBXPW8Jos22qIReTdCEFtlYiIZjh3NJ7_MM","js":{"sites\/default\/libraries\/jquery-ui-multiselect-widget\/src\/jquery.multiselect.js":1,"sites\/default\/libraries\/jquery-ui-multiselect-widget\/src\/jquery.multiselect.filter.js":1,"sites\/default\/modules\/contrib\/jquery_ui_multiselect_widget\/jquery_ui_multiselect_widget.js":1,"modules\/statistics\/statistics.js":1,"sites\/default\/themes\/bootstrap\/js\/bootstrap.js":1,"\/\/ajax.aspnetcdn.com\/ajax\/jQuery\/jquery-1.11.2.min.js":1,"0":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"\/\/ajax.aspnetcdn.com\/ajax\/jquery.ui\/1.11.4\/jquery-ui.min.js":1,"1":1,"sites\/default\/modules\/contrib\/extlink\/extlink.js":1,"sites\/default\/modules\/contrib\/google_analytics\/googleanalytics.js":1,"https:\/\/www.googletagmanager.com\/gtag\/js?id=UA-86410002-1":1,"2":1,"sites\/default\/themes\/app\/bootstrap\/js\/affix.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/alert.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/button.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/carousel.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/collapse.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/dropdown.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/modal.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/tooltip.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/popover.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/scrollspy.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/tab.js":1,"sites\/default\/themes\/app\/bootstrap\/js\/transition.js":1,"sites\/default\/themes\/app\/scripts\/scripts.js":1},"css":{"modules\/system\/system.base.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.accordion.css":1,"sites\/default\/modules\/contrib\/date\/date_api\/date.css":1,"sites\/default\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"sites\/default\/modules\/contrib\/date\/date_repeat_field\/date_repeat_field.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"sites\/default\/modules\/contrib\/extlink\/extlink.css":1,"sites\/default\/modules\/contrib\/views\/css\/views.css":1,"sites\/default\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/default\/libraries\/jquery-ui-multiselect-widget\/jquery.multiselect.css":1,"sites\/default\/libraries\/jquery-ui-multiselect-widget\/jquery.multiselect.filter.css":1,"sites\/default\/modules\/contrib\/jquery_ui_multiselect_widget\/jquery_ui_multiselect_widget.css":1,"sites\/default\/themes\/app\/css\/style.css":1,"sites\/default\/themes\/app\/css\/oog.css":1,"sites\/default\/themes\/app\/css\/print.css":1}},"jquery_ui_multiselect_widget":{"module_path":"sites\/default\/modules\/contrib\/jquery_ui_multiselect_widget","multiple":1,"filter":1,"subselector":"#edit-category2","selectedlist":"4","autoOpen":0,"header":1,"height":"auto","classes":"app-uberselect","filter_auto_reset":1,"filter_width":"auto","jquery_ui_multiselect_widget_path_match_exclude":"admin\/*\r\nmedia\/*\r\nfile\/*\r\nsystem\/ajax"},"extlink":{"extTarget":"_blank","extClass":0,"extLabel":"(link is external)","extImgClass":0,"extIconPlacement":"append","extSubdomains":1,"extExclude":"","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":0,"extAlertText":"This link will take you to an external web site.","mailtoClass":0,"mailtoLabel":"(link sends e-mail)"},"googleanalytics":{"account":["UA-86410002-1","G-86B9KEYGFJ"],"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip","trackDomainMode":2,"trackCrossDomains":["dev-wwwpresidencyucsbedu.pantheonsite.io","www.presidency.ucsb.edu"]},"statistics":{"data":{"nid":"324107"},"url":"\/modules\/statistics\/statistics.php"},"bootstrap":{"anchorsFix":1,"anchorsSmoothScrolling":1,"formHasError":1,"popoverEnabled":0,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","triggerAutoclose":1,"title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":1,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-node page-node- page-node-324107 node-type-book" >
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    <div class="wrapper"> <!-- Wrapper for Sticky Footer -->
+
+      <div class="branding-region">
+      <div class="container">
+                  <div class="region region-branding">
+    <section id="block-block-1" class="block block-block site-title-block clearfix">
+
+      
+  <div class="site-title"><a href="https://www.presidency.ucsb.edu/">The American Presidency Project</a></div>
+
+</section>
+<section id="block-block-2" class="block block-block top-link-buttons clearfix">
+
+      
+  <p><a class="btn btn-default" href="https://www.presidency.ucsb.edu/about">About</a><a class="btn btn-default" href="/advanced-search"><span class="glyphicon glyphicon-search"></span> Search</a></p>
+<p id="ucScript"><a href="https://www.ucsb.edu/" target="_blank"><img alt="ucsb wordmark black" src="https://www.presidency.ucsb.edu/sites/default/files/pictures/uc_santa_barbara_wordmark_black_rgb.svg" style="width: 175px; height: 13px;" /></a></p>
+
+</section>
+  </div>
+      </div>
+    </div>
+  
+  <div id="navbar" role="banner" class="navbar navbar-default"><!-- Only way to remove "container" class -->
+    <div class="container">
+      <div class="navbar-header">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+              <div class="navbar-collapse collapse">
+          <nav role="navigation">
+                          <ul class="menu nav navbar-nav"><li class="first expanded active-trail active dropdown"><a href="/documents" class="active-trail dropdown-toggle" data-toggle="dropdown">Documents <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf active-trail active"><a href="/documents/presidential-documents-archive-guidebook" class="active-trail">Guidebook</a></li>
+<li class="last leaf"><a href="/documents/category-attributes">Category Attributes</a></li>
+</ul></li>
+<li class="collapsed"><a href="/statistics">Statistics</a></li>
+<li class="leaf"><a href="/media" title="">Media Archive</a></li>
+<li class="leaf"><a href="/presidents" title="">Presidents</a></li>
+<li class="leaf"><a href="/analyses" title="">Analyses</a></li>
+<li class="last leaf"><a href="https://giving.ucsb.edu/Funds/Give?id=185" title="">GIVE</a></li>
+</ul>                                              </nav>
+        </div>
+          </div>
+  </div>
+
+  <div role="banner" id="page-header" class="site-header">
+      </div>
+
+  <div class="main-container container">
+    <div class="row">
+
+          <aside class="col-sm-3 no-print" role="complementary">
+            <div class="region region-sidebar-first well">
+    <section id="block-menu-block-8" class="block block-menu-block doc-sub clearfix">
+
+        <h2 class="block-title">Documents</h2>
+    
+  <div class="menu-block-wrapper menu-block-8 menu-name-menu-documents parent-mlid-0 menu-level-1">
+  <ul class="menu nav"><li class="first leaf active-trail menu-mlid-10329 active"><a href="/documents/presidential-documents-archive-guidebook" title="" class="active-trail">Archive Guidebook</a></li>
+<li class="leaf menu-mlid-10330"><a href="/documents" title="">Categories</a></li>
+<li class="last leaf menu-mlid-10791"><a href="/documents/category-attributes" title="">Attributes</a></li>
+</ul></div>
+
+</section>
+<section id="block-book-navigation" class="block block-book oog-book clearfix">
+
+        <h2 class="block-title">Table of Contents</h2>
+    
+    <div id="book-block-menu-324106" class="book-block-menu">
+    <ul class="menu nav"><li class="first last expanded active-trail active dropdown"><a href="/documents/presidential-documents-archive-guidebook" class="active-trail dropdown-toggle" data-toggle="dropdown">Presidential Documents Archive Collections <span class="caret"></span></a><ul class="dropdown-menu"><li class="first expanded active-trail active"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union" class="active-trail active">Annual Messages to Congress on the State of the Union (Washington 1790 - the present)</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/inaugural-addresses">Inaugural Addresses </a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/farewell-addresses">Farewell Addresses </a></li>
+<li class="collapsed"><a href="/documents/presidential-documents-archive-guidebook/party-platforms-and-nominating-conventions">Party Platforms and Nominating Conventions</a></li>
+<li class="collapsed"><a href="/documents/presidential-documents-archive-guidebook/presidential-campaigns-debates-and-endorsements">Presidential Campaigns, Debates, and Endorsements</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/executive-orders-beginning-with-jq-adams">Executive Orders (Beginning with J.Q. Adams )</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/proclamations-washington-1789-present">Proclamations  (Washington 1789 - present)</a></li>
+<li class="collapsed"><a href="/documents/presidential-documents-archive-guidebook/the-first-ladies">The First Ladies</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/news-conferences-starting-with-hoover-1929">News Conferences (Starting with Hoover, 1929 )</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/fireside-chats-f-roosevelt">Fireside Chats (F. Roosevelt)</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/the-presidents-weekly-address-saturday-radio-from">The President&#039;s Weekly Address (Saturday Radio from Reagan through Trump 1982 - 2018)</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/presidential-signing-statements-hoover-1929">Presidential Signing Statements (Hoover 1929 - present)</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/statements-administration-policy-reagan-1985">Statements of Administration Policy (Reagan (1985) - Biden (99th - 117th Congress)</a></li>
+<li class="collapsed"><a href="/documents/presidential-documents-archive-guidebook/documents-related-presidential-transitions">Documents Related to Presidential Transitions</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/the-economic-report-the-president-from-truman">The Economic Report of the President: (From Truman, 1947)</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/list-vice-presidents-who-served-acting-president">List of Vice-Presidents Who Served as Acting President Under the 25th Amendment</a></li>
+<li class="last leaf"><a href="/documents/presidential-documents-archive-guidebook/remarks-the-vice-president-walter-mondale-kamala">Remarks by the Vice President (Walter Mondale - Kamala Harris)</a></li>
+</ul></li>
+</ul>  </div>
+
+</section>
+<section id="block-menu-block-7" class="block block-menu-block dropdown clearfix">
+
+        <h2 class="block-title">Categories</h2>
+    
+  <div class="menu-block-wrapper menu-block-7 menu-name-menu-doc-cat-menu parent-mlid-0 menu-level-1">
+    <ul class="menu nav"><li class="first expanded menu-mlid-10954 dropdown"><a href="/documents/app-categories/presidential" title="Presidential (73842)" class="dropdown-toggle" data-toggle="dropdown">Presidential (229349) <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf menu-mlid-10910"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/eulogies" title="Eulogies (55)">Eulogies (63)</a></li>
+<li class="leaf menu-mlid-10930"><a href="/documents/app-categories/written-presidential-orders/presidential/executive-orders" title="Executive Orders (5885)">Executive Orders (8331)</a></li>
+<li class="leaf menu-mlid-10912"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/fireside-chats" title="Fireside Chats (27)">Fireside Chats (27)</a></li>
+<li class="leaf menu-mlid-10906"><a href="/documents/app-categories/presidential/interviews" title="Interviews (950)">Interviews (958)</a></li>
+<li class="leaf menu-mlid-10894"><a href="/documents/app-categories/presidential/letters" title="Letters (4363)">Letters (4692)</a></li>
+<li class="leaf menu-mlid-10899"><a href="/documents/app-categories/presidential/miscellaneous-written" title="Miscellaneous Written (741)">Miscellaneous Written (103)</a></li>
+<li class="leaf menu-mlid-10907"><a href="/documents/app-categories/presidential/news-conferences" title="News Conferences (2096)">News Conferences (2501)</a></li>
+<li class="collapsed menu-mlid-10909"><a href="/documents/app-categories/presidential/spoken-addresses-and-remarks" title="Spoken Addresses and Remarks (5428)">Spoken Addresses and Remarks (34069)</a></li>
+<li class="leaf menu-mlid-10911"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/farewell-address" title="Farewell Address (10)">Farewell Address (11)</a></li>
+<li class="leaf menu-mlid-10913"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/inaugural-addresses" title="Inaugural Addresses (61)">Inaugural Addresses (62)</a></li>
+<li class="leaf menu-mlid-10895"><a href="/documents/app-categories/presidential/memoranda" title="Memoranda (1828)">Memoranda (3440)</a></li>
+<li class="leaf menu-mlid-10927"><a href="/documents/app-categories/citations/presidential/messages" title="Messages (11049)">Messages (12471)</a></li>
+<li class="leaf menu-mlid-10931"><a href="/documents/app-categories/written-presidential-orders/presidential/proclamations" title="Proclamations (7974)">Proclamations (9158)</a></li>
+<li class="leaf menu-mlid-10919"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/saturday-weekly-addresses-radio" title="Saturday Addresses (Radio and Webcast) (1629)">Saturday Weekly Addresses (Radio and Webcast) (1639)</a></li>
+<li class="leaf menu-mlid-10920"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/state-dinners" title="State Dinners (953)">State Dinners (960)</a></li>
+<li class="leaf menu-mlid-10921"><a href="/documents/app-categories/spoken-addresses-and-remarks/presidential/state-the-union-addresses" title="State of the Union Addresses (98)">State of the Union Addresses (99)</a></li>
+<li class="leaf menu-mlid-10928"><a href="/documents/app-categories/citations/presidential/state-the-union-written-messages" title="State of the Union Messages (1)">State of the Union Written Messages (140)</a></li>
+<li class="expanded menu-mlid-10934"><a href="/documents/app-categories/statements" title="Statements (8647)">Statements (13891)</a></li>
+<li class="leaf menu-mlid-10924"><a href="/documents/app-categories/presidential/vetoes" title="Vetoes (266)">Vetoes (1216)</a></li>
+<li class="collapsed menu-mlid-10925"><a href="/documents/app-categories/presidential/citations" title="Written Messages (11021)">Citations (12838)</a></li>
+<li class="last expanded menu-mlid-10929"><a href="/documents/app-categories/presidential/written-presidential-orders" title="Written Presidential Orders (13858)">Written Presidential Orders (40698)</a></li>
+</ul></li>
+<li class="leaf menu-mlid-10897"><a href="/documents/app-categories/remarks-administration-officials" title="Miscellaneous Press Secretary (23298)">Remarks by Administration Officials (142)</a></li>
+<li class="expanded menu-mlid-10887 dropdown"><a href="/documents/app-categories/elections-and-transitions" title="Elections and Transitions (16448)" class="dropdown-toggle" data-toggle="dropdown">Elections and Transitions (42160) <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf menu-mlid-10888"><a href="/documents/app-categories/elections-and-transitions/campaign-documents" title="Campaign Documents (2747)">Campaign Documents (19873)</a></li>
+<li class="expanded menu-mlid-10889"><a href="/documents/app-categories/elections-and-transitions/convention-speeches" title="Convention Speeches (50)">Convention Speeches (117)</a></li>
+<li class="leaf menu-mlid-10890"><a href="/documents/app-categories/elections-and-transitions/debates" title="Debates (152)">Debates (171)</a></li>
+<li class="leaf menu-mlid-10892"><a href="/documents/app-categories/elections-and-transitions/party-platforms" title="Party Platforms (98)">Party Platforms (103)</a></li>
+<li class="last leaf menu-mlid-10893"><a href="/documents/app-categories/elections-and-transitions/transition-documents" title="Transition Documents (346)">Transition Documents (552)</a></li>
+</ul></li>
+<li class="last leaf menu-mlid-10883"><a href="/documents/app-categories/congressional" title="Congressional (3)">Congressional (29)</a></li>
+</ul></div>
+
+</section>
+  </div>
+        </aside>  <!-- /#sidebar-first -->
+      
+      <section class="col-sm-9">
+                        <a id="main-content"></a>
+                
+                          
+                          <div class="region region-content">
+    <section id="block-system-main" class="block block-system clearfix">
+
+      
+  
+
+<div  about="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union" typeof="sioc:Item foaf:Document" class="node node-book view-mode-full ">
+    <div class="row">
+    <div class="col-sm-12 ">
+      
+  <div class="field-title">
+    <h1>Annual Messages to Congress on the State of the Union (Washington 1790 - the present)</h1>  </div>
+
+  <div class="field-body">
+    <h4 align="center">All of our State of the Union (SOTU) Resources</h4>
+<h4>            1.  <a href="#SOTU Introductory Essay">Introductory Essay</a><br />            2.  <a href="#Table of SOTU">Table of all SOTU Messages and Addresses</a><br />            3.  <a href="https://www.presidency.ucsb.edu/node/324135/">Length of State of the Union Messages and Addresses in Words</a><br />            4.  <a href="https://www.presidency.ucsb.edu/node/324136/">Length of State of the Union Addresses in Minutes (starting1964)</a><br />            5.  <a href="https://www.presidency.ucsb.edu/node/324137/">List of Acknowledged Guests Sitting in House Gallery</a><br />            6.  <a href="https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union/list">List of Opposition Responses</a><br />            7.  <a href="https://www.presidency.ucsb.edu/node/324139/">Cabinet Members Not in Attendance ("Designated Survivor;" (starting1984)</a></h4>
+<h4><a id="SOTU Introductory Essay" name="SOTU Introductory Essay">Introductory Essay</a></h4>
+<p>State of the Union Messages to the Congress are mandated by Article II, Section 3 of the United States Constitution: "He shall from time to time give to the Congress information of the state of the union, and recommend to their consideration such measures as he shall judge necessary and expedient." </p>
+<p>George Washington established the precedent that clarifies the phrase "from time to time." Since 1790, with occasional exceptions, State of the Union messages have been delivered once annually.</p>
+<p>A misconception found even in some academic literature is that the State of the Union is a <em>spoken </em>message presented to a Joint Session of Congress.  With a few exceptions, this has been true in the modern era--starting around 1933.  However, beginning with Jefferson's 1st State of the Union (1801) and lasting until Taft's final message (1912), the State of the Union was a written (and often lengthy) report sent to Congress to coincide with a new Session of Congress..  </p>
+<p>Federalists Washington and Adams had personally addressed the Congress, but Jefferson stopped that practice.  Some believe he thought the practice of appearing before the representatives of the people was too similar to the British monarch's practice of addressing each new Parliament.  Jefferson suggested the process was a waste of time.  Some believe Jefferson just was not comfortable with public oratory.   </p>
+<p>Jefferson's practice changed in 1913 with Woodrow Wilson.  Wilson stated that the presidency was more than an impersonal institution and active and visible presidential leadership was needed by both the people and the Congress. As an expression of this philosophy, Wilson delivered spoken messages to Congress, citing the authority of the Constitution.  (For an excellent discussion of the contemporary commentary on both the Jefferson and Wilson innovations, we recommend an article by Anne Pluta, "Reassessing the Assumptions behind the Evolution of Popular Presidential Communication," <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/psq.12171"><em>Presidential Studies Quarterly</em> 45:1 (March 2015): 70-90</a>.)</p>
+<p>For health reasons, Wilson did not address Congress in 1919 and 1920. Warren Harding's two messages (1921 and 1922) and Calvin Coolidge's first (1923) were also spoken messages.  Subsequently, Coolidge's remaining State of the Unions (1924-28) and all four of Hoover's (1929-32) were written.  </p>
+<p>Franklin D. Roosevelt consolidated the modern practice of delivering a spoken State of the Union beginning with his first in 1934. However, there continued to be exceptions. In some cases, there was only a written message and no spoken address. These include Truman (1946 and 1953), Eisenhower (1961), and Carter (1981). In some years there were both written messages and spoken addresses. Nixon in 1972 presented both a spoken address and a written message. In 1973 and 1974, Nixon submitted multiple documents entitled "State of the Union."  Carter also spoke <em>and </em>wrote in 1978, 1979, and 1980. Both Roosevelt's last (1945) and Eisenhower's 4th (1956) were technically written messages although they also addressed the American people via radio summarizing their reports (rather than speaking to a Joint Session of Congress). Scholarly research needs to recognize the variability in these practices.</p>
+<p>Television further transformed the spoken Addresses.  The first televised address was Truman's in 1947.  (Later that same year Truman was the first to televise an address from the Oval Office.)  In 1965, Lyndon Johnson began the practice of making the address in the evening in <em>prime time</em> and relying on teleprompters.  (<em>New York Times</em> columnist Russell Baker called this one of Johnson's "worst mistakes" inflicting a hardship on the public. 1/13/1966 p. 24.) This change to prime-time addresses vastly expanded the immediate audience.  This also marked the start of instantaneous television commentary following the speech.</p>
+<p>The following year, 1966, began the practice of opposition party responses to the Address. In the first instance, Senator Everett Dirksen and Representative Gerald R. Ford held a joint news conference 15 minutes after the end of the President's address.  But the main GOP rebuttal was not until five days later in a thirty-minute videotaped telecast carried at different times by the main TV networks.  ABC explained the decision as one of granting equal time. (<em>New York Times</em>, 1/14/1966, p. 79.)</p>
+<p>Recent presidents starting with Reagan addressed a joint session of Congress shortly after their inaugurations. These messages are, technically, not considered to be "State of the Union" addresses. Reagan's 1981 address is called, "Address Before a Joint Session of the Congress on the Program for Economic Recovery."  Bush's 1989 and Clinton's 1993 messages are called speeches on "Administration Goals."  </p>
+<p>G.W. Bush's 2001 speech was actually his "Budget Message," and Presidents Obama and Trump delivered a similar non-State of the Union "Address before a Joint Session of the Congress."  For research purposes, it is probably harmless to categorize these as State of the Union messages (as we do). The impact of such a speech on public, media, and congressional perceptions of presidential leadership and power should be the same as if the address was an official State of the Union.  These speeches are included in the table below with an asterisk.</p>
+<p>The State of the Union is delivered near the beginning of each session of Congress.  Before 1934 this meant the State of the Union was delivered usually in December. Since 1934, the State of the Union has been delivered near the beginning each year, with some presidents delivering a final message at the end of their last term (Truman, Eisenhower, Johnson, Ford, and Carter).  The table below reflects each message's placement in the President's term.</p>
+<p>President George W. Bush delivered his last State of the Union Address on January 28, 2008. Presidents have the right to deliver either a written or spoken State of the Union in the days immediately before leaving office in January. However, recent Presidents Reagan, George H.W. Bush, Clinton, George W. Bush, Obama, and Trump have chosen <em>not </em>to do so. Presidents Truman, Eisenhower, Johnson, Ford, and Carter did so.</p>
+<p>In 2019, in the midst of a government shutdown related to conflicts about how to adequately secure the Southern border, House Speaker Nancy Pelosi withdrew an invitation previously extended for a State of the Union Address tentatively scheduled for January 29, 2019.  At that point, Speaker Pelosi had not yet asked for a vote on a Concurrent Resolution necessary to schedule a Joint Session of Congress. (President Reagan had delayed a SOTU in the wake of the space shuttle Challenger disaster.)  After President Trump agreed to a temporary reopening of the government, an <a href="https://www.congress.gov/bill/116th-congress/house-concurrent-resolution/9?q=%7B%22search%22%3A%5B%22concurrent%22%5D%7D&amp;s=2&amp;r=5">invitation was extended to address a Joint Session on February 5, 2019</a>.  Is this a new front in institutional conflict between President and Congress, or just a passing moment in a particularly conflictual Presidency?</p>
+<table border="1" cellpadding="0" cellspacing="0" class="table-responsive">
+<thead>
+<tr>
+<td colspan="14" style="text-align: center;"><a id="Table of SOTU" name="Table of SOTU"><strong>Table of All State of the Union Messages and Addresses</strong></a></td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><span>President</span></strong></td>
+<td style="text-align: center;"><strong>Years of term</strong></td>
+<td colspan="5" rowspan="1" style="text-align: center;"><strong> Delivered as a Speech (Address)</strong></td>
+<td colspan="8" rowspan="1" style="text-align: center;"><strong>            Delivered as a Written Message</strong></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;">1st</td>
+<td style="text-align: center; height: 16px;">2nd</td>
+<td style="text-align: center; height: 16px;">3rd</td>
+<td style="text-align: center; height: 16px;">4th</td>
+<td style="text-align: center; height: 16px;">end 4th</td>
+<td style="text-align: center; height: 16px;">1st</td>
+<td style="text-align: center; height: 16px;">2nd</td>
+<td style="text-align: center; height: 16px;">3rd</td>
+<td style="text-align: center; height: 16px;">4th</td>
+<td style="text-align: center; height: 16px;">end 4th</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Joseph R. Biden</strong></td>
+<td style="text-align: center; height: 16px;"><em>2021-present</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-3">2021</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-the-state-the-union-28">2022</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-the-state-the-union-29">2023</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Donald J. Trump</strong></td>
+<td style="text-align: center; height: 16px;"><em>2017-2021</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=123408">2017</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-the-state-the-union-25">2018</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-the-state-the-union-26">2019</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-the-state-the-union-27">2020</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Barack Obama</strong></td>
+<td style="text-align: center; height: 16px;"><em>2013-2017</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=102826">2013</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=104596">2014</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=108031">2015</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=111174">2016</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>2009-2013</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=85753">2009</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=87433">2010</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=88928">2011</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=99000">2012</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>George W. Bush</strong></td>
+<td style="text-align: center; height: 16px;"><em>2005-2009</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=58746">2005</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=65090">2006</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=24446">2007</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=76301">2008</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>2001-2005</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29643">2001</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29644">2002</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29645">2003</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29646">2004</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>William J. Clinton</strong></td>
+<td style="text-align: center; height: 16px;"><em>1997-2001</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=53358">1997</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=56280">1998</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/address-before-joint-session-the-congress-the-state-the-union-6">1999</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=58708">2000</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1993-1997</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=47232">1993</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=50409">1994</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=51634">1995</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=53091">1996</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>George Bush</strong></td>
+<td style="text-align: center; height: 16px;"><em>1989-1993</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16660">1989</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=18095">1990</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=19253">1991</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=20544">1992</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Ronald Reagan</strong></td>
+<td style="text-align: center; height: 16px;"><em>1985-1989</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=38069">1985</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=36646">1986</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=34430">1987</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=36035">1988</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1981-1985</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=43425">1981</a>*</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=42687">1982</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=41698">1983</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=40205">1984</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Jimmy Carter</strong></td>
+<td style="text-align: center; height: 16px;"><em>1977-1981</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=30856">1978</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=32657">1979</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=33079">1980</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=30867">1978</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=32735">1979</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=33062">1980</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=44541">1981</a></td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Gerald R. Ford</strong></td>
+<td style="text-align: center; height: 16px;"><em>1974-1977</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4938">1975</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=5677">1976</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=5555">1977</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Richard M. Nixon</strong></td>
+<td style="text-align: center; height: 16px;"><em>1973-1974</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4327">1974</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="#nixon1973">1973†</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4328">1974</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1969-1973</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=2921">1970</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=3110">1971</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=3396">1972</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=3407">1972</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Lyndon B. Johnson</strong></td>
+<td style="text-align: center; height: 16px;"><em>1965-1969</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=26907">1965</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=28015">1966</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=28338">1967</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=28738">1968</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29333">1969</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1964-1965</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=26787">1964</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>John F. Kennedy</strong></td>
+<td style="text-align: center; height: 16px;"><em>1961-1963</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=8045">1961</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=9082">1962</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=9138">1963</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Dwight D. Eisenhower</strong></td>
+<td style="text-align: center; height: 16px;"><em>1957-1961</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=11029">1957</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=11162">1958</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=11685">1959</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=12061">1960</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=12074">1961</a></td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1953-1957</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=9829">1953</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10096">1954</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10416">1955</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10704">1956‡</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10593">1956</a><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10704">‡</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Harry S Truman</strong></td>
+<td style="text-align: center; height: 16px;"><em>1949-1953</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=13293">1949</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=13567">1950</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=14017">1951</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=14418">1952</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=14379">1953</a></td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1945-1949</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=12762">1947</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=13005">1948</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=12467">1946</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Franklin D. Roosevelt</strong></td>
+<td style="text-align: center; height: 16px;"><em>1945</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16603">1945</a><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10704">‡</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16595">1945</a><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10704">‡</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1941-1945</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16092">1941</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16253">1942</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16386">1943</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=16518">1944</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1937-1941</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=15336">1937</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=15517">1938</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=15684">1939</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=15856">1940</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1933-1937</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=14683">1934</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=14890">1935</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=15095">1936</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Herbert Hoover</strong></td>
+<td style="text-align: center; height: 16px;"><em>1929-1933</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=22021">1929</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=22458">1930</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=22933">1931</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=23376">1932</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Calvin Coolidge</strong></td>
+<td style="text-align: center; height: 16px;"><em>1925-1929</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29566">1925</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29567">1926</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29568">1927</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29569">1928</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1923-1925</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29564">1923</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29565">1924</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Warren G. Harding</strong></td>
+<td style="text-align: center; height: 16px;"><em>1921-1923</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29562">1921</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29563">1922</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Woodrow Wilson</strong></td>
+<td style="text-align: center; height: 16px;"><em>1917-1921</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29558">1917</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29559">1918</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29560">1919</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29561">1920</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1913-1917</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29554">1913</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29555">1914</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29556">1915</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29557">1916</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>William Howard Taft</strong></td>
+<td style="text-align: center; height: 16px;"><em>1909-1913</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29550">1909</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29551">1910</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/third-annual-message-17">1911</a>**</td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29553">1912</a>***</td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Theodore Roosevelt</strong></td>
+<td style="text-align: center; height: 16px;"><em>1905-1909</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29546">1905</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29547">1906</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29548">1907</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29549">1908</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1901-1905</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29542">1901</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29543">1902</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29544">1903</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29545">1904</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>William McKinley</strong></td>
+<td style="text-align: center; height: 16px;"><em>1897-1901</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29538">1897</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29539">1898</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29540">1899</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29541">1900</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Grover Cleveland</strong></td>
+<td style="text-align: center; height: 16px;"><em>1893-1897</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29534">1893</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29535">1894</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29536">1895</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29537">1896</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Benjamin Harrison</strong></td>
+<td style="text-align: center; height: 16px;"><em>1889-1893</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29530">1889</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29531">1890</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29532">1891</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29533">1892</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Grover Cleveland</strong></td>
+<td style="text-align: center; height: 16px;"><em>1885-1889</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29526">1885</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29527">1886</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29528">1887</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29529">1888</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Chester A. Arthur</strong></td>
+<td style="text-align: center; height: 16px;"><em>1881-1885</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29522">1881</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29523">1882</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29524">1883</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29525">1884</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>James A. Garfield</strong></td>
+<td style="text-align: center; height: 16px;"><em>1881</em></td>
+<td colspan="10" style="text-align: center; height: 16px;">no messages</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Rutherford B. Hayes</strong></td>
+<td style="text-align: center; height: 16px;"><em>1877-1881</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29518">1877</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29519">1878</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29520">1879</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29521">1880</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Ulysses S. Grant</strong></td>
+<td style="text-align: center; height: 16px;"><em>1873-1877</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29514">1873</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29515">1874</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29516">1875</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29517">1876</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1869-1873</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/first-annual-message-11">1869</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/second-annual-message-11">1870</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/third-annual-message-11">1871</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/documents/fourth-annual-message-10">1872</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Andrew Johnson</strong></td>
+<td style="text-align: center; height: 16px;"><em>1865-1869</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29506">1865</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29507">1866</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29508">1867</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29509">1868</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Abraham Lincoln</strong></td>
+<td style="text-align: center; height: 16px;"><em>1861-1865</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29502">1861</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29503">1862</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29504">1863</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29505">1864</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>James Buchanan</strong></td>
+<td style="text-align: center; height: 16px;"><em>1857-1861</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29498">1857</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29499">1858</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29500">1859</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29501">1860</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Franklin Pierce</strong></td>
+<td style="text-align: center; height: 16px;"><em>1853-1857</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29494">1853</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29495">1854</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29496">1855</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29497">1856</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Millard Fillmore</strong></td>
+<td style="text-align: center; height: 16px;"><em>1850-1853</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29491">1850</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29492">1851</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29493">1852</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Zachary Taylor</strong></td>
+<td style="text-align: center; height: 16px;"><em>1849-1850</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29490">1849</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>James K. Polk</strong></td>
+<td style="text-align: center; height: 16px;"><em>1845-1849</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29486">1845</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29487">1846</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29488">1847</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29489">1848</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>John Tyler</strong></td>
+<td style="text-align: center; height: 16px;"><em>1841-1845</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29483">1841</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29484">1842</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29647">1843</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29485">1844</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>William Henry Harrison</strong></td>
+<td style="text-align: center; height: 16px;"><em>1841</em></td>
+<td colspan="10" style="text-align: center; height: 16px;">no messages</td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Martin Van Buren</strong></td>
+<td style="text-align: center; height: 16px;"><em>1837-1841</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29479">1837</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29480">1838</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29481">1839</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29482">1840</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Andrew Jackson</strong></td>
+<td style="text-align: center; height: 16px;"><em>1833-1837</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29475">1833</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29476">1834</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29477">1835</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29478">1836</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1829-1833</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29471">1829</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29472">1830</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29473">1831</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29474">1832</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>John Quincy Adams</strong></td>
+<td style="text-align: center; height: 16px;"><em>1825-1829</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29467">1825</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29468">1826</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29469">1827</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29470">1828</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>James Monroe</strong></td>
+<td style="text-align: center; height: 16px;"><em>1821-1825</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29463">1821</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29464">1822</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29465">1823</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29466">1824</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1817-1821</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29459">1817</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29460">1818</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29461">1819</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29462">1820</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>James Madison</strong></td>
+<td style="text-align: center; height: 16px;"><em>1813-1817</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29455">1813</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29456">1814</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29457">1815</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29458">1816</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1809-1813</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29451">1809</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29452">1810</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29453">1811</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29454">1812</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>Thomas Jefferson</strong></td>
+<td style="text-align: center; height: 16px;"><em>1805-1809</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29447">1805</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29448">1806</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29449">1807</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29450">1808</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1801-1805</em></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29443">1801</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29444">1802</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29445">1803</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29446">1804</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>John Adams</strong></td>
+<td style="text-align: center; height: 16px;"><em>1797-1801</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29439">1797</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29440">1798</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29441">1799</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29442">1800</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="white-space: nowrap; text-align: center; height: 16px;"><strong>George Washington</strong></td>
+<td style="text-align: center; height: 16px;"><em>1793-1797</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29435">1793</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29436">1794</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29437">1795</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29438">1796</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td style="height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"><em>1789-1793</em></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29431">1790</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29432">1790</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29433">1791</a></td>
+<td style="text-align: center; height: 16px;"><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=29434">1792</a></td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+<td style="text-align: center; height: 16px;"> </td>
+</tr>
+<tr>
+<td colspan="12">
+<p><em>* Technically not a "State of the Union" Address.   See explanation in essay above this table</em><br />**In 1911 President Taft submitted his written message in four parts on December 5, December 7, December 20, and December 21.<br />***In 1912 President Taft submitted his written message in three parts on December 3, December 6, and December 19.<br /><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10704">‡</a> In 1956 President Eisenhower sent a written message to Congress, and also addressed the Nation via radio with a summary of his message. He did not deliver a speech before a joint session of Congress.<br /><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=10704">‡</a> In 1945 President Roosevelt sent a written message to Congress, and also addressed the Nation via radio with a summary of his message. He did not deliver a speech before a joint session of Congress.</p>
+</td>
+</tr>
+<tr>
+<td colspan="12"><a id="nixon1973"></a><span>† In 1973 President Nixon delivered a series of six written State of the Union messages to Congress. One message was an overview, followed by five additional messages each of which focused on a specific public policy theme. The president also delivered a radio address to the nation before each policy-specific message was sent to Congress. Links to each individual message and radio address are below:</span><br />
+<table>
+<tbody>
+<tr>
+<td><span><em>February 2, 1973</em></span></td>
+<td><span><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=3996">State of the Union Message to the Congress: Overview and Goals</a></span></td>
+</tr>
+<tr>
+<td><span><em>February 15, 1973</em></span></td>
+<td><span><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4102">State of the Union Message to the Congress on Natural Resources and the Environment</a></span></td>
+</tr>
+<tr>
+<td><span><em>February 22, 1973</em></span></td>
+<td><span><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4112">State of the Union Message to the Congress on the Economy</a></span></td>
+</tr>
+<tr>
+<td><span><em>March 1, 1973</em></span></td>
+<td><span><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4121">State of the Union Message to the Congress on Human Resources</a></span></td>
+</tr>
+<tr>
+<td><span><em>March 8, 1973</em></span></td>
+<td><span><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4134">State of the Union Message to the Congress on Community Development</a></span></td>
+</tr>
+<tr>
+<td><span><em>March 14, 1973</em></span></td>
+<td><span><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4140">State of the Union Message to the Congress on Law Enforcement and Drug Abuse Prevention</a></span></td>
+</tr>
+<tr>
+<td><em>February 14, 1973</em></td>
+<td><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4101">Radio Address About the State of the Union Message on Natural Resources and the Environment</a></td>
+</tr>
+<tr>
+<td><em>February 21, 1973</em></td>
+<td><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4111">Radio Address About the State of the Union Message on the Economy</a></td>
+</tr>
+<tr>
+<td><em>February 24, 1973</em></td>
+<td><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4117">Radio Address About the State of the Union Message on Human Resources</a></td>
+</tr>
+<tr>
+<td><em>March 4, 1973</em></td>
+<td><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4128">Radio Address About the State of the Union Message on Community Development</a></td>
+</tr>
+<tr>
+<td><em>March 10, 1973</em></td>
+<td><a href="https://www.presidency.ucsb.edu/ws/index.php?pid=4135">Radio Address About the State of the Union Message on Law Enforcement and Drug Abuse Prevention</a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span><strong>Citation:</strong> Gerhard Peters and John T. Woolley. "The State of the Union, Background and Reference Table." <u>The American Presidency Project</u>. Ed. John T. Woolley and Gerhard Peters. Santa Barbara, CA: University of California. 1999-2021. Available from the World Wide Web: </span><a href="https://www.presidency.ucsb.edu/node/324107/">https://www.presidency.ucsb.edu/node/324107/</a>.</p>
+  </div>
+  <div id="book-navigation-324106" class="book-navigation">
+    <ul class="menu nav"><li class="first leaf"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union-3">Length of State of the Union Messages and Addresses in Words</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union-0">Length of State of the Union Addresses in Minutes (from 1964)</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union-2">List of Acknowledged Guests Sitting in House Gallery</a></li>
+<li class="leaf"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union/list">List of Opposition Responses</a></li>
+<li class="last leaf"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union-1">Cabinet Members Not in Attendance (&quot;Designated Survivor,&quot; from 1984), and Frequency By Department</a></li>
+</ul>
+        <ul class="pager clearfix">
+              <li class="previous"><a href="/documents/presidential-documents-archive-guidebook" class="page-previous" title="Go to previous page">‹ Presidential Documents Archive Collections</a></li>
+                    <li><a href="/documents/presidential-documents-archive-guidebook" class="page-up" title="Go to parent page">up</a></li>
+                    <li class="next"><a href="/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union-3" class="page-next" title="Go to next page">Length of State of the Union Messages and Addresses in Words ›</a></li>
+          </ul>
+    
+  </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Needed to activate display suite support on forms -->
+
+</section>
+  </div>
+<!-- Content -->
+      </section>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+<footer class="site-footer no-print">
+  <div class="container">
+      <div class="region region-footer">
+    <section id="block-block-4" class="block block-block attribution clearfix">
+
+      
+  <p><span>The American Presidency Project</span><br />John Woolley and Gerhard Peters<br /><strong><a href="https://www.presidency.ucsb.edu/contact">Contact</a></strong></p>
+
+</section>
+<section id="block-block-6" class="block block-block foot ucsb clearfix">
+
+      
+  <p style="text-align: center;display:inline-block;"><a class="twitter" href="https://twitter.com/presidency_proj" target="_blank">Twitter</a> <a class="facebook" href="https://www.facebook.com/pg/american.presidency.project/" target="_blank">Facebook</a></p>
+
+</section>
+<section id="block-block-5" class="block block-block copyright clearfix">
+
+      
+  <p>Copyright &copy; The American Presidency Project<br /><a href="http://www.ucsb.edu/terms-of-use" target="_blank">Terms of Service</a> | <a href="http://www.policy.ucsb.edu/privacy-notification/" target="_blank">Privacy</a> | <a href="/accessibility">Accessibility</a></p><p><img alt="uc santa barbara logo" src="/sites/default/files/pictures/uc-santa-barbara-wordmark-white1x.svg" style="width: 197px; min-width: 150px; height: 14px;object-fit:cover;" /></p>
+</section>
+  </div>
+  </div>
+  </footer>
+  <script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_NKBfN5q_T2fdeVG6tE3pdNU7glYkyzgPuDTc4K3Ne1w.js"></script>
+<script src="https://www.presidency.ucsb.edu/sites/default/files/js/js_MRdvkC2u4oGsp5wVxBG1pGV5NrCPW3mssHxIn6G9tGE.js"></script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"dee899de70","applicationID":"80106271","transactionName":"bl1XYxNYWkVYVxFdWVcXdFQVUFtYFlAWa1NBTEdWEmZaWV1ROkRXXl1qQQhcQw==","queueTime":0,"applicationTime":505,"atts":"QhpUFVtCSUs=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

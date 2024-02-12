@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title> | STV4030A - Visualizing regression models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Visualization/data_viz_model_predictions.html" rel="next">
+<link href="../Visualization/data_viz_examples.html" rel="prev">
+<link href="..//pics/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><img src="../pics/uio-logo-white.png" class="img-fluid" width="150"> | STV4030A</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Visualization/data_viz_in_ggplot.html">Data Visualization</a></li><li class="breadcrumb-item"><a href="../Visualization/data_viz_models.html">Visualizing regression models</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A">
+            Source code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.uio.no/oyvinsti/STV4030A/issues">
+            Report an error
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Working in R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/R_refresher.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R refresher</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Beyond_the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beyond the basics: functions and iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing your own functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/Iteration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_refresh/encoding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Locales and encoding</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Quarto documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/writing_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing Quarto documents</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Quarto_documents/producing_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Producing Tables from R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/tidy_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Wrangling/wrangling_in_dplyr_and_tidyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wrangling in <code>dplyr</code> and <code>tidyr</code></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_in_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization in <code>ggplot2</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examples of different types of data visualizations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_models.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Visualizing regression models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Visualization/data_viz_model_predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualizing quantities of interest based on regression models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Text data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/text_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Political Text as Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/read_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading Texts into R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/regex.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/extracting_data_from_texts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extracting data from texts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../text_data/preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Data gathering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/webscraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Webscraping</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data_gather/apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">APIs</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Spatial data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/what_is_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What is spatial data?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/reading_spatial_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reading spatial data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/spatial_joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../spatial_data/basic_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating maps</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#coefficient-plots" id="toc-coefficient-plots" class="nav-link active" data-scroll-target="#coefficient-plots">Coefficient plots</a>
+  <ul class="collapse">
+  <li><a href="#coefficient-plots-for-a-single-regression-model" id="toc-coefficient-plots-for-a-single-regression-model" class="nav-link" data-scroll-target="#coefficient-plots-for-a-single-regression-model">Coefficient plots for a single regression model</a></li>
+  <li><a href="#coefficient-plots-with-multiple-regression-models" id="toc-coefficient-plots-with-multiple-regression-models" class="nav-link" data-scroll-target="#coefficient-plots-with-multiple-regression-models">Coefficient plots with multiple regression models</a></li>
+  </ul></li>
+  <li><a href="#plotting-conditional-coefficients-to-understand-interactions" id="toc-plotting-conditional-coefficients-to-understand-interactions" class="nav-link" data-scroll-target="#plotting-conditional-coefficients-to-understand-interactions">Plotting conditional coefficients to understand interactions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Visualizing regression models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Visualizations are not just useful for presenting your data. Visualizations can also be more effective than the traditional regression tables in communicating the results of your statistical analysis!</p>
+<section id="coefficient-plots" class="level1">
+<h1>Coefficient plots</h1>
+<p>Coefficient plots are visualizations where the magnitude of each coefficient is displayed as a point with error bars indicating confidence intervals. Such confidence intervals typically better convey the uncertainty surrounding each coefficient than reporting the standard error and level of significance as is typically done in regression tables. Coefficient plots also make easy to compare different point estimates (for instance from different models against each other) <span class="citation" data-cites="kastellec2007using">(<a href="#ref-kastellec2007using" role="doc-biblioref">Kastellec and Leoni 2007, 763–67</a>)</span>.</p>
+<p>Lets’s look at some examples. We will use the following packages</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sandwich)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(interplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="coefficient-plots-for-a-single-regression-model" class="level2">
+<h2 class="anchored" data-anchor-id="coefficient-plots-for-a-single-regression-model">Coefficient plots for a single regression model</h2>
+<p><span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span> is interested in the factors that influence legislators willingness to bend the rules to strengthen legislative majorities. She investigates the decision of US Senators in 2017 to sign letter committing to save the <a href="https://en.wikipedia.org/wiki/Filibuster">“filibuster” procedure</a> in the US Senate (which she interprets as an unwillingness to bend the rules). She hypothesizes that Republicans (the majority party) were less likely to sign the letter, but that republicans running for reelection in 2018 would be more likely to sign than other republicans, and that ideological outliers would be less likely to sign the letter. She controls for “other forces that may shape lawmakers’ procedural views including senators’ seniority in the chamber and whether they have ever served in the Senate minority party” <span class="citation" data-cites="binder2018dodging">(<a href="#ref-binder2018dodging" role="doc-biblioref">Binder 2018, 1460</a>)</span>.</p>
+<p>She estimates a single logistic regression model with the decision to sign the letter as the dependent variable. Instead of a regression table, she reports the coefficients and 95% confidence intervals in a coefficient plot <span class="citation" data-cites="binder2018dodging">(<a href="#ref-binder2018dodging" role="doc-biblioref">Binder 2018, 1461</a>)</span>. We recreate this plot using <code>broom</code> and <code>ggplot2</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>dodgingrules <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"../data/dodgingrules.dta"</span>)</span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-3" class="code-annotation-target"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>binder_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(filisave <span class="sc">~</span> running18 <span class="sc">+</span> gop <span class="sc">+</span>  wings <span class="sc">+</span>  leader <span class="sc">+</span></span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>                      stdrank <span class="sc">+</span> servedmin <span class="sc">+</span>  running18<span class="sc">:</span>gop,</span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> dodgingrules,</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-9" class="code-annotation-target"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(binder_model) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-10" class="code-annotation-target"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">clustered_standard_error =</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">vcovHAC</span>(binder_model,</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>                                                      <span class="at">cluster =</span> dodgingrules<span class="sc">$</span>stateid))),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-2-12" class="code-annotation-target"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper =</span> estimate <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> clustered_standard_error,</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower =</span> estimate <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> clustered_standard_error,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-2-14" class="code-annotation-target"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">term =</span> <span class="fu">case_when</span>(term <span class="sc">==</span> <span class="st">"wings"</span> <span class="sc">~</span> <span class="st">"Ideologue"</span>,</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a>                          term <span class="sc">==</span> <span class="st">"running18:gop"</span> <span class="sc">~</span> <span class="st">"GOP running in 2018"</span>,</span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>                          term <span class="sc">==</span> <span class="st">"leader"</span> <span class="sc">~</span> <span class="st">"Party leader"</span>,</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17" aria-hidden="true" tabindex="-1"></a>                          term <span class="sc">==</span> <span class="st">"gop"</span> <span class="sc">~</span> <span class="st">"Republican"</span>,</span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-hidden="true" tabindex="-1"></a>                          term <span class="sc">==</span> <span class="st">"stdrank"</span> <span class="sc">~</span> <span class="st">"Chamber rank"</span>,</span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19" aria-hidden="true" tabindex="-1"></a>                          term <span class="sc">==</span> <span class="st">"servedmin"</span> <span class="sc">~</span> <span class="st">"Served in minority"</span>,</span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-hidden="true" tabindex="-1"></a>                          term <span class="sc">==</span> <span class="st">"running18"</span> <span class="sc">~</span> <span class="st">"Running in 2018"</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="6" onclick="event.preventDefault();">6</a><span id="annotated-cell-2-21" class="code-annotation-target"><a href="#annotated-cell-2-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">term =</span> <span class="fu">factor</span>(term, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Running in 2018"</span>,<span class="st">"Served in minority"</span>,</span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"Chamber rank"</span>,<span class="st">"Republican"</span>,<span class="st">"Party leader"</span>,</span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"GOP running in 2018"</span>, <span class="st">"Ideologue"</span>  ))) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="7" onclick="event.preventDefault();">7</a><span id="annotated-cell-2-24" class="code-annotation-target"><a href="#annotated-cell-2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(term) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="8" onclick="event.preventDefault();">8</a><span id="annotated-cell-2-25" class="code-annotation-target"><a href="#annotated-cell-2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> term,</span>
+<span id="annotated-cell-2-26"><a href="#annotated-cell-2-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> estimate,</span>
+<span id="annotated-cell-2-27"><a href="#annotated-cell-2-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmin =</span> lower,</span>
+<span id="annotated-cell-2-28"><a href="#annotated-cell-2-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmax =</span> upper))<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="9" onclick="event.preventDefault();">9</a><span id="annotated-cell-2-29" class="code-annotation-target"><a href="#annotated-cell-2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey"</span>, <span class="at">linetype =</span> <span class="st">"longdash"</span>)<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="10" onclick="event.preventDefault();">10</a><span id="annotated-cell-2-30" class="code-annotation-target"><a href="#annotated-cell-2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> term), <span class="at">color =</span> <span class="st">"grey"</span>)<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="11" onclick="event.preventDefault();">11</a><span id="annotated-cell-2-31" class="code-annotation-target"><a href="#annotated-cell-2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="12" onclick="event.preventDefault();">12</a><span id="annotated-cell-2-32" class="code-annotation-target"><a href="#annotated-cell-2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbarh</span>(<span class="at">height =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="13" onclick="event.preventDefault();">13</a><span id="annotated-cell-2-33" class="code-annotation-target"><a href="#annotated-cell-2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">5</span>)<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="14" onclick="event.preventDefault();">14</a><span id="annotated-cell-2-34" class="code-annotation-target"><a href="#annotated-cell-2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="15" onclick="event.preventDefault();">15</a><span id="annotated-cell-2-35" class="code-annotation-target"><a href="#annotated-cell-2-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>))<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="16" onclick="event.preventDefault();">16</a><span id="annotated-cell-2-36" class="code-annotation-target"><a href="#annotated-cell-2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">""</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-2-37"><a href="#annotated-cell-2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-lines="3,4,5,6" data-code-cell="annotated-cell-2" data-code-annotation="1">We reestimate her logistic regression using <code>glm()</code>, which is the maximum likelihood equvalent of <code>stan_glm()</code> from <code>rstanarm</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-lines="9" data-code-cell="annotated-cell-2" data-code-annotation="2">Using <code>tidy()</code> from <code>broom</code> we can get all the regression table as a nice <code>data.frame</code> that is easy to work with.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-lines="10,11" data-code-cell="annotated-cell-2" data-code-annotation="3"><span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span> clustered her standard errors by state. We can cluster the variance covariance matrix with <code>vcovHAC()</code> from the sandwich package. The arguments we supply are a regression model (<code>binder_model</code>) and a variable to cluster on <code>dodgingrules$stateid</code>. We take the square root (<code>sqrt()</code>) of the diagonal (<code>diag()</code>) of this matrix to get the standard errors which we save as variable to the <code>data.frame()</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-lines="12,13" data-code-cell="annotated-cell-2" data-code-annotation="4">We create the upper/lower limits of the confidence intervals by taking each coefficient and adding/subtracting 1.96 times the standard error.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-lines="14,15,16,17,18,19,20" data-code-cell="annotated-cell-2" data-code-annotation="5">We recode the <code>term</code> column which has the variable for each coefficient to have the same labels as the one reported by <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-lines="21,22,23" data-code-cell="annotated-cell-2" data-code-annotation="6">By making <code>factor</code> variable with <code>levels</code> we can ensure that the coefficients will have the same order in the figure as the order used by <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-lines="24" data-code-cell="annotated-cell-2" data-code-annotation="7">We didn’t recode the <code>term</code> for the intercept so this row now has <code>NA</code> on term. <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span> didn’t report the intercept in her figure, so we will just omit this row.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="8">8</dt>
+<dd>
+<span data-code-lines="25,26,27,28" data-code-cell="annotated-cell-2" data-code-annotation="8">We start making our plot with <code>ggplot()</code> we map the coefficient names to the y axis and the size of each coefficient to the x axis. In addition we now specify <code>xmin</code> and <code>xmax</code> which are going to provide the lower and upper end of each confidence interval.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="9">9</dt>
+<dd>
+<span data-code-lines="29" data-code-cell="annotated-cell-2" data-code-annotation="9">Adding a vertical line at 0 makes it easy to see which confidence interval cross zero (indicating that the coefficient is not is significant at the 0.05-level) and which don’t (indicating that the coefficient is statistically significant). <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span> added a grey dashed line, so we do the same.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="10">10</dt>
+<dd>
+<span data-code-lines="30" data-code-cell="annotated-cell-2" data-code-annotation="10"><span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span> also added some grey horizontal lines for each coefficient. These don’t serve a clear purpose, but adding them is easy enough and illustrates how we can also map the <code>yintercept</code> to variable in the dataset using <code>aes()</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="11">11</dt>
+<dd>
+<span data-code-lines="31" data-code-cell="annotated-cell-2" data-code-annotation="11">We add points for each coefficient and make them slightly larger then the default size using <code>size = 2</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="12">12</dt>
+<dd>
+<span data-code-lines="32" data-code-cell="annotated-cell-2" data-code-annotation="12">We use <code>geom_errorbarh()</code> to create horizontal error bars for the confidence intervals. By default they have quite pronounced edges that we can remove by setting <code>height = 0</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="13">13</dt>
+<dd>
+<span data-code-lines="33" data-code-cell="annotated-cell-2" data-code-annotation="13">We adjust the length of the x-axis using <code>xlim()</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="14">14</dt>
+<dd>
+<span data-code-lines="34" data-code-cell="annotated-cell-2" data-code-annotation="14">We want to remove most of the background noise so we use <code>theme_classic()</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="15">15</dt>
+<dd>
+<span data-code-lines="35" data-code-cell="annotated-cell-2" data-code-annotation="15">The exception is that <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span> had a black border around her figure, so adjust the <code>theme()</code> to add such a border. We set <code>fill = NA</code> so that nothing is added inside the border.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="16">16</dt>
+<dd>
+<span data-code-lines="36,37" data-code-cell="annotated-cell-2" data-code-annotation="16">We remove the axis labels using <code>xlab()</code> and <code>ylab()</code>.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-binder" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-binder-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Replication of <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span>’s Figure 2. Logit coefficients and 95%-confidence intervals</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The above example illustrates how you can make coefficient plots using the regular <code>ggplot2</code> functionality. There are also packages that automatize more of this process for you. For instance, <a href="https://pages.github.uio.no/oyvinsti/STV4030A/Quarto_documents/producing_tables.html">the <code>modelSummary</code> package that we used to create regression tables</a> has a <code>modelplot()</code> function that produces coefficient plots.</p>
+<p>Let’s see if we can recreate the figure using <code>modelplot()</code>!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(binder_model,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">vcov =</span> <span class="fu">vcovHAC</span>(binder_model, <span class="at">cluster =</span> dodgingrules<span class="sc">$</span>stateid),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">coef_map =</span> <span class="fu">list</span>(<span class="st">"running18"</span> <span class="ot">=</span> <span class="st">"Running in 2018"</span>,</span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"servedmin"</span> <span class="ot">=</span> <span class="st">"Served in minority"</span>,</span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"stdrank"</span> <span class="ot">=</span> <span class="st">"Chamber rank"</span>,</span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"gop"</span> <span class="ot">=</span> <span class="st">"Republican"</span>,</span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"leader"</span> <span class="ot">=</span> <span class="st">"Party leader"</span>,</span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"running18:gop"</span> <span class="ot">=</span> <span class="st">"GOP running in 2018"</span>,</span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"wings"</span> <span class="ot">=</span> <span class="st">"Ideologue"</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">conf_level =</span> <span class="fl">0.95</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-lines="1" data-code-cell="annotated-cell-3" data-code-annotation="1">We supply the model to <code>modelplot()</code> from <code>modelsummary</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-lines="2" data-code-cell="annotated-cell-3" data-code-annotation="2">we can change how the standard errors are calculated using the <code>vcov</code> argument. Note that we just supply a new variance-covariance matrix so we don’t need to extract the square root of the diagonal. <code>modelplot()</code> knows how to that for us.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-lines="3,4,5,6,7,8,9" data-code-cell="annotated-cell-3" data-code-annotation="3"><a href="https://pages.github.uio.no/oyvinsti/STV4030A/Quarto_documents/producing_tables.html#rearranging-renaming-and-omitting-coefficients">Just as for the tables we made using <code>modelsummary()</code></a>, we can use <code>coef_map</code> to rename, reorder, and omit coefficients!</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-lines="10" data-code-cell="annotated-cell-3" data-code-annotation="4">We decide whatever confidence interval we want here.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-binder2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-binder2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Replication of <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span>’s Figure 2 using <code>modelplot()</code></figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Using <code>modelplot()</code> was arguably much easier, so many thanks to <span class="citation" data-cites="arel2022modelsummary">Arel-Bundock (<a href="#ref-arel2022modelsummary" role="doc-biblioref">2022</a>)</span>!</p>
+<p>But the fun doesn’t stop. Since <code>modelplot()</code> produces a <code>ggplot2</code> object, we can use all the `<code>ggplot2</code> functions to further customize the figure! E.g.:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(binder_model, </span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">vcov =</span> <span class="fu">vcovHAC</span>(binder_model, <span class="at">cluster =</span> dodgingrules<span class="sc">$</span>stateid), </span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">coef_map =</span> <span class="fu">list</span>(<span class="st">"running18"</span> <span class="ot">=</span> <span class="st">"Running in 2018"</span>, </span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"servedmin"</span> <span class="ot">=</span> <span class="st">"Served in minority"</span>,</span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"stdrank"</span> <span class="ot">=</span> <span class="st">"Chamber rank"</span>,</span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"gop"</span> <span class="ot">=</span> <span class="st">"Republican"</span>, </span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"leader"</span> <span class="ot">=</span> <span class="st">"Party leader"</span>, </span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"running18:gop"</span> <span class="ot">=</span> <span class="st">"GOP running in 2018"</span>,</span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"wings"</span> <span class="ot">=</span> <span class="st">"Ideologue"</span>), </span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">conf_level =</span> <span class="fl">0.95</span>) <span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-11" class="code-annotation-target"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey"</span>, <span class="at">linetype =</span> <span class="st">"longdash"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-lines="11" data-code-cell="annotated-cell-4" data-code-annotation="1">We can change the theme.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-lines="12" data-code-cell="annotated-cell-4" data-code-annotation="2">We can add the dashed grey line to clarify which confidence intervals overlap with zero.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-binder3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-binder3-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Replication of <span class="citation" data-cites="binder2018dodging">Binder (<a href="#ref-binder2018dodging" role="doc-biblioref">2018</a>)</span>’s Figure 2 using <code>modelplot()</code> with some additional adjustments.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coefficient-plots-with-multiple-regression-models" class="level2">
+<h2 class="anchored" data-anchor-id="coefficient-plots-with-multiple-regression-models">Coefficient plots with multiple regression models</h2>
+<p>Using coefficient plots arguably also makes it easier to compare coefficients and uncertainty estimates from multiple regression models. To distinguish between different models in the coefficient plot, we can for instance use different colors, different symbols for the coefficient points, different line types for the coefficient estimates or some combination.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Alternatively, We can have different models on one the axis and use colors and symbols to distinguish between different coefficients.</p>
+<p>For instance, <span class="citation" data-cites="shen2022undue">Shen-Bayh (<a href="#ref-shen2022undue" role="doc-biblioref">2022</a>)</span> argues that authoritarian regimes are more likely to use judicial means of repressing insider threats (and to use extrajudicial strategies towards outsider threats). Using a dataset on failed coup plots in Anglophone sub-Saharan Africa, she estimates three logistic regression with a binary indicator for whether judicial strategies were used to deal with the plotters (or not) as the dependent variable and the challengers were “regime insiders” the main independent variable <span class="citation" data-cites="shen2022undue">(<a href="#ref-shen2022undue" role="doc-biblioref">Shen-Bayh 2022, 341</a>)</span>. The models differ in the control variables that are included. While <span class="citation" data-cites="shen2022undue">Shen-Bayh (<a href="#ref-shen2022undue" role="doc-biblioref">2022</a>)</span> report her results in a table, we will illustrate how they could also have been reported in a coefficient plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>judicial_repression <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"../data/sb_judicial_repression_wp_2018.csv"</span>, <span class="at">delim =</span> <span class="st">","</span>) </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>judicial_repression <span class="ot">&lt;-</span> judicial_repression <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">insider_threat =</span> <span class="fu">ifelse</span>(challenger_type <span class="sc">==</span> <span class="st">"Insiders"</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>judicial_repression_logit1 <span class="ot">&lt;-</span>  <span class="fu">glm</span>(trial <span class="sc">~</span> insider_threat, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data =</span> judicial_repression, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>judicial_repression_logit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(trial <span class="sc">~</span> insider_threat <span class="sc">+</span> exec_mil, </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">data =</span> judicial_repression, </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>judicial_repression_logit3  <span class="ot">&lt;-</span> <span class="fu">glm</span>(trial <span class="sc">~</span> insider_threat <span class="sc">+</span> exec_mil <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="fu">as.factor</span>(country) <span class="sc">+</span> <span class="fu">as.factor</span>(year), </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data =</span> judicial_repression, </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(<span class="fu">list</span>(<span class="st">"Model 1: no controls"</span> <span class="ot">=</span> judicial_repression_logit1,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Model 2: Controlling for military regime"</span> <span class="ot">=</span>  judicial_repression_logit2,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Model 3: Controlling for military regime +</span><span class="sc">\n</span><span class="st">year and country fixed effects"</span> <span class="ot">=</span> judicial_repression_logit3), </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">coef_map =</span> <span class="fu">list</span>(<span class="st">"insider_threat"</span> <span class="ot">=</span> <span class="st">"Insider threat"</span>, </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"exec_mil"</span> <span class="ot">=</span> <span class="st">"Military regime"</span>, </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"(Intercept)"</span> <span class="ot">=</span> <span class="st">"Intercept"</span>))<span class="sc">+</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-fiona" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-fiona-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Replication of Table 1 in <span class="citation" data-cites="shen2022undue">Shen-Bayh (<a href="#ref-shen2022undue" role="doc-biblioref">2022</a>)</span> as a coefficient plot.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure <a href="#fig-fiona">Figure&nbsp;4</a> makes it easy to compare the magnitude and uncertainty for the “Insider threat” coefficients across the three different specifications.</p>
+</section>
+</section>
+<section id="plotting-conditional-coefficients-to-understand-interactions" class="level1">
+<h1>Plotting conditional coefficients to understand interactions</h1>
+<p>Interaction effects can often be difficult to understand just from looking at regression tables. It is therefore recommended to report conditional coefficients (the coefficient for one variable conditional on the levels of the variable it is interacted with) when you are interested in investigating interaction effects <span class="citation" data-cites="brambor2006understanding">(<a href="#ref-brambor2006understanding" role="doc-biblioref">Brambor, Clark, and Golder 2006</a>)</span>. Conditional coefficients are typically best presented visually.</p>
+<p>For instance, <span class="citation" data-cites="carrubba2008judicial">Carrubba, Gabel, and Hankla (<a href="#ref-carrubba2008judicial" role="doc-biblioref">2008</a>)</span> argue that European Court of Justice is influenced by the degree of support a plaintiff receives from European Union member states (who may submit briefs indicating their position on cases before the Court) and that this effect is even more pronounced when a government is a litigant in the case. They thus estimate the following probit model in which the net number of observations in favor of the plaintiff is interacted with whether a government is a litigant <span class="citation" data-cites="carrubba2008judicial">(<a href="#ref-carrubba2008judicial" role="doc-biblioref">Carrubba, Gabel, and Hankla 2008, 443</a>)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/CarrubbaGabelHankla.RData"</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>ecj_data <span class="ot">&lt;-</span> table</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>ecj_probit <span class="ot">&lt;-</span> <span class="fu">glm</span>(ECJPlAgree <span class="sc">~</span> </span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>              normnetwobs <span class="sc">*</span>  govislit <span class="sc">+</span></span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>              percham <span class="sc">+</span> </span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>              CommIsPl <span class="sc">+</span> </span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a>              CommIsDef  <span class="sc">+</span> </span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>              CommObsPl <span class="sc">+</span> </span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>              CommObsDef, </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-10" class="code-annotation-target"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>),</span>
+<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> ecj_data )</span>
+<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">modelplot</span>(ecj_probit, </span>
+<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">coef_map =</span> <span class="fu">list</span>( <span class="st">"(Intercept)"</span> <span class="ot">=</span> <span class="st">"Constant"</span>,</span>
+<span id="annotated-cell-6-15"><a href="#annotated-cell-6-15" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"CommObsDef"</span> <span class="ot">=</span> <span class="st">"Commission observation for defendant"</span>, </span>
+<span id="annotated-cell-6-16"><a href="#annotated-cell-6-16" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"CommObsPl"</span> <span class="ot">=</span> <span class="st">"Commission observation for plaintiff"</span>, </span>
+<span id="annotated-cell-6-17"><a href="#annotated-cell-6-17" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"CommIsDef"</span> <span class="ot">=</span> <span class="st">"Commission is defendant"</span>, </span>
+<span id="annotated-cell-6-18"><a href="#annotated-cell-6-18" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"CommIsPl"</span> <span class="ot">=</span> <span class="st">"Commission is plaintiff"</span>, </span>
+<span id="annotated-cell-6-19"><a href="#annotated-cell-6-19" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"percham"</span> <span class="ot">=</span> <span class="st">"Chamber size"</span>, </span>
+<span id="annotated-cell-6-20"><a href="#annotated-cell-6-20" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"govislit"</span><span class="ot">=</span> <span class="st">"Government litigant"</span>, </span>
+<span id="annotated-cell-6-21"><a href="#annotated-cell-6-21" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"normnetwobs:govislit"</span> <span class="ot">=</span> <span class="st">"Net weighted observations for plaintiff * Government litigant"</span>, </span>
+<span id="annotated-cell-6-22"><a href="#annotated-cell-6-22" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"normnetwobs"</span> <span class="ot">=</span> <span class="st">"Net weighted observations for plaintiff"</span>), </span>
+<span id="annotated-cell-6-23"><a href="#annotated-cell-6-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">vcov =</span> <span class="fu">vcovHAC</span>(ecj_probit, <span class="at">cluster =</span> ecj_data<span class="sc">$</span>casenumber))<span class="sc">+</span></span>
+<span id="annotated-cell-6-24"><a href="#annotated-cell-6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey"</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-6-25"><a href="#annotated-cell-6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fl">4.5</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-6-26"><a href="#annotated-cell-6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="annotated-cell-6-27"><a href="#annotated-cell-6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dependent variable is ECJ ruling for plaintiff"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-lines="2" data-code-cell="annotated-cell-6" data-code-annotation="1">The dataset in the <code>.RData</code>-file was called <code>table</code>, which can be confusing. We give it a more informative name.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-lines="10" data-code-cell="annotated-cell-6" data-code-annotation="2">Probit models are very similar to logistic regressions, but have a different link function. You can estimate them using <code>glm()</code> or <code>stan_glm()</code>, but you need to change the <code>link</code> argument.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-carrubba" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-carrubba-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Replication of model 2 in table 2 in <span class="citation" data-cites="carrubba2008judicial">Carrubba, Gabel, and Hankla (<a href="#ref-carrubba2008judicial" role="doc-biblioref">2008</a>)</span>. Probit coefficients and 95% confidence intervals.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>How can we interpret the coefficient for “Government litigant”? It does not capture the general relationship between a government being a litigant and a ruling for the plaintiff. Rather it effects the conditional coefficient for this relationship when “Net weighted observations for plaintiff” is 0. To better understand the relationship between “Government litigant” and the outcome, we should therefore plot conditional coefficients for “Government litigant” for different levels on “Net weighted observations for plaintiff”. It is easy to do so using the <code>interplot()</code> function from the <code>interplot</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-1" class="code-annotation-target"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interplot</span>(ecj_probit,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-7-2" class="code-annotation-target"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">var1 =</span> <span class="st">"govislit"</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-7-3" class="code-annotation-target"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">var2 =</span> <span class="st">"normnetwobs"</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-7-4" class="code-annotation-target"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">hist =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Net weighted observations for plaintiff"</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Coefficient for Government litigant"</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-lines="1" data-code-cell="annotated-cell-7" data-code-annotation="1">We supply the model.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-lines="2" data-code-cell="annotated-cell-7" data-code-annotation="2">We then supply the variable we want the conditional coefficient for.</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-lines="3" data-code-cell="annotated-cell-7" data-code-annotation="3">We supply the name of the other variable in the interaction (the moderator).</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-lines="4" data-code-cell="annotated-cell-7" data-code-annotation="4">We can make <code>interplot</code> add a histogram for the moderator, which is avoid us from making strong inferences for levels of the moderators which are very unusual in the data (and thus hard to estimate precisely).</span>
+</dd>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-lines="5,6,7,8" data-code-cell="annotated-cell-7" data-code-annotation="5">Since <code>interplot()</code> produces a <code>ggplot2</code> object, we can use our usual <code>ggplot2</code> functions to add layers and change the appearance of the graph.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-conditional1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-conditional1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: Conditional coefficient for “Government litigant” and 95% confidence intervals.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-conditional1">Figure&nbsp;6</a> suggests that when there is strong support for the plaintiff, a government litigant is correlated with a higher likelihood for a ruling in favor of the plaintiff, but that this relationship reverses when there is strong opposition to the plaintiff.</p>
+<p>An alternative way to interpret the model (and indeed this is the way that <span class="citation" data-cites="carrubba2008judicial">Carrubba, Gabel, and Hankla (<a href="#ref-carrubba2008judicial" role="doc-biblioref">2008</a>)</span> look at it) is that the relationship “Net weighted observations for plaintiff” is conditional on whether a government is a plaintiff or not. If so, what we really should look at is the conditional coefficient for “Net weighted observations for plaintiff” for the two different values on “Government is litigant”. That’s also easy to do:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interplot</span>(ecj_probit, </span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">var1 =</span> <span class="st">"normnetwobs"</span>, </span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">var2 =</span> <span class="st">"govislit"</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-4" class="code-annotation-target"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">point =</span> <span class="cn">TRUE</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Coefficient for Net weighted observations for plaintiff"</span>)<span class="sc">+</span></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-8" class="code-annotation-target"><a href="#annotated-cell-8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No government litigant"</span>, <span class="st">"Government litigant"</span>),</span>
+<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">1.3</span>))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-lines="4" data-code-cell="annotated-cell-8" data-code-annotation="1">Since there are only two values on <code>govislit</code>, it is better to use points than a line. We can adjust this using the <code>point</code> argument.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-lines="8,9,10" data-code-cell="annotated-cell-8" data-code-annotation="2">Since <code>govislit</code> is introduced to the model as a numeric variable, <code>ggplot2</code> will give us a continuous scale. We can still add categorical labels like this.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output-display">
+<div id="fig-conditional2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="data_viz_models_files/figure-html/fig-conditional2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Conditional coefficient for “Net weighted observations for plaintiff” and 95% confidence intervals.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-conditional2">Figure&nbsp;7</a> shows that while “Net weighted observations for plaintiff” is generally associated with a higher likelihood of a ruling for the plaintiff, this relationship is larger when there is a government litigant.</p>
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-arel2022modelsummary" class="csl-entry" role="listitem">
+Arel-Bundock, Vincent. 2022. <span>“Modelsummary: Data and Model Summaries in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 103: 1–23.
+</div>
+<div id="ref-binder2018dodging" class="csl-entry" role="listitem">
+Binder, Sarah. 2018. <span>“Dodging the Rules in Trump’s Republican Congress.”</span> <em>The Journal of Politics</em> 80 (4): 1454–63.
+</div>
+<div id="ref-brambor2006understanding" class="csl-entry" role="listitem">
+Brambor, Thomas, William Roberts Clark, and Matt Golder. 2006. <span>“Understanding Interaction Models: Improving Empirical Analyses.”</span> <em>Political Analysis</em> 14 (1): 63–82.
+</div>
+<div id="ref-carrubba2008judicial" class="csl-entry" role="listitem">
+Carrubba, Clifford J, Matthew Gabel, and Charles Hankla. 2008. <span>“Judicial Behavior Under Political Constraints: Evidence from the European Court of Justice.”</span> <em>American Political Science Review</em> 102 (4): 435–52.
+</div>
+<div id="ref-kastellec2007using" class="csl-entry" role="listitem">
+Kastellec, Jonathan P, and Eduardo L Leoni. 2007. <span>“Using Graphs Instead of Tables in Political Science.”</span> <em>Perspectives on Politics</em> 5 (4): 755–71.
+</div>
+<div id="ref-shen2022undue" class="csl-entry" role="listitem">
+Shen-Bayh, Fiona. 2022. <em>Undue Process: Persecution and Punishment in Autocratic Courts</em>. Cambridge University Press.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Although coefficient plots make it easier to compare multiple models, it can be hard to distinguish a very large number of models based on colors and symbols.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../Visualization/data_viz_examples.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Examples of different types of data visualizations</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Visualization/data_viz_model_predictions.html" class="pagination-link">
+        <span class="nav-page-text">Visualizing quantities of interest based on regression models</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><img src="../pics/uio-logo-white.png" class="img-fluid" width="150"></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

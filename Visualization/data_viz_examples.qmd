@@ -1,0 +1,274 @@
+---
+title: "Examples of different types of data visualizations"
+bibliography: "../STV4030A.bib"
+format: html
+execute: 
+  message: false
+  warning: false
+---
+
+Visualizations are useful for summarizing information about our different variables and the relationships between them. The type of visualizations that are useful will depend on what kinds of data you have (are your variables continuous or categorical, cross sectional or temporal, etc.?) and on the questions you ask. 
+
+On this page, we will show examples of different types graphs often used in political science. Indeed, all the examples are reproductions of figures from recent political science articles published in top journals. The code chunks below show both the `ggplot2` code needed to create the visualization and the `dplyr` and `tidyr` wrangling code needed to get the data in the right format format for `ggplot`.  Throughout we will thus make use of the following packages: 
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(haven)
+```
+
+The examples below are meant to illustrate how to make various forms of frequently used graphs and to show the type of messages you can communicate with the different types of visualizations.  Remember that with `ggplot2` you are not stuck with any of these graphs or with the aesthetic design that we have chosen here. You may (and should) adapt your visualizations to your own needs!
+
+# Bar charts 
+Bar charts are great for visualizing the count or proportion of observations that belong to different categories on a categorical variable.
+
+
+For instance, @chen2023partners collect data on litigation by multinational corporations in Chinese courts. To visualize the amount of litigation from companies from eight important economies they use a bar chart [@chen2023partners, 162], which we can recreate using `ggplot2`: 
+
+
+```{r}
+
+load("../data/chen_xu.RData")
+dat %>% 
+  mutate(across(.cols = c(plahq, defhq, plaregister, defregister), .fns = as.character),  #<1> 
+                country = case_when(plahq == "日本" | defhq == "日本" | plaregister == "日本" | defregister == "日本" ~ "Japan", #<2> 
+                                    plahq == "韩国" | defhq == "韩国" | plaregister == "韩国" | defregister == "韩国" ~ "South Korea",#<2> 
+                                    plahq == "美国" | defhq == "美国" | plaregister == "美国" | defregister == "美国" ~ "USA", #<2> 
+                                    plahq == "德国" | defhq == "德国" | plaregister == "德国" | defregister == "德国" ~ "Germany", #<2> 
+                                    plahq == "法国" | defhq == "法国" | plaregister == "法国" | defregister == "法国" ~ "France", #<2> 
+                                    plahq == "新加坡" | defhq == "新加坡" | plaregister == "新加坡" | defregister == "新加坡" ~ "Singapore", #<2> 
+                                    plahq == "英国" | defhq == "英国" | plaregister == "英国" | defregister == "英国" ~ "UK", #<2> 
+                                    plahq == "澳大利亚" | defhq == "澳大利亚" | plaregister == "澳大利亚" | #<2> 
+                                      defregister == "澳大利亚" ~ "Australia")) %>% #<2> 
+  drop_na(country) %>% #<3> 
+  ggplot(aes(x = country))+ #<4> 
+  geom_bar(stat = "count", width = 0.9, fill = "darkgrey", color = "black")+#<5> 
+  ylab("Number of cases")+ #<6> 
+  xlab("")+ #<6> 
+  scale_y_continuous(breaks = seq(0, 1400, by = 200), limits = c(0,1600))+ #<7>
+  theme_classic()+ #<8> 
+  theme(axis.line.x = element_blank(),  #<9>
+        axis.ticks.x = element_blank(), #<9>
+        axis.text.x = element_text(angle = 45))+#<9>
+    rotate_y_text()#<10>
+
+                                  
+```
+1. Their country variable in the bar chart is based on these four variables. They were all coded as "factors" so we recode them to characters. 
+2. The dataset is in Chinese, but with great help from the replication materials we can create the country variable using `case_when()`. 
+3. We omit observations that have `NA` on the `country` variable we just created, which just means that they didn't involve a company from any of the eight countries included in the graph. 
+4. We start making our graph with `ggplot()`. We only need one aesthetic mapping (`x`). On the y-axis we will have a count of the observations with each value on the x-axis, but `geom_bar()` will take care of the counting. 
+5. We use `geom_bar()` to get bars! `stat = "count"` means that it should count the observations for each value on the x-axis on let this count determine the height of the bars. We adjust the width of the bars, the color inside the bars (using `fill`) and the color of the border surrounding each bar (using `color`) to make it match the design of the original figure (which was not created using `ggplot2`). 
+6. Using `ylab` and `xlab` we can change the axes labels. 
+7. Using `scale_y_continuous()` we can change aspects relating the  "scale" on the y-axis. Here we change which values to have ticks and labels for using `breaks` and the length of the y-axis using `limits`. 
+8. `theme_classic()` roughly matches the appearance of the original graph which was created in the base R. 
+9. We make some adjustments to the theme to match the original graph: We remove the line and tick marks from the x-axis and tilt change the labels so that they are printed in a 90 degrees angle. 
+10. `rotate_y_text()` from the ``ggpubr` package is useful to rotate the labels on the y-axis to match the original graph by @chen2023partners. But truth to be told: we think the graph would look better if we hadn't rotated the labels on the y-axis. 
+
+
+
+You can also use bar charts to show how the amount on one variables vary depending on the value on some categorical variable or combinations of categorical variables. For instance, @carey2021understanding make the observation that most journalists are killed in democracies. To illustrate this claim, they count the number of journalists killings that occurred in democracies and the autocracies (using the binary regime classification from @boix2013complete). They further distinguish between killings known to have been committed by the state and killings with an unknown perpetrator and display the number of killings in each category in a bar chart. Let's recreate their bar chart: 
+
+
+```{r}
+journalist_killings <- read_csv("../data/journalist_killings.csv")
+journalist_killings %>% #<1>
+  filter(major != 1, is.na(bmr_democracy)== FALSE) %>% #<2>
+  mutate(regime = ifelse(bmr_democracy == 1, "Democracy", "Autocracy")) %>% #<3>
+  group_by(regime) %>% #<4>
+  summarize(state = sum(state), 
+            unknown = sum(unknown)) %>% #<5>
+  pivot_longer(cols = c(state, unknown), #<6>
+               values_to = "Killings", #<6>
+               names_to = "Perpetrator") %>% #<6>
+  ggplot(aes(x = regime, #<7>
+             y = Killings, #<7>
+             fill = Perpetrator)) + #<7>
+    geom_bar(position = "dodge", #<8> 
+            stat = "identity", #<9> 
+            width = .3, #<10>
+            color = "black") + #<11>
+  scale_fill_manual(labels = c("state", "unconfirmed"),#<12>
+                     values = c("grey", "white"))+#<12>
+   xlab("")+ #<13>
+  ylab("Journalists killed") +#<13>
+  theme(legend.position = "bottom", #<14>
+        panel.background = element_blank(), #<14>
+                    panel.border = element_rect(colour = "black", fill=NA), #<14>
+                     text = element_text(size=16)) + #<14>
+  coord_flip() #<15>
+```
+1. Some simple wrangling is needed for this figure. We will wrangle the data as needed and supply the wrangled data directly to `ggplot()` using pipes (`%>%`)
+2. We start by filtering out killings that occurred during major conflicts and observations from countries with missing on the regime variable. 
+3. We recode the regime variable to get a categorical variable with nice labels for the figure. 
+4. We `group_by()` the regime variable to summarize the data within each regime type
+5. Using `summarize()` we count the number of killings by the state and killings with an unknown perpetrator in the dataset
+6. In the dataset, there are different columns for killings depending on whether the perpetrator was the state or if the perpetrator was unknown. `ggplot()` prefers  to have a longer dataset with just one "Killings" variable and additional variable measuring the type of "Perpetrator". We thus `pivot_longer()`. 
+7. Finally, we can start on recreating the graph, using `ggplot()`. Notice the we supply both `x` and `y` since we have now already counted the `y` for each category on `x`. Notice also that we use `fill` to let the colors vary group. While `color` would determine the color of the borders of the bars. `fill` determines the color of the area of the bars. 
+8. We use `geom_bar()` to get bars in our graph. We want the bars side by side rather than on top of each other, so we specify `position = "dodge"`. 
+9. We have already counted the number of killings for each category, so we don't need `ggplot` to do that for us. We therefore use `stat = "identity`. 
+10. @carey2021understanding's bars are slimmer than the default, so we will also adjust their width accordingly. 
+11. Here we set `color` to decide the color of the border for each bar. `color` is not supplied to `aes()` so it will not vary by variable. Instead all the bars will get a black border. 
+12. Using `scale_fill_manual()` we can make adjustments to the scale. Here we change the labels and the colors used. 
+13. We change the labels. 
+14. We adjust the `theme()`. Specifically we remove the background, create black frame around the graph, and change the position of the legend. 
+15. Like @carey2021understanding, we will flip the graph around so that the x-axis becomes the y-axis and vice versa. 
+
+
+# Histograms
+The histogram is a type of bar chart that is useful for visualizing the distribution on continuous variables. Values on the continuous variable are binned in into different categories and displayed on the x-axis and the count or share of observations in each category are displayed on the y-axis. 
+
+For instance, @seabra2022beyond introduces a dataset on the sponsorship of draft resolutions in the United Nations General Assembly. To illustrate their data, they report histograms both of the number of sponsors per draft resolution and of the number of drafts each country has sponsored [@seabra2022beyond, 7]. Let's replicate both histograms: 
+
+```{r}
+drafts <- read_delim("../data/drafts abs 2009-2020 (S64-S74).csv", delim = ",")
+
+drafts <- drafts %>%
+  filter(session>63 & session<74)  #<1> 
+
+
+per_draft <- ggplot(drafts, #<2> 
+                    aes(x = n_sponsors_final))+ #<3>
+  geom_histogram(binwidth = 10)+#<4>
+  labs(x = "Total number of sponsors",#<5>
+       y ="Draft count", #<5>
+       title = "Number of sponsors per draft") #<5>
+
+per_country <- drafts %>% #<6>
+  pivot_longer(cols = c(29:222), #<7>
+               names_to = "country", #<7>
+               values_to = "sponsorship") %>% #<7>
+  mutate(sponsorship = replace_na(sponsorship, 0), #<8>
+         sponsorship = ifelse(sponsorship > 0, 1,sponsorship)) %>% #<9>
+  group_by(country) %>% #<10>
+  summarize(sponsorships = sum(sponsorship)) %>% #<10>
+  ggplot(aes(x = sponsorships))+ #<11>
+  geom_histogram()+ #<12>
+  labs(x="Number of sponsored drafts", y="Country count", title="Sponsored drafts per country")#<13>
+
+ggarrange(per_draft, per_country, ncol = 2, nrow = 1) #<14>
+
+
+
+
+```
+1. The article is based on a smaller subset of General Assembly sessions than are available in their data. We subset to have the same data as in the article. 
+2. We start making the first histogram with `ggplot()` since we will combine two graphs in this example, we assign the graph to an object (`per_draft`). 
+3. We just need to supply a mapping for the x-axis
+4. `geom_histogram()` makes an histogram. We can specify how large each bin on the x variable should be using `bindwidth`. 
+5.  We change the labels for the x- and y- axes and add a title using `labs`. @seabra2022beyond just used the default theme, so we will do the same. 
+6. For the second histogram, we need to wrangle the data so that we have one row per country and a variable measuring how many drafts each country sponsored. 
+7. There are a bunch of variables for each country with codes measuring their sponsorship status. We use `pivot_longer()` to get one row per country and a variable measuring the sponsorship status for each country on each draft. We use the numbering rather than the names of the columns for selection. 
+8. The sponsorship variable has `NA` when countries did not sponsor the draft. We replace with 0s. 
+9. We don't want to distinguish between types of sponsorship so we replace all codes other than 0 with 1. 
+10. We `group_by()` country and then use `summarize()` to count the number of sponsorships per country. 
+11. We map the `sponsorships` variable to the x-axis using `aes()`. 
+12. For this histogram, we don't change the `binwidth` or the `bins` for `geom_histogram()`. We then get the default number of bins, which is 30. 
+13. We add appropriate labels using `labs()`. 
+14. Using `ggarrange()` from the `ggpubr`package, we can combine different "ggplots" in the same figure. We want them in the same row but in different columns, so we set the number of columns to be 2 and the number of rows to be 1. 
+
+
+
+
+
+
+
+
+
+<!-- # Scatter plots -->
+
+
+<!-- # Dot plots  -->
+
+# Line graphs
+We often want to show the development of one or more variables over time. Line graphs are great for this purpose. For instance, @nyrup2023consolidating use the WhoGov data (which we discussed here) to show how the shares of female ministers in democracies and autocracies have developed over time [@nyrup2023consolidating, 9]. We can recreate the upper panel of their figure, like this: 
+
+```{r}
+
+consolidating_progress <- read_csv("../data/df_consolidatingprogress_V1.csv")
+
+consolidating_progress %>% 
+  drop_na(democracy_bmr) %>%  #<1> 
+  mutate(democracy_bmr = ifelse(democracy_bmr == 1, "Democracy", "Autocracy")) %>%  #<2> 
+  group_by(year, democracy_bmr) %>% #<3> 
+  summarize(percentage_female = mean(share_female, na.rm = TRUE)) %>% #<4> 
+  ggplot(aes(x = year, y = percentage_female, color = democracy_bmr))+ #<5>
+  geom_line(size = 1.1)+ #<6>
+  scale_x_continuous(breaks = seq(1970, 2021, 10)) + #<7>
+  scale_y_continuous(breaks = seq(0, 30, by = 10), label = paste(seq(0, 30, by = 10), "%"), limits = c(0,30))+#<8>
+  scale_color_manual(values=c("#CB2314","#273046"), guide = FALSE)+#<9>
+  annotate("text", x = 2018, y = 29, label = "Democracies",size = 3) + #<10>
+  annotate("text", x = 2019, y = 18, label = "Autocracies",size = 3) +#<10>
+  labs(title = "% women in cabinet", x = "", y = "") +#<11>
+  theme_classic() #<12>
+```
+1. Since we want to group observations by whether they are democracies or autocracies according to @boix2013complete, we drop observations with `NA` on this variable. 
+2. We recode the democracy variable to be categorical. 
+3. We `group_by()` year and democracy variable. 
+4. Then we use `summarize()` to calculate the mean percentage within each group (note that even if the variable is called `share_female` it measures percentages, so we don't need to multiply by 100). 
+5. It is time to start visualizing using `gpplot()`. We need three aesthetic mappings. The x- and y- axes, but also a mapping to distinguish between autocracies and autocracies. We use `color` to get two different lines in different colors. 
+6. Using `geom_line()` we produce our two lines and by increasing the `size` we get lines that are slightly thicker than the default. 
+7. Using `scale_x_continuous()` we can adjust the values shown on the x-axis. 
+8. Using `scale_y_continuous()` we similarly change the values shown on the y-axis. Here we also use `paste()` to add a "%" symbol after each value and `limits` to change the default height of the axis. 
+9. Using `scale_color_manual()` we can change the colors used in the plot. Rather than using one of the named colors,  @nyrup2023consolidating supplied their preferred colors using [hexadecimal notation](https://en.wikipedia.org/wiki/Web_colors). Setting `guide = FALSE` removes the legend. 10. In place of the legend, we can add text to the plot using `annotate()`. We need to supply the coordinates for the text using `x` and `y` and the `label` to be included. 
+11. Using `labs()` we can both change the labels for the x- and y- axes (i.e. instead of using `ylab()` and `xlab()`) and add a title on top of the graph. 
+12. `theme_classic()` removes the background and grid, producing a graph that looks like the original graph [@nyrup2023consolidating, 9]. 
+
+
+
+
+
+# Smoothed time trends
+We have already seen how to create scatter plots and add smoothed curves to illustrate the correlation between two variables. Points and smoothed curves can also be to illustrate developments over time. Such a strategy can help illuminate just what the overall time trend is, but also how much variation there is around the general trend. 
+
+For instance, @clark2023police ask "Are police racially biased in the decision to shoot?" To answer this question (sadly, the answer is "yes"), they collect data on all officer-involved shootings in eight jurisdictions in the United States. To illustrate their data they construct group the data by jurisdiction and month and calculate the natural logarithm of the number of shootings in each jurisdiction-month. They plot this number against the month for each jurisdiction and add a [local regression curve](https://en.wikipedia.org/wiki/Local_regression) to capture potential time trends [@clark2023police, 835]. Let's recreate their graph!
+
+```{r}
+library(lubridate)#<1>
+load("../data/ois_data_for_models.RData")  #<2>
+ois %>% 
+  filter(is.na(civilian_race_factor) == FALSE, #<3>
+  city_clean != "San Antonio") %>%  #<4> 
+  group_by(month = floor_date(Date, "month"), city_clean) %>% #<5> 
+  count() %>% #<6>
+  ggplot(aes(x = month, y = log(n+1))) + #<7>
+  geom_point() + #<8>
+  geom_smooth(method = "loess") + #<9>
+  facet_wrap(vars(city_clean), as.table = FALSE) +#<10>
+  xlab("Month-Year") + #<11>
+  ylab("Number of OIS") + #<11>
+  scale_y_continuous(breaks = c(log(1),log(11),log(21),#<12>
+                              log(101), log(201),log(401)),#<12>
+                     labels = c("0", "10","20", "100", "200","400")) + #<12>
+  theme_bw()#<13>
+
+
+
+```
+1. The `lubridate` package is useful for worked in dates!
+2. The dataset is an "events dataset" with one row per officer-related shooting. 
+3. Ultimately, they are interested in how racial bias influence the decision to shoot so they omit observations with `NA` on the racial identity of the civilian.
+4. As described in footnote 9 of the paper, they omit San Antonio because there is too little data available from this jurisdiction. 
+5. They group their data by month (which they extract from a date variable using `floor_date()` from `lubridate`) and jurisdiction. 
+6. Using `count()` we can count the number of rows for each group. The resulting variable will by default we be called `n`
+7. We start making the graph by declaring the aesthetic mapping. We want `month` on the x-axis and `log(n)` on the y-axis. This will compress the scale. However, we want to avoid taking the logarithm og zero, so instead we use `log(n+1)`. 
+8. We can add points using `geom_point()`.
+9. And we can add a fitted line or curve to the point using `geom_smooth()`. We set the method to be `loess` to get a local regression. 
+10. Using `facet_wrap()` and selecting the variable capturing the jurisdiction in which the shooting occurred (`city_clean`), we get one facet per jurisdiction. 
+11. Using `ylab()` and `xlab()`, we can change the axes labels. 
+12. We can change aspects relating to the "scale" on the y-axis, using `scale_y_continuous()`. @clark2023police have a logarithmic scale on the axis but labels on the original scale. When setting the `breaks` we therefore take the logarithm of the values we want labels and tick marks for. In the `labels` argument we add the labels that should be displayed in the graph. 
+13. Finally, `theme_bw()` is the theme @clark2023police used. 
+
+
+
+
+
+
+
+
+
+
+

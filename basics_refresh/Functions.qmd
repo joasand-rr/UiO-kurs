@@ -1,0 +1,230 @@
+---
+title: "Writing your own functions"
+bibliography: "../STV4030A.bib"
+format: html
+---
+
+# Motivation
+Sometimes, there is no function available in R that does exactly what we want to do. For instance, there is no built-in function in that gives you the modal value of a variable. This is not necessarily a big problem. We can find the modal value by combining other functions. Let's say we want to fine the modal value on the variable called "v2x_regime" (a categorical variable measuring the type of regime in place in a given year on scale from "closed autocracy" to "liberal democracy") in the Varieties of Democracy country-year dataset, [which is available from here](https://v-dem.net/data/the-v-dem-dataset/). 
+
+We could use `table()`, to get the frequency table for the variable: 
+
+```{r}
+load("../data/vdem.rda") #<1>
+table(vdem$v2x_regime) #<2> 
+```
+1. loading the data
+2. Using `table()` to get a frequency table
+
+From the frequency table, we quickly see that 0 ([which according to the codebook is the value given to "closed autocracies"](https://v-dem.net/documents/24/codebook_v13.pdf)) is the most frequent value on this variable. However, this doesn't give us the modal value as a single number output, which is typically what we want if we want to use the modal value for something else later. 
+
+One way to retrieve the model value would be to first create a frequency table using `table()`, then sort this table using `sort()`, then extract the names of the sorted table using `names()`, and finally extract the first element of this table (which will now be the most frequent value on our variable) using square brackets `[]` and the number 1 for the first element. 
+
+```{r}
+freq_table  <- table(vdem$v2x_regime) #<1>  
+freq_table_sorted  <- sort(freq_table, decreasing = TRUE)  #<2>
+sorted_names <- names(freq_table_sorted) #<3> 
+modal_value <- sorted_names[1] #<4> 
+print(modal_value)  #<5> 
+```
+
+1. First, we use `table()` to create a frequency table.
+2. Then we `sort()` the frequency table so that the most frequent value is in the first row of the table.
+3. Next, we extract the different values on the variable in the sorted order (we also get rid of the frequencies which we don't need anymore).
+4. We extract the first element of the vector of sorted values, which will be the modal value.
+5. Finally, we `print()` out the modal value. 
+
+If we only wanted the modal value of one variable, this approach would be fine. But what if also want the mode of many other variables in the dataset? We could copy paste the above code and adapt it to get the modal value for many different variables, but this is not a good approach for a big project such as an MA thesis. 
+
+Why not? 
+
+First, It will be cumbersome to copy and edit multiple lines of code repeatedly. 
+
+Second, this approach is error prone: as we copy-paste and edit many lines of code, we are very likely to make mistakes and those mistakes will be difficult to spot. 
+
+Third, the copy-pasting and editing approach will make our R-scripts very long and difficult to read. 
+
+A better approach is therefore to define our own function.
+
+# Concept 
+ We define our own functions in R using `function()`. We will need to specify one or more arguments that the function will take, define what the function will do, and what the function should return (i.e. what is the final output we are interested in from this function). Defining a function will look this:  
+  
+```{r}
+#| eval: false
+
+my_function <- function(x){  #<1> 
+  y <- do_something(x) #<2>  
+  z <- do_something_else(y) #<3>   
+  return(z) #<4>  
+} #<5>
+
+```
+1. We start defining a function, which will take the argument x. The curly bracket (`{`) starts the body of the function where we define what the function will do. 
+2. In this example, we first apply the (imaginary) function  do_something to x and assign it to y.
+3. then we apply the (still imaginary) function do_something_else() to y and assign it to z.
+4. Finally, we tell R that what this function should return (i.e. produce) is what we assigned to z. 
+5. The curly bracket  (`}`) closes the body of the function, telling R that we are done defining our function. 
+
+If were to apply this function to a variable called `dataset$some_variable`, we would simply run: 
+  
+```{r}
+#| eval: false
+my_function(x = dataset$some_variable)
+```
+
+::: callout-tip 
+## Local environments
+When we are calling functions, a local environment is created in which values may be (temporarily) stored in objects. For instance, in the `my_function()` example above, we assign something to the object `y` inside the body of the function. However, `y` will not be saved to the global environment. 
+
+We could already have an object `y` in our global environment. If so, this function will not be overwritten by assigning something to different local `y` inside the function call. The flip-side of this is that if we cannot refer to the global object `y` inside the function after we have already defined a local `y`. 
+
+::: 
+
+# Application
+Let's apply this idea to our modal value example. We can generalize the code we wrote before into a user-defined function like this: 
+
+
+```{r}
+modal_value <- function(x){
+  freq_table  <- table(x)  #<1> 
+  freq_table_sorted  <- sort(freq_table, decreasing = TRUE) 
+  sorted_names <- names(freq_table_sorted) 
+  modal_value <- sorted_names[1] 
+  return(modal_value) 
+}
+```
+1. Notice that we no longer write a specific variable name here. We write `x` which as an argument of the function. Later we can apply the function to different variable by specifying `x` when we call the function.
+
+
+Running the above code chunk will create a function called modal_value and we can see that it takes the argument `x`. We can now use this function to get the modal value of `vdem$v2x_regime`: 
+```{r}
+modal_value(vdem$v2x_regime)
+```
+
+# More complicated functions
+Now that we know how to define a function in R, we are ready to extend this idea to writing more complicated functions. 
+
+## Multiple arguments
+A first way to extend the idea is to allow the function to have more than one argument. The possibility of having more than argument should come as no surprise given that we have already been using functions written by others that take more two arguments. For instance, `mean()` takes three arguments, `x`, `trim`, and `na.rm`. 
+
+Let's make a (relatively silly) function that takes two arguments, `x` and `y`, divides `x` by `y`, and returns `TRUE` if the resulting number is an integer and `FALSE` if the number is a fraction: 
+
+```{r}
+dividing_x_by_y_gives_integer <- function(x, y) {
+  ifelse(x/y == as.integer(x/y), TRUE, FALSE)
+}
+```
+
+To use this function you need to specify both `x` and `y`. E.g. 
+
+```{r}
+dividing_x_by_y_gives_integer(x = 2, y = 1)
+```
+or 
+```{r}
+dividing_x_by_y_gives_integer(x = 1, y = 2)
+```
+
+Specifying only one of the arguments will produce an error: 
+
+```{r}
+#| error: true
+dividing_x_by_y_gives_integer(x = 5)
+
+```
+
+## Conditionals
+Sometimes we want the behavior of our function to change depending on our arguments or on some other conditions. For instance, in our `modal_value` function we have not specified what the function should do with missing values (`NA`s). What happens if we run the function on a vector in which `NA` is the most frequent value: 
+
+```{r}
+new_numbers <- c(10,3,  6,NA, 5, NA,  6, 10,  8,  3,NA, NA,  6,  4,  4,  4, 10,  2, NA, NA,  1,  2,  5,  5,  6)
+
+modal_value(new_numbers)
+
+```
+The way we wrote the function, implicitly omits all the `NA`s. The reason for this is that the `NA`s are not included in the frequency table created by `table()`: 
+
+```{r}
+table(new_numbers)
+```
+But maybe we sometimes (but not always) want to know if `NA` is the modal value? If so, we need to add an argument to the function that tells the function whether it should also consider the `NA`s (following the precedence set by other functions, such as `mean()`, we might call this argument `na.rm`) and have the behavior of the function change conditional on the value on this argument. 
+
+To have the behavior of our R functions change depending on some condition(s) we can use `if(){} ` and `else{}`. Inside the parenthesis  following `if` you specify a logical condition and inside the curly brackets (`{ }`) you specify what happen if that condition is met. In the curly brackets following `else`, you specify what should happen if the logical condition is not met. If you want, you may have multiple `if()` statements before a final `else` statement. What comes after `else` will then specify what should happen if the none of the conditions in the previous `if()` statements were met. 
+
+
+
+```{r}
+modal_value <- function(x, na.rm ){ #<1> 
+  if(na.rm == FALSE){ #<2>
+    freq_table  <- table(x, useNA = "ifany")   #<2>
+    freq_table_sorted  <- sort(freq_table, decreasing = TRUE) #<2>
+    sorted_names <- names(freq_table_sorted) #<2>
+    modal_value <- sorted_names[1] #<2>
+    return(modal_value) #<2>
+  }#<2>
+  else{#<3>
+    freq_table  <- table(x)   #<3>
+    freq_table_sorted  <- sort(freq_table, decreasing = TRUE) #<3>
+    sorted_names <- names(freq_table_sorted) #<3>
+    modal_value <- sorted_names[1] #<3>
+    return(modal_value) #<3>
+  }
+}
+```
+1. Our function now takes two arguments, `x` and `na.rm`. 
+2. Here we tell our function what to do if `na.rm` is set to  `FALSE`. Inside the curly brackets we specify that in these cases we want to set the `useNA` argument of `table()` to `"ifany"`, which means that `NA` will be included as a value in the frequency table. 
+3. Inside the curly brackets following `else`, we specify what should happen if none of the above `if` statements (in this case we only have one such statement, but we can have multiple). 
+
+```{r}
+#| error: true
+modal_value(new_numbers, na.rm = TRUE) #<1>
+
+```
+1. When `na.rm = TRUE`, our function will behave like before. `NA`s will not be counted as a value. 
+
+
+```{r}
+modal_value(new_numbers, na.rm = FALSE) #<1>
+```
+1. When `na.rm = FALSE`, our function will now include `NA`s as values and `NA` will be the modal value for our vector. 
+
+```{r}
+#| error: true
+modal_value(new_numbers) #<1>
+```
+1. If we forget to supply a value to the `na.rm` argument, our function will now fail (and throw an error)!
+
+## Default arguments
+Having the function fail if we forget to supply the `na.rm` argument seems somewhat suboptimal. We can avoid this problem by giving the argument a default value. We can set default values when we define the function:  
+
+```{r}
+modal_value <- function(x, na.rm = FALSE){ #<1> 
+  if(na.rm == FALSE){
+    freq_table  <- table(x, useNA = "ifany")   
+    freq_table_sorted  <- sort(freq_table, decreasing = TRUE) 
+    sorted_names <- names(freq_table_sorted) 
+    modal_value <- sorted_names[1] 
+    return(modal_value) 
+  }
+  else{
+    freq_table  <- table(x)  
+    freq_table_sorted  <- sort(freq_table, decreasing = TRUE) 
+    sorted_names <- names(freq_table_sorted)
+    modal_value <- sorted_names[1]
+    return(modal_value)
+  }
+}
+```
+1. Here we set the default value for `na.rm` to be `FALSE`. 
+
+If we now run the function with declaring the `na.rm` argument. The function will treat `na.rm` as having been declared as `FALSE`
+
+```{r}
+modal_value(new_numbers)
+```
+But we can override this default behavior by specifying the argument: 
+```{r}
+modal_value(new_numbers, na.rm = TRUE)
+```
+
+

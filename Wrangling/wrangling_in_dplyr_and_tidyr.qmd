@@ -1,0 +1,1134 @@
+---
+title: "Wrangling in `dplyr` and `tidyr`"
+bibliography: "../STV4030A.bib"
+format: html
+---
+
+We now turn to how you can *tidy* your data so that each observation is a row, each variable is a column, and each value is a cell and how you can *transform* or *manipulate* your dataset so that it contains exactly the information you need for your analysis, for instance by subsetting to a particular set of observations or recoding some of the variables. We will refer to these tasks as *data wrangling*.
+
+Wrangling is a fundamental part of quantitative political science! If we cannot get our data in the right format, we cannot do our advanced statistical analyses or make our beautiful visualizations. 
+
+For our data wrangling we will rely heavily on the `dplyr` and `tidyr` packages (both part of the so-called `tidyverse`). While `tidyr` contains a set of functions for making dataset tidy (for instance by pivoting/reshaping them), `dplyr` contains a set of functions for manipulating data (for instance by filtering observations or recoding variables).
+
+::: callout-tip
+## `tidyverse`
+
+`tidyverse` is a collection of R packages that share a common preference for tidy data and particular style of writing R code. We find the `tidyverse` packages extremely useful!
+
+`dplyr` and `tidyr` are both part of `tidyverse`, as are `haven` and `readr` which we already used to load data, `purrr` which have used for iteration, `ggplot2` which we will use for data visualization, and `stringr` which we will use for working with text data. There are also several other useful packages in the `tidyverse`. You can install all the packages in `tidyverse` in one go by running:
+
+```{r}
+#| eval: false
+
+install.packages("tidyverse")
+```
+
+While `install.packages("tidyverse")` installs the entire `tidyverse`, the following command will load the nine most frequently used `tidyverse` packages:
+
+```{r}
+#| output: false
+
+
+library(tidyverse)
+```
+
+The packages loaded by `library(tidyverse)` are `dplyr`, `tidyr`, `forcats`, `ggplot2`, `lubridate`, `purrr`, `readr`, `stringr`, and `tibble`. 
+
+You can learn more about the `tidyverse` [here](https://www.tidyverse.org/) or in [@wickham2023r](https://r4ds.had.co.nz/).
+:::
+
+Before we go in detail on the various wrangling functions, the following two videos provide an overview of functions we will often be using: 
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=ca06a0ab-a0e7-431c-89ec-b031014047af&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay">
+</iframe>
+
+<iframe src="https://uio.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=e023e158-c5fe-4ab4-9de1-b03101404787&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=false&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen allow="autoplay"> </iframe>
+
+Now that we have a sense of what some of the frequently used wrangling functions are, we will go in more detail in text and code. 
+
+Let's start by introducing some of the `dplyr` functions for manipulating data. Even when our dataset already is in a "tidy" format, many of these functions will be useful to further manipulate the data to suit our particular research needs!
+
+# Manipulating data with `dplyr`
+As explained in the above video, `dplyr` contains set of "verbs"  that do something to our dataset. For instance `filter()` is a verb that "filters" the data to only contain specific rows, while `select()` is a verb that "selects" columns from the dataset. Pipes (`%>%`) allow us to combine multiple operations on our dataset together (which makes our code much easier to read).
+
+## `filter()`
+Let's revisit the WhoGov dataset by @nyrup2020governs, which we introduced [here](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/R_refresher.html#sec-loading-data).
+
+```{r}
+#| message: false
+library(readr)
+who_gov <- read_delim("../data/WhoGov_within_V2.0.csv", delim = ",")
+
+
+```
+
+
+Suppose we are only interested in observations from Norway. If so, we want to `filter()` the data:
+
+```{r}
+#| message: false
+library(dplyr)
+who_gov_norway <- filter(who_gov,  #<1> 
+                         country_isocode == "NOR") #<2>
+```
+
+1.  The first argument is the name of a `data.frame`.
+2.  The second argument is some condition that we use to `filter()` the data. Here the condition is that we only want observations for which `country_isocode == "NOR"` evaluates to `TRUE`.
+
+Suppose that we are also only interested in ministers and would like to remove other types of people also included in the dataset (we definitely don't care about the kings!). The variable called `classification` contains a standardized classification of the different positions people in the dataset held (the [codebook](https://static.cambridge.org/content/id/urn:cambridge.org:id:article:S0003055420000490/resource/name/S0003055420000490sup001.pdf) says so!).
+
+Using `table()` we can figure out how the Norwegian observations are classified:
+
+```{r}
+table(who_gov_norway$classification)
+```
+
+If we are interested in ministers, we want all the observations with the value "Prime Minister" or the value "Minister (Full Rank)" on the variable `who_gov_norway$classification`. Again, we can `filter()` the dataset:
+
+```{r}
+who_gov_norway_ministers <- filter(who_gov_norway, 
+                        classification == "Prime Minister" | #<1>
+                          classification == "Minister (Full Rank)" ) #<1>
+```
+
+1.  We use the "or" operator "`|`" to filter the data so that observations need to either have the value "Prime Minister" or the value "Minister (Full Rank)" on the variable `who_gov_norway$classification` to be included in our filtered dataset.
+
+We could also have combined these two conditions in one call to `filter()` using `,` to separate between different conditions that filtered observations need to satisfy:
+
+```{r}
+who_gov_norway_ministers <- filter(who_gov, #<1>
+                                   country_isocode == "NOR", #<2>
+                        classification == "Prime Minister" | #<3>
+                          classification == "Minister (Full Rank)") 
+```
+
+1.  We are starting with the full `who_gov` `data.frame`.
+2.  We filter observations for which ` country_isocode == "NOR"`.
+3.  And we filter observations for which either `classification == "Prime Minister"` or `classification == "Minister (Full Rank)"`  evaluate to `TRUE`. 
+
+## `select()`
+
+While `filter()` filters the observations in the dataset, `select()` selects specific columns in the dataset. 
+
+Suppose we only want the variables "year","country_isocode", "id", "position", "name", "gender", "birthyear", "deadyear", "party", and "classification". If so, we can `select()` these columns.
+
+```{r}
+who_gov_norway_ministers <-  select(who_gov_norway_ministers, #<1>
+                                    year,country_isocode, id, position, name, #<2>
+                                    gender,  birthyear, deadyear, party, classification) #<2>
+```
+
+1.  We start with `who_gov_norway_ministers` and here we will also overwrite the existing `who_gov_norway_ministers` rather than assigning the result to a new object
+2.  We select the variables we would like to keep.
+
+We may also use `select()` to remove variables. To remove variables we simply add a minus sign before the variable names. Perhaps we figure out that we don't need the `country_isocode` variable as all the observations are from Norway. If so, we can:
+
+```{r}
+ who_gov_norway_ministers <- select(who_gov_norway_ministers, 
+                                    -country_isocode) #<1>
+```
+
+1.  Removing the "country_isocode variable by putting a `-` in front of it in the `select()` code. 
+
+
+::: callout-tip
+## helper functions for `select()`
+Sometimes we need to select many columns according to some rule or condition. There are multiple helper functions for such cases.  Consider all the variables in the `who_gov` dataset: 
+```{r}
+names(who_gov)
+```
+
+Suppose for instance, that we want to select all the columns with names that start with "portfolio". If so, we can use the helper function `starts_with()`
+
+```{r}
+portfolios <- select(who_gov, 
+                     starts_with("portfolio"))
+
+names(portfolios)
+```
+Most likely, we don't want a `data.frame` with only the `portfolios`. We would likely also keep the "name" and "year" of the observation and maybe we also want all the variables with "party" somewhere in the variable name. If so, we could run:  
+```{r}
+portfolios_and_party <- select(who_gov, 
+                     name, year, 
+                     starts_with("portfolio"), 
+                     contains("party"))
+
+names(portfolios_and_party)
+```
+There are multiple other helper functions. For an overview, you can run the following line in your console: 
+
+```{r}
+#| eval: false
+?tidyr_tidy_select
+```
+
+
+
+
+::: 
+
+## `rename()`
+
+It is straightforward to `rename()` variables. 
+
+Suppose we find the variable name "classification" to not really be that informative now that it only takes the values "Minister (Full Rank)" and "Prime Minister". 
+
+Perhaps we want to `rename()` it as "minister_type". If so we can run:
+
+```{r}
+ who_gov_norway_ministers <- rename(who_gov_norway_ministers, 
+                                    minister_type = classification) #<1>
+```
+
+1.  We need to specify `new_name = old_name` to `rename()` a variable. 
+
+## `mutate()`
+We can add new variables (or recode existing ones) using `mutate()`. For instance, we can create a variable measuring the age of each minister like this: 
+
+```{r}
+who_gov_norway_ministers <- mutate(who_gov_norway_ministers, 
+                                   age = year - birthyear) #<1>
+```
+1. We create a new variable called `age` which is `year` minus `birthyear`.
+
+So, basically you need to supply the name of the new variable followed by the `=` sign and then you specify how this new variable should be created. 
+
+If the new variable name is the same as an existing variable name, the existing variable will be replaced by the new variable you are creating. 
+
+You can use various R functions to create the new variables. For instance, we will often use the `ifelse()` function ([which we introduced here](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/R_refresher.html#changing-or-adding-variables)). 
+
+If we inspect the `who_gov_norway_ministers` carefully, we notice that there is a minister of fisheries and a minister of agriculture which both  have missing values on multiple variables including on `birthyear` and who have the value "unknown" on the variable `party`. Using `filter()` we can print out these rows to the console: 
+
+```{r}
+filter(who_gov_norway_ministers, party == "unknown")
+  
+```
+
+As political scientists trained in Norway we do know our ministers of fisheries[^1] and we certainly don't recognize this "Moynes Einsi" who supposedly was minister of fisheries from 1968 to 1970. [Einar Hole Moxnes](https://no.wikipedia.org/wiki/Einar_Moxnes) was, however, minister of fisheries in the that period and we will use `mutate()` and `ifelse()` to recode these three observations with data on him: 
+
+[^1]: Or at least we know how to use [Wikipedia](https://no.wikipedia.org/wiki/Liste_over_Norges_fiskeriministre) to learn about them.
+
+```{r}
+who_gov_norway_ministers <- mutate(who_gov_norway_ministers, 
+                                   name = ifelse(name == "Moynes Einsi", 
+                                                 "Einar Hole Moxnes", name ), #<1>
+                                   party = ifelse(name == "Einar Hole Moxnes", 
+                                                  "sp", party), #<2>
+                                   birthyear = ifelse(name == "Einar Hole Moxnes", 
+                                                       1921, birthyear), #<2>
+                                   deadyear = ifelse(name == "Einar Hole Moxnes", 
+                                                     2006,deadyear), #<2>
+                                   gender = ifelse(name == "Einar Hole Moxnes", 
+                                                   "Male", gender ), #<2>
+                                   age = year - birthyear) #<3>
+```
+1. If the `name` is "Moynes Einsi", we replace it with  "Einar Hole Moxnes", otherwise we keep what is stored in `name`
+2. We recode the different variables for observations for which the `name` is (now) "Einar Hole Moxnes" and keep the other variables as they currently. 
+3. If we calculate the `age` after the operations above, we avoid the missing value on  `age` for "Einar Hole Moxnes". 
+
+We similarly quickly realize that Kare Gennes should probably be [Kåre Gjønnes](https://en.wikipedia.org/wiki/K%C3%A5re_Gj%C3%B8nnes) who represented Kristelig Folkeparti. We correct these two observations as well (his gender was already coded correctly): 
+
+```{r}
+who_gov_norway_ministers <- mutate(who_gov_norway_ministers, 
+                                   name = ifelse(name == "Kare Gennes", 
+                                                 "Kare Gjonnes", name ), 
+                                   party = ifelse(name == "Kare Gjonnes", 
+                                                  "krf", party), 
+                                   birthyear = ifelse(name == "Kare Gjonnes", 
+                                                       1942, birthyear), 
+                                   deadyear = ifelse(name == "Kare Gjonnes", 
+                                                     2021,deadyear),
+                                   age = year - birthyear) 
+```
+
+
+
+### Coding variables based on multiple logical conditions using `case_when()`
+We will often find ourselves creating or recoding variables based on multiple logical conditions. Suppose, for instance, that we wanted a categorical age variable with the values "30-39 years", "40-49 years", "50-59 years", "60-69 years".[^2] 
+
+There are different ways in which we could create such a variable. In the past we have frequently relied on combining multiple `ifelse()` calls. We could write: 
+
+```{r}
+who_gov_norway_ministers <- mutate(who_gov_norway_ministers, 
+                                   age_categorical = NA, #<1> 
+                                   age_categorical = ifelse(age < 40,#<2> 
+                                                            "30-39 years",#<2> 
+                                                            age_categorical), #<2> 
+                                  age_categorical = ifelse(age> 39 & age < 50,#<3>
+                                                           "40-49 years",#<3>
+                                                           age_categorical),#<3> 
+                                  age_categorical = ifelse(age > 49 & age < 60,
+                                                           "50-59 years",#<3>
+                                                           age_categorical),#<3>
+                                    age_categorical = ifelse(age > 59 & age < 70,#<3>
+                                                             "60-69 years",#<3>
+                                                             age_categorical))#<3>
+                                   
+```
+1. We first create a new variable containing only `NA`s. 
+2. We replace values on the new variable for observations with `age` less than 40 and keep the existing values for the other observations
+3. Then we sequentially replace the values using the appropriate logical conditions (and always keeping the existing values for the observations that don't satisfy the condition).  
+
+[^2]: There are no ministers younger than 30 or older than 69 in `who_gov_norway_ministers`. 
+
+We can get a quick sense of the variable, we created using `table()`
+
+```{r}
+table(who_gov_norway_ministers$age_categorical)
+```
+
+
+The above code, works just fine,  but this approach is a little cluttered. `case_when()` allows you to simplify this type of code. Let's rewrite the same code, using `case_when()`
+
+
+```{r}
+who_gov_norway_ministers <- mutate(who_gov_norway_ministers, 
+                                   age_categorical = case_when(age < 40 ~ "30-39 years", #<1>
+                                                               age < 50 ~ "40-49 years", #<2>
+                                                               age < 60 ~ "50-59 years", #<3>
+                                                               age < 70 ~ "60-69 years"))#<3>
+
+```
+1. We want a new variable called "age_categorical" to be created using `case_when()`. If `age` is less than 40 this variable should take the value "30-39 years". 
+2. If the above condition was not `TRUE`, then we move on to evaluate the next condition which is whether `age` is less than 50. If so, the variable should get the value "40-49 years". 
+3. We follow the same logic for the remaining two conditions. Note that because the conditions are evaluated sequentially, we don't to specify e.g. `age > 39 & age < 50`. `age < 50` suffices as we have already taken care of the observations that are younger than 40. 
+
+```{r}
+table(who_gov_norway_ministers$age_categorical) #<1>
+```
+1. If we compare the output of this `table()` with the one created above, we see that two code chunks produce the same variable. The `case_when()` code is just much simpler. Woot!
+
+
+In the `case_when()` code above observations that don't specify any of the conditions will get `NA`s on the variable that is created. Sometimes, we want to use `case_when()` to recode a variable for specific conditions and keep the original value for those observations that don't match any of the conditions. Using the placeholder `TRUE` in the `case_when()` code, we can specify what happens with those observations that don't satisfy any of the conditions. We could exploit this to simplify our code for correcting the coding of Einar Hole Moxnes and Kåre Gjønnes:
+
+
+```{r}
+who_gov_norway_ministers <- who_gov_norway_ministers %>% 
+  mutate(name = case_when(name == "Moynes Einsi" ~ "Einar Hole Moxnes", 
+                          name == "Kare Gennes" ~ "Kare Gjonnes", 
+                          TRUE ~ name), #<1>
+         party  = case_when(name == "Einar Hole Moxnes" ~ "sp", 
+                          name == "Kare Gjonnes" ~ "krf", 
+                          TRUE ~ party ), #<1>
+          birthyear  = case_when(name == "Einar Hole Moxnes" ~ 1921, 
+                          name == "Kare Gjonnes" ~ 1942, 
+                          TRUE ~ birthyear ), #<1>
+          deadyear  = case_when(name == "Einar Hole Moxnes" ~ 2006, 
+                          name == "Kare Gjonnes" ~ 2021, 
+                          TRUE ~ birthyear ), #<1>
+         gender  = case_when(name == "Einar Hole Moxnes" ~ "Male", 
+                          TRUE ~ gender )) #<1>
+```
+1. Using `TRUE ~` we can specify what happens to those observations that don't satisfy any of the conditions. Otherwise those observations would get `NA`s. 
+
+
+
+## Using pipes (`%>%`)
+
+Pipes (`%>%`) allow you to combine a sequence of multiple operations, such as multiple `dplyr` verbs that need to be executed sequentially to produce the out we want. Pipes make our code easier to read and understand.
+
+In RStudio, you can get a `%>%` by pressing `ctrl+shift+m`/`cmd+shift+m`
+
+The `%>%` operator comes from the `magrittr`, but is automatically loaded with all `tidyverse packages` such as `dplyr` and using pipes is particularly useful in data wrangling as we typically will perform a long chain of operations to produce the dataset that we need for our analysis.
+
+Using pipes, we can perform all the operations we did to produce `who_gov_norway_ministers` like this:
+
+```{r}
+who_gov_norway_ministers <- who_gov %>% #<1>
+  filter(country_isocode == "NOR", #<2>
+         classification == "Prime Minister" | #<2>
+           classification == "Minister (Full Rank)") %>%  #<2>
+  select(year, id, position, name, #<3>
+         gender,  birthyear, deadyear, party, classification) %>% #<3>
+  rename(minister_type = classification) %>% #<4>
+  mutate(name = case_when(name == "Moynes Einsi" ~ "Einar Hole Moxnes", #<5>
+                          name == "Kare Gennes" ~ "Kare Gjonnes", #<5>
+                          TRUE ~ name), #<5>
+         party  = case_when(name == "Einar Hole Moxnes" ~ "sp", 
+                          name == "Kare Gjonnes" ~ "krf", #<5>
+                          TRUE ~ party ), #<5>
+          birthyear  = case_when(name == "Einar Hole Moxnes" ~ 1921, #<5>
+                          name == "Kare Gjonnes" ~ 1942, #<5>
+                          TRUE ~ birthyear ),#<5>
+          deadyear  = case_when(name == "Einar Hole Moxnes" ~ 2006, #<5>
+                          name == "Kare Gjonnes" ~ 2021, #<5>
+                          TRUE ~ birthyear ), #<5>
+         gender  = case_when(name == "Einar Hole Moxnes" ~ "Male", #<5>
+                          TRUE ~ gender), #<5>
+         age = year - birthyear, #<5>
+         age_categorical = case_when(age < 40 ~ "30-39 years", #<5>
+                                     age < 50 ~ "40-49 years", #<5>
+                                     age < 60 ~ "50-59 years",#<5>
+                                     age < 70 ~ "60-69 years"))#<5>
+  
+```
+
+1.  We start a sequence of operations with a `data.frame`, here `who_gov`. We may choose to assign the result of the sequence of operation that follows to an object. Here we assign the result to `who_gov_norway_ministers`. We end the line with a `%>%` which tells R that more commands will follow to produce our desired result.
+2.  We then `filter()` the data. We don't need to specify the dataset in `filter()` (or in any of the subsequent operations) because R will continue to use the data from the line above in the sequence of operations. We end the line with a `%>%` to tell R that more functions are coming.
+3.  We then `select()`the columns we want and end the line with a `%>%` to let R know that more is coming.
+4.  We then`rename()`. 
+5. Finally, we use `mutate()` to calculate new variables and recode existing ones. Because the line doesn't end in a `%>%`, the sequence of operations ends here.
+
+We think that pipes are great for making sequences of operations performed on the same input data more readable! And now that you have seen how they work, we will be using them a lot in the what follows!
+
+::: callout-tip
+## `%>%` vs. `|>`
+
+Pipes were introduced to R with the `magrittr` package which is where the `%>%` operator comes from. Pipes proved immensely popular and in version 4.1 of R (released in 2021), a pipe operator (`|>`) was included in base R.
+
+For the most part, the "native" pipe operator, `|>`, works like the `%>%` operator, but there are some important exceptions, which you can read more about [here](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/).
+
+We will be sticking to the `%>%` operator and this course, but the `|>` operator is still useful to be aware of as you are likely to encounter it in code written by others.
+:::
+
+## Grouping data using `group_by()`
+We often have datasets in which the observations are grouped in some way.  
+
+In `who_gov_norway_ministers` there are  multiple observations of the same people (identified by `who_gov_norway_ministers$name`), multiple observations from the same year (identified by `who_gov_norway_ministers$year`), multiple observations of the same positions (identified by `who_gov_norway_ministers$position`), and so on. Perhaps, we want to create a new variable capturing which cabinet each observation was part of, thus creating a new potential grouping variable. 
+
+Often we want to calculations within each group. For instance, we may want to calculate the age of each person when they first achieved a position in a Norwegian cabinet.[^3] To do that we first need to `group_by(name)`. After we have grouped the data, we can do operations on the data within each "group". 
+
+```{r}
+who_gov_norway_ministers <- who_gov_norway_ministers %>% 
+  group_by(name) %>% 
+  mutate(age_when_first_entering_a_cabinet = min(age, na.rm = TRUE))
+```
+[^3]: Note that since our data starts in 1966 and some of the people in government in the 1960s and 1970s may also have been in government before the start of our data, this variable will be somewhat inaccurate at the beginning of the time series. 
+
+If we print out the first few rows on selected variables, we will see that `who_gov_norway_ministers$age_when_first_entering_a_cabinet` varies by `who_gov_norway_ministers$name`, but is constant within each `who_gov_norway_ministers$name`: 
+
+```{r}
+who_gov_norway_ministers %>% 
+  select(name, year, age, age_when_first_entering_a_cabinet) %>% 
+  head(20)
+```
+
+When we are done with applying functions within a particular group, it is useful to `ungroup()` the data so that R will not apply subsequent functions within the group. Running the following code will remove the grouping of the dataset. 
+
+```{r}
+who_gov_norway_ministers <- who_gov_norway_ministers %>% 
+  ungroup()
+```
+
+## `summarize()` 
+
+Suppose we are interested in the share of female ministers each year. We then need first to  `group_by(year)`. we could use `mutate()` to add new variable with the share of female ministers each year to the `who_gov_norway_ministers` data, but this might not be those most convenient format, if we want to report the annual shares in a table or figure. Instead we want to `summarize()`:
+
+```{r}
+share_female_ministers <- who_gov_norway_ministers %>% #<1> 
+  group_by(year) %>% #<2>
+  summarize(share_female_ministers = mean(gender == "Female", na.rm = TRUE)) #<3>
+ 
+
+table(who_gov$year) 
+```
+1. We want to use `who_gov_norway_ministers` as our input `data.frame`, but we will assign the result to a new object `share_female_ministers`
+2. We `group_by(year)` to the operations that follow within each year. 
+3. `summarize()` will calculate the share of female ministers each year and aggregate the data to have one row per year. The only columns will be the grouping variable (`year`) and the variable(s) we create inside the summary call. 
+
+The resulting `data.frame` looks like this: 
+```{r}
+print(share_female_ministers, n = nrow(share_female_ministers))
+```
+
+We might want more than one summary statistics per year. For instance, we might want to add the count of female ministers, and the count of ministers in total and the share of ministers from each of the different parties: 
+
+
+```{r}
+shares_and_counts <- who_gov_norway_ministers %>% #<1> 
+  group_by(year) %>% #<2>
+  summarize(share_female_ministers = mean(gender == "Female", na.rm = TRUE),  #<3>
+            count_female_ministers = sum(gender == "Female", na.rm = TRUE),  #<3>
+            count_ministers = n(), #<4>
+            share_dna = mean(party == "dna", na.rm = TRUE),
+            share_hoyre= mean(party == "h", na.rm = TRUE), 
+                       share_sp= mean(party == "sp", na.rm = TRUE), 
+               share_venstre = mean(party == "v", na.rm = TRUE), 
+            share_frp = mean(party == "fr", na.rm = TRUE), 
+            share_sv = mean(party == "sv", na.rm = TRUE), 
+            share_krf = mean(party == "krf", na.rm = TRUE)) 
+
+print(shares_and_counts)
+  
+```
+1. We use `who_gov_norway_ministers` as the input data, but we don't assign the result to a new object. The result will then instead be printed in the console. 
+2. We group the data by year. 
+3. We now calculate multiple summary statistics for each year. 
+4. The `n()` function can be used to find the total number of observations within a group. 
+
+
+You can also use `summarize()` with a group. If so, `summarize()` will calculate the summary statistics for the full dataset. For instance we can get the share of female ministers in the `who_gov_norway_ministers` as a whole like this: 
+
+```{r}
+who_gov_norway_ministers %>% 
+  summarize(share_female_ministers = mean(gender == "Female", na.rm = TRUE))
+```
+
+The above code produces a single number because the share is calculated across all the observations in the dataset. 
+
+
+##  `mutate()` or `summarize()` `across()` multiple columns
+We often need to the the same `mutate()` or `summarize()`  operations `across()` multiple columns. We `across()` and the helper functions for `select()` to do the same operation for a defined set of columns. 
+Suppose for instance that we wanted to recode all the variables with "shares" in the `shares_and_counts` `data.frame` we created above to percentages, but we wanted to keep the "counts" unchanged. Combining `across()` and an appropriate `select()` helper functions makes this straightforward: 
+
+```{r}
+percentages_and_counts <- shares_and_counts %>% 
+  mutate(across(.cols = contains("share"), #<1>
+                .fns = function (x) { #<2>
+                  x *100 #<3>
+                }))
+
+print(percentages_and_counts)
+```
+1. We use `across()` inside `mutate()` (we may also use it inside `summarize()`). Using the `.cols` argument and the `select()` helper function `contains()` we specify that we want to do something with all the columns with "share" in the column name. 
+2. For the `.fns` argument we specify the function that should be applied across the selected columns. We may give the name of an existing function or we may define a function using `function()`. [Our knowledge of how to define our own function now comes in handy!](https://pages.github.uio.no/oyvinsti/STV4030A/basics_refresh/Functions.html)
+3. Our function is in this case very simple. It takes the value `x` and multiplies it with 100. This will turn our shares into percentages. 
+
+
+
+
+## `arrange()`
+We can change the order of the rows in the dataset by using `arrange()`. For instance, let's say we wanted the rows in our  `share_female_ministers` dataset to be sorted not by year, but by the share of female ministers. We would then then: 
+
+```{r}
+share_female_ministers <- share_female_ministers %>% 
+  arrange(share_female_ministers)
+```
+If we print out `share_female_ministers`, the `data.frame` will now be sorted by the values on `share_female_ministers$share_female_ministers`: 
+
+```{r}
+print(share_female_ministers, n = 33)
+```
+
+By default, the data will be arranged in ascending order (with the lowest values first). To instead `arrange()` the data in descending order (with the highest values first), we can use `desc()`:
+
+```{r}
+share_female_ministers <- share_female_ministers %>% 
+  arrange(desc(share_female_ministers))
+print(share_female_ministers, n = 33)
+```
+
+## `distinct()`
+`distinct()` is useful for making sure that observations in the data are not duplicated. Let's say we want to produce a list of all the prime ministers in Norway. We could start by using `filter()` to subset the data to prime ministers. 
+
+```{r}
+who_gov_norway_ministers %>% 
+  filter(minister_type == "Prime Minister")
+```
+The above code subsets to the prime ministers, but we now get repeated observations of the prime ministers (one row for each year they were in office). We can use `distinct()` to only get one observation per `who_gov_norway_ministers$name` like this: 
+
+```{r}
+who_gov_norway_ministers %>% 
+  filter(minister_type == "Prime Minister") %>% 
+  distinct(name)
+```
+We now only have one observation per person, but we lost all of the other variables. We can change this behavior in two different ways, first, we can add the other variables we want (and which do not vary within each prime minister) inside the `distinct()` call: 
+
+```{r}
+who_gov_norway_ministers %>% 
+  filter(minister_type == "Prime Minister") %>% 
+  distinct(name, birthyear, deadyear, party)
+```
+Alternatively, we could say that we want to `.keep_all` the variables: 
+
+```{r}
+who_gov_norway_ministers %>% 
+  filter(minister_type == "Prime Minister") %>% 
+  distinct(name, .keep_all = TRUE)
+```
+
+
+# Combining datasets with `dplyr`
+So far, we have been using `dplyr` verbs to manipulate individual dataset. Very often we  will also need to combine multiple datasets. Fortunately, `dplyr` has a set of functions for *joining* and *binding* datasets. 
+
+## Joining (also called "merging") data 
+We can use mutating joins, to combine datasets that share *keys* or *ID-variables*, meaning one or more variables that uniquely identify the observations at the level on which they will be joined. 
+
+In some cases, you will only need a single variable to have your *key*. For instance, if you are joining two datasets that have one row per country, you my join the two datasets if you have one or more variables uniquely identifying each country in both dataset. If you are joining two datasets both containing one row per country per year, you may use two variables to uniquely identify each country and each year in both datasets (or alternatively, you may have a "country-year" variable in both datasets). 
+
+:::callout-warning
+## The key needs to be consistent across the datasets!
+Note that the variables need to be identical across the datasets you want to join. If you have the value "Ivory Coast" on the country variable in one of  the datasets and "Côte d'Ivoire" in the other dataset, R will not know that these observations are of the same country. For this reason, it is useful to use one of the many standardized ID variables for your countries, such as the [@gleditsch1999revised country codes](http://ksgleditsch.com/data/iisystem.dat) or perhaps one of the country code standards from the [International Organization for Standardization](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes). 
+
+Of course, this advice also applies to other types of keys. If we want to match two datasets where the unit of observations are individuals (such as government ministers, members of parliament, or judges) we would need a variable that uniquely identifies each individual in both datasets. 
+::: 
+:::callout-tip
+## Use the `countrycode` package to convert country names to country codes and translate between different country codes
+@arel2018countrycode provide an excellent resource for students and scholars working with country data. The `countrycode()` function from their [`countrycode` package](https://github.com/vincentarelbundock/countrycode) converts country names into various types of country codes and translates between different types of country codes. 
+
+To illustrate, let's generate  country codes that correspond to the country codes used by the [Varieties of Democracy](https://v-dem.net/documents/25/countryunit_v13.pdf) project for all observations in the `who_gov` dataset: 
+
+
+
+```{r}
+library(countrycode)
+who_gov <- who_gov %>% 
+  mutate(vdem_countrycode = countrycode(sourcevar = country_name, #<1>
+                            origin = "country.name", #<2>
+                            destination = "vdem")) #<3>
+
+
+```
+1. We need to specify `sourcevar` the variable used to generate the country codes. Often this will be the country names, but it may also be one of the different types of country codes if we need to translate between different standards. 
+2. We need to specify how the `source.var` is coded. We set `origin` to "country.name" if we are generating the codes from country names. When translating between different country codes, we would set `origin` to whatever standard we are translating from. 
+3. We supply the label for the type of country code we would like to generate to `destination`. You can get a list of the different standards and their labels by running `?countrycode::codelist` in your console. 
+
+Notice that the above code produces a warning message about country names that could not be unambiguously matched to a Varieties of Democracy country code. These observations will get `NA`s on the new `who_gov$vdem_countrycode`. To avoid losing them from your analysis, it would be useful to either set their Varieties of Democracy country code manually or to recode the `whogov$country_name` variable so that also these country names can be matched. 
+
+:::
+Let's consider an example. Say, we want investigate the relationship between female representation in Norwegian cabinets and female representation in the Norwegian parliament. We already used WhoGov to investigate female representation in Norwegian cabinets.[^4] Let's also load some data on female representation in Norwegian parliament.[^5]
+
+[^4]: If we are to do this for a proper research project such as an MA thesis, we would have wanted to use a complete dataset on all Norwegian Ministers. In fact Martin @soyland2017survival did just that for his MA thesis which he later published as an article. His data are available [here](https://github.com/martigso/ministersNor).   WhoGov is updated annually and sometimes ministers are replaced  more frequently. For instance, Kåre Gjønnes, which we recoded above, was not just Minister of Agriculture from 1997 to 2000. He was also Minister of Nordic Cooperation from January to March 2000. Because he never held this position in July, it is, however, not registered in the WhoGov dataset. WhoGov arguably makes up for omissions such as these by offering a very impressive coverage of most countries in the world over a long time period, making it possible, for instance, to [study female access to cabinets across the world @nyrup2023consolidating](https://doi.org/10.1017/S000305542300062X). But if you do a study only on a single country, want to do like @soyland2017survival and collect data on all the ministers!
+
+
+
+
+
+[^5]: We grabbed this data from the Norwegian parliament's website using the R package `stortingscrape` developed by @soyland2021stortingscrape. 
+```{r}
+#| eval: false
+#| echo: false
+library(stortingscrape)
+
+parl_periods <- get_parlperiods()
+
+mps <- data.frame(NA)
+for(i in 1:nrow(parl_periods)){
+  mps <- bind_rows(mps, 
+                   get_parlperiod_mps(parl_periods$id[i], substitute = FALSE))
+}
+
+stortinget_female_share_by_period <- mps %>% 
+  group_by(period_id) %>% 
+  summarize(share_female_mps = mean(gender == "kvinne")) %>% 
+  drop_na()
+save(stortinget_female_share_by_period, file = "../data/stortinget_female_share_by_period.RData")
+
+
+stortinget_female_share_by_period_and_party <- mps %>% 
+  group_by(period_id, party_id) %>% 
+  summarize(share_female_mps = mean(gender == "kvinne")) %>% 
+  drop_na()
+
+save(stortinget_female_share_by_period_and_party , file = "../data/stortinget_female_share_by_period_and_party.RData")
+
+
+
+```
+
+```{r}
+load("../data/stortinget_female_share_by_period.RData")
+
+print(stortinget_female_share_by_period, n = 20)
+```
+The dataset `stortinget_female_share_by_period` contains the share of members of parliament that were female for each legislative period from the "1945-49" period to the "2021-2025" period. 
+
+If we are to join the `stortinget_female_share_by_period` with data on female representation in Norwegian cabinets from WhoGov, we need a *key* that uniquely identifies each observation in both datasets. In this case, we will need to make some choices as `stortinget_female_share_by_period` is measured at the level of the legislative period, while `who_gov` contains annual data on the composition of the cabinet. 
+
+One solution would be to create a legislative period variable in our `share_female_ministers` dataset. We already know how to do that using `mutate()` and `case_when()`.[^6]
+
+[^6]: When coding the `period_id`, we keep in mind that each legislative period starts at the beginning of October (at least since 1962), while WhoGov is updated each July.
+
+```{r}
+share_female_ministers <- share_female_ministers %>% 
+  mutate(period_id = case_when(year < 1974 ~ "1969-73", 
+                               year < 1978 ~ "1973-77", 
+                               year < 1982 ~ "1977-81", 
+                               year < 1986 ~ "1981-85", 
+                               year < 1990 ~ "1985-89", 
+                               year < 1994 ~ "1989-93", 
+                               year < 1998 ~ "1993-97", 
+                               year < 2002 ~ "1997-2001", 
+                               year < 2006 ~ "2001-2005", 
+                               year < 2010 ~ "2005-2009",
+                               year < 2014 ~ "2009-2013",
+                               year < 2018 ~ "2013-2017", 
+                               year < 2022 ~ "2017-2021"))
+```
+
+We now have a variable `period_id` in both `share_female_ministers` and `stortinget_female_share_by_period`. This variable uniquely identifies each observation in `stortinget_female_share_by_period`, but not in `stortinget_female_share_by_period`. We can use this *key* to join data at the level of the legislative period. 
+
+### `left_join()` 
+There are different types of *joins*, but `left_join()` is likely the one you will use the most. `left_join()` takes two dataset and join observations from the second dataset to the first dataset (i.e to the dataset on the left in our `left_join()` code.) by the *key* they have in common. Let's join  `stortinget_female_share_by_period` to `share_female_ministers`. 
+
+```{r}
+share_female_ministers_and_mps <- left_join(share_female_ministers, stortinget_female_share_by_period, #<1>
+                                            by = "period_id" ) #<2>
+```
+1. We use `left_join()` and specify the two datasets. Variables from the second dataset will be added to corresponding observations in the first dataset. 
+2. The variable to join by. 
+
+This is the resulting `data.frame`: 
+```{r}
+print(share_female_ministers_and_mps, n = nrow(share_female_ministers_and_mps))
+```
+
+Notice that the new `data.frame` called `share_female_ministers_and_mps` will have the same number of rows as `share_female_ministers`. It is good idea to check that this is indeed the case. We can verify using
+
+```{r}
+nrow(share_female_ministers) == nrow(share_female_ministers_and_mps)
+```
+If the above statement had evaluated to `FALSE`, it would have indicated a problem with our *key* resulting in the duplication of some rows. We would have wanted to investigate and correct our code before proceeding! 
+
+Let's say we instead wanted to `left_join` `share_female_ministers` to `stortinget_female_share_by_period` using the first year of the legislative period as they *key*. We can add a year variable to our `stortinget_female_share_by_period` like this: 
+```{r}
+stortinget_female_share_by_period <- stortinget_female_share_by_period %>% 
+  mutate(year = substr(period_id, 1,4), #<1>
+         year = as.integer(year), #<2>
+         year = year +1) #<3>
+```
+1. `substr(period_id, 1,4)` extracts the first 4 characters from each element of `period_id`, so for "1969-73" it extracts "1969", for "2005-2009" it extracts "2005", and so on. 
+2. The extracted `year`s will be character strings, so we need to turn them into integers, which we can do using `as.integer()`. 
+3. We add 1 to the start of each year to account for how the legislative sessions all start in October, while the WhoGov data are updated each July. 
+
+We can now `left_join` `stortinget_female_share_by_period` and `share_female_ministers`  using `year` as the *key*: 
+
+```{r}
+share_female_ministers_and_mps_by_year <- left_join(stortinget_female_share_by_period, share_female_ministers, 
+                                             by = "year")
+
+nrow(share_female_ministers_and_mps_by_year) == nrow(stortinget_female_share_by_period)
+```
+
+That worked. But let's look at the result: 
+
+```{r}
+print(share_female_ministers_and_mps_by_year, n = nrow(share_female_ministers_and_mps_by_year))
+```
+There are several things to note: 
+
+1. We no longer retain the yearly observations for the `share_female_ministers` variables. We retain only those years that exist in `stortinget_female_share_by_period$year`. If we wanted a dataset on the legislative period level, it would arguably have been better to create the `period_id` variable in the `who_gov_norway_ministers` dataset and calculate the share of female ministers within each period (this would again create additional questions concerning for instance if we wanted to adjust for how long each minister was in office. These things are not as straightforward as we might wish!). 
+2. We keep the periods for which there are no observations on `share_female_ministers`. `left_join()` will retain all observations in the "left" dataset. These observations get `NA` values on the variables from the dataset "to the right". 
+3. We duplicated the `period_id` variable. Since this variable was present in both datasets and we didn't use it as a key, `left_join()` has retained a copy of each and named them `period_id.x` and `period_id.y`. We could have avoided this by including the variable as part of the key (`by = c("year", "period_id")` or by omitting this variable from one of the dataset before joining them. 
+
+:::callout-tip
+## `right_join()`
+There is, of course, also a `right_join()` which works exactly like `left_join`, except that it will keep all the observations in the second dataset ("the dataset to the right") and add variables from the first dataset to this second dataset. 
+:::
+
+
+### `inner_join()`
+We can also `inner_join()`, in which case we will only keep those variables that are present in both datasets. Consider: 
+
+```{r}
+
+
+share_female_ministers_and_mps_by_year_inner <- inner_join(stortinget_female_share_by_period, share_female_ministers, 
+                                                     by = c("year", "period_id"))
+
+
+```
+
+```{r}
+print(share_female_ministers_and_mps_by_year_inner, n = nrow(share_female_ministers_and_mps_by_year_inner))
+```
+The key difference is that we now omit all observations that are not present in both datasets!
+
+### `full_join()`
+We can instead `full_join()` to keep all observations that are present in at least one of the datasets: 
+
+```{r}
+
+
+share_female_ministers_and_mps_by_year_full <- full_join(stortinget_female_share_by_period, share_female_ministers, 
+                                                     by = c("year", "period_id"))
+
+print(share_female_ministers_and_mps_by_year_full, n = nrow(share_female_ministers_and_mps_by_year_full))
+
+```
+When using `full_join()` we get all the combinations of `year` and `period_id` that are present in one of the datasets. We get `NA`s on the `share_female_ministers` if the observation doesn't appear in the `share_female_ministers` dataset and `NA`s on the `share_female_mps` variable if the the observation doesn't appear in the `stortinget_female_share_by_period` dataset. 
+
+
+
+## Binding data
+Imagine that instead of the having the `stortinget_female_share_by_period` dataset with the share of female members of parliament for each legislative period, we had multiple files each containing the share of female members of parliament in one particular legislative period. For instance, we may have a set of `.csv` files such as these: 
+
+```{r}
+#| eval: false
+#| echo: false
+for(i in stortinget_female_share_by_period$period_id){
+  tmp_data <- filter(stortinget_female_share_by_period,
+                     period_id == i) %>% 
+    select(-year)
+  object_name <- paste("stortinget_female_share",
+                       substr(i, 1,4), 
+                       "period",
+                       sep = "_")
+  file_name <- paste("../data/stortinget_periods", object_name, sep = "/")
+  file_name <- paste(file_name, "csv", sep = ".")
+  assign(x = object_name,
+         value = tmp_data) %>% 
+    write_csv( file = file_name)
+}
+
+```
+
+```{r}
+dir("../data/stortinget_periods") #<1> 
+```
+1. The `dir()` function gives you the names of all the files in a specified directory on your computer. 
+
+Consider the files `stortinget_female_share_2017_period.csv"`  and `stortinget_female_share_2021_period.csv`: 
+
+```{r}
+#| message: false
+stortinget_female_share_2017_period <- read_delim("../data/stortinget_periods/stortinget_female_share_2017_period.csv", delim = ",")
+print(stortinget_female_share_2017_period)
+stortinget_female_share_2021_period <- read_delim("../data/stortinget_periods/stortinget_female_share_2021_period.csv", delim = ",")
+print(stortinget_female_share_2021_period)
+```
+Each of these files contain information about the same variables and with the same variable names. But there are different observations in each file. We cannot join them to combine these data, but we may bind the files together: 
+
+### `bind_rows()`
+We we would want to add the rows from these different datasets on top of each other. We can do so using the `bind_rows()` function `dplyr`. You supply `bind_rows()` with two or more `data.frame`s which will be added on top of each other. The output will contain all columns that exist in at least one of the `data.frame`s and columns with the same names will be treated as the same variable: 
+
+```{r}
+stortinget_female_share_2017_and_2021_periods <- bind_rows(stortinget_female_share_2017_period, 
+                                                           stortinget_female_share_2021_period)
+```
+
+
+The result looks like this: 
+```{r}
+print(stortinget_female_share_2017_and_2021_periods)
+```
+
+#### Binding many datasets together
+Of course, we may want to bind all the different `.csv`-files together. If so, it makes sense to exploit what we already know about *iteration* in R, for instance by writing a for-loop: 
+
+```{r}
+#| message: false
+
+files <- paste("../data/stortinget_periods", dir("../data/stortinget_periods"), sep = "/") #<1> 
+stortinget_female_share_combined <- data.frame() #<2> 
+for(i in files){ #<3> 
+  tmp <- read_csv(i) #<4> 
+  stortinget_female_share_combined <- bind_rows(stortinget_female_share_combined,  #<5> 
+                                                tmp) #<5>
+}
+```
+1. We start by creating a vector with the path to all the different `.csv`-files. 
+2. Next we create an empty `data.frame` that we will add the data to
+3. We loop over the different `files`
+4. We read each file and assign it temporarily as `tmp`
+5. Finally,  we bind `stortinget_female_share_combined` and `tmp` and assign the result to `stortinget_female_share_combined`. For each iteration we thus overwrite `stortinget_female_share_combined` making it longer. 
+
+
+```{r}
+print(stortinget_female_share_combined)
+```
+
+Alternatively we may use the `map()` and `reduce()` functions from `purrr` to do the same thing:
+
+```{r}
+#| message: false
+library(purrr)
+stortinget_female_share_combined_with_purr <- files %>% #<1> 
+  map(read_csv) %>%  #<2> 
+  reduce(bind_rows)  #<3>     
+```
+1. We use the `files` vector with the name and location of each `csv.`-file that we created above
+2. With `map()` we can apply a function to all the elements in a vector. Here we apply `read_csv` which will load each file with a name and location in the `files` vector. This will produce a list containing the 20  `data.frame`s
+3. We can use `reduce()` to combine the elements of a list or vector into a single value. Here we use `bind_rows()` to combine all the the elements of the list of 20 `data.frame`s into a single `data.frame`
+
+The result looks exactly the same as when we used a for-loop: 
+```{r}
+print(stortinget_female_share_combined_with_purr)
+```
+
+With only 20 files, neither of these solutions is significantly more efficient than the other. It's a matter of taste. If you have a very large number of files, the  `purrr` approach will likely be faster. 
+
+
+### `bind_cols()`
+Just like we can `bind_rows()`, adding different datasets on top of each other, we can `bind_cols()`, adding different datasets together side by side. 
+
+For `bind_cols()` to be appropriate though, all the observations/rows need to be the same and be sorted in the same order in the `data.frame`s we are binding. When we are not absolutely confident that they are, it is better to use `left_join()` or one of the other "join"-functions. 
+
+
+# Changing the structure of datasets with `tidyr`
+
+
+
+# `unite()` and `separate()`
+
+In a tidy dataset, each cell should contain one value and each value should have its own cell. Sometimes, we will encounter data where multiple values are included in the same cell or maybe what for our purposes should be considered a a value is spread across multiple cells. In the former case, we would need to `separate()` the data. In the latter case, we would need to `unite()` the data. `unite()` and `separate` are both from the package `tidyr` (i.e. not from `dplyr`) so make sure that this package is loaded.
+
+Lets' consider an example.
+
+The file "grand_chamber.RData" contains some information about Grand Chamber judgments of the European Court of Human Rights rendered between 1999 and 2018. Let's load the data and use `head()` to get a sense of how it is structured.
+
+```{r}
+#| echo: false
+#| eval: false
+library(janitor)
+library(readxl)
+library(stringr)
+case_details <- read_excel("../data/CaseDetails(updated2019_01_11) (1).xlsx")
+
+## Making the example somewhat easier: 
+grand_chamber <- case_details %>% 
+  clean_names() %>% 
+  filter(originating_body == "Court (Grand Chamber)") %>% 
+  mutate(year = as.numeric(substr(judgment_date,1,4))) %>% 
+  filter(year > 1998) %>% 
+  select(file_name, title,   conclusion_s, judgment_date) %>% 
+  separate(judgment_date, into = c("year", "month", "day"), sep = "-") %>% 
+  rename(conclusions = conclusion_s) %>% 
+  mutate(title = str_replace_all(title, pattern = "\\(.*?\\)", ""), 
+         title = str_replace_all(title, pattern = "()", ""), 
+         title = str_replace_all(title, pattern = "CASE OF ", ""), 
+         title = str_replace_all(title, 
+                                 pattern = '"THE FORMER YUGOSLAV REPUBLIC OF MACEDONIA"', "NORTH MACEDONIA"), 
+         title = str_replace_all(title, pattern = "BELGIUM AND GREECE", "BELGIUM, GREECE"), 
+         title = str_replace_all(title, pattern = " AND NORTH MACEDONIA", ", NORTH MACEDONIA"), 
+         title = str_replace_all(title, pattern = "MOLDOVA AND RUSSIA", "MOLDOVA, RUSSIA"), 
+         title = str_replace_all(title, pattern = "THE REPUBLIC OF", ""), 
+                  title = str_replace_all(title, pattern = "ITALIE", "ITALY"), 
+         title = str_replace_all(title, pattern = "THE ", ""), 
+         title = str_squish(title))
+
+save(grand_chamber, file = "../data/grand_chamber.RData")
+```
+
+```{r}
+load("../data/grand_chamber.RData")
+head(grand_chamber)
+```
+
+The dataset contains one row per Grand Chamber judgment. The different variables are the "file_name" which is a unique identifier of the judgment in the Court's database system, the title of the case, the conclusion(s) of the judgment, and the year, month, and day on which the judgment was rendered.
+
+## `unite()`
+
+Remember that each variable should have one column only. For most applications, it doesn't make sense to think of the year, month, and day on which the judgment was rendered (unless your theory is that judges get more grumpy in particular months or something like that). Instead, we would want a single variable capturing the date of the judgment!
+
+To get a date variable we need to `unite()` the `year`, `month` and `day` columns.
+
+For the `unite()` function we need to specify the name of the new column we would like to create. We then list all the columns we would like to `unite()`
+
+```{r}
+library(tidyr)
+grand_chamber %>% #<1> 
+  unite(judgment_date, year, month, day) %>% #<2> 
+  head() #<3>
+```
+
+1.  We are not assigning it to a new object, because we just want to test how this works. We therefore prefer to just print the result to the console.
+2.  We want the new column "judgment_date" based on uniting "year", "month", and "day"
+3.  We use head() to get a quick look of what the above code produces
+
+The above code removed the columns `year`, `month`, and `day` and replaced them with the new column `judgment_date`. The new column looks almost like what we want, but we see that years, months, and days are separated by underscores (`_`). This is not really a common way to format dates. We might want to replace the underscores (`_`) with hyphens (`-`). If so, we can specify the `sep` argument:
+
+```{r}
+grand_chamber %>%
+  unite(judgment_date, year, month, day, sep = "-") %>% #<1>
+  head() 
+```
+
+1.  We specify that values on the old columns should be separated with `-` on the new column.
+
+The dates are now formatted in a a reasonable way.
+
+Notice that by default, the old columns are removed. If we don't want to remove the `year`, `month`, and `day` columns, we can set `remove = FALSE`.
+
+```{r}
+grand_chamber %>%
+  unite(judgment_date, year, month, day, sep = "-", remove = FALSE) %>% #<1>
+  head() 
+```
+
+1.  setting `remove = FALSE` in order to retain the input columns.
+
+To save the result to the `grand_chamber` dataset, we need to assign the result back to the `data.frame`
+
+```{r}
+grand_chamber <- grand_chamber %>% 
+  unite(judgment_date, year, month, day, sep = "-", remove = FALSE)
+
+head(grand_chamber)
+```
+
+## `separate()`
+
+Consider the variable `grand_chamber$title`.
+
+```{r}
+grand_chamber$title[1:10]
+```
+
+The case name contains the name of the applicant(s) in the case (the people claiming that their human rights have been violated) and the name of the respondent state(s) separated by ".v ". Suppose we are interested in having the applicant(s) and the respondent state(s) in separate variables. For instance, we might be interested in learning how many cases there are against different states.
+
+We need to `separate()` the column "title" into two new columns, which we may call "applicant" and "respondent_state". We can exploit the fact that these two pieces of the data are always separated by the a "v." in the "title" column. We need to specify (1) the column we would like to `separate()` using the `col` argument, (2) the columns it should be separated into using the `into` argument, which takes a character vector with the new column names, and (3) the separator, using the `sep` argument:
+
+```{r}
+grand_chamber %>% 
+  separate(col = title, #<1> 
+           into = c("applicant", "respondent_state"), #<2> 
+           sep = "v. ") %>%  #<3> 
+  head()
+```
+
+1.  `title` is the column we would like to separate
+2.  "applicant" and "respondent_state" are the names of the new columns that `title` should be separated into.
+3.  The separator is "v. ".
+
+We now got two new columns `applicant`  and `respondent_state`. Like for `unite()` the default behavior is to remove the old column. In this case, it probably makes sense to keep the title though, so we will override this behavior using the `remove` argument:
+
+```{r}
+grand_chamber <- grand_chamber %>% 
+  separate(col = title,  
+           into = c("applicant", "respondent_state"), 
+           sep = "v. ", 
+           remove = FALSE) 
+head(grand_chamber)
+```
+
+### `separate()` when the number of values differ between rows
+Let's tabulate the `grandchamber$respondent_state` variable, we just created: 
+
+```{r}
+table(grand_chamber$respondent_state)
+```
+
+As you can see most, judgments had a single respondent state, but a few had two, and one judgment had five respondent states ("BOSNIA AND HERZEGOVINA, CROATIA, SERBIA, SLOVENIA, NORTH MACEDONIA"). We might want to separate these into different columns and, if so,  we can exploit the fact that different states are separated by commas. The problem is we don't have the same number of respondent states for all the rows. Fortunately, `separate()` can easily deal with this problem by filling in `NA` for rows with less than five respondent states. We just need to specify that we want `NA`s to be filled in to the right of the columns with 
+
+
+```{r}
+grand_chamber %>% 
+  separate(col = respondent_state, 
+           into = paste("respondent_state", 1:5, sep = "_"), #<1> 
+           sep = ",", 
+           fill = "right") %>% #<2>
+  head()
+```
+1. `paste("respondent_state", 1:5, sep = "_")` will produce the list of column names we want. If you run `paste("respondent_state", 1:5, sep = "_")`, you get `"respondent_state_1" "respondent_state_2" "respondent_state_3" "respondent_state_4" "respondent_state_5"`, which is what we want. 
+2. We just need to specify where the `NA` should be added. 
+
+## `separate_longer_delim()` 
+Rather than having multiple `respondent_state` variables, it might make sense to change the data structure so that we have one row per judgment per respondent state. If so, we can use `separate_longer_delim()`. This function works like `separate` but instead of splitting the column supplied to `col` into multiple columns, it will add addition rows so that each row has a single value on `col` column. For instance, we may: 
+
+```{r}
+grand_chamber_per_state <- grand_chamber %>% 
+  separate_longer_delim(col = respondent_state, 
+           delim = ",") #<1>
+
+table(grand_chamber_per_state$respondent_state)
+```
+1. Note that `separate_longer_delim` uses the argument `delim` instead of `sep`. 
+
+Each row now only has a single value in the `respondent_state`. While this is a nice way to structure these data, a key thing to remember is that we have now changed the observational unit from "judgment" to "judgment*respondent". 
+
+:::callout-tip
+## `separate_wider_delim()`
+There is also a `separate_wider_delim()` which works in the same way as the regular `separate()` function we have already discussed: it separates into multiple columns. The key difference is that it uses the argument `delim` instead of `sep`.  The intention of the `tidyr` developers is that this  function will replace `separate()`. 
+:::
+
+# Pivoting (also called "reshaping") your data
+It's time to deliver on the promise of tidying up the [World Bank population data that we introduced here](https://pages.github.uio.no/oyvinsti/STV4030A/Wrangling/tidy_data.html). Let's reload this file: 
+
+```{r}
+#| message: false
+wb_population_data <- read_delim("../data/WBpopulation.csv", delim = ",")
+head(wb_population_data)
+```
+
+The variable names are somewhat inconvenient, so before proceeding, we will quickly change the variable names using `clean_names()` from the `janitor` package. 
+
+```{r}
+#| message: false
+library(janitor)
+wb_population_data <- wb_population_data %>% 
+  clean_names() #<1>
+
+names(wb_population_data) #<2>
+```
+1. `clean_names()`changes the variable names so that they only consist of letters, numbers, and underscores and all names start with a letter. By default the new names follow our preferred "snake_case" convention, but you can change this using the `case` argument if you prefer to follow a different naming convention.  
+2. Printing out the new column names
+
+The **main problem**, is, however, that the dataset  is not in a tidy format. Each row refers to multiple different years and population variable is spread across multiple columns. Using `tidyr` we can, however, *pivot* or *reshape* the dataset into a tidy format. 
+
+## `pivot_longer()`
+In other words, the main problem problem with `wb_population_data` is that is in a too [*wide* format](https://en.wikipedia.org/wiki/Wide_and_narrow_data). We need to increase the number of rows and decrease the number of columns, thus making the data *longer*.
+
+We can do this using *pivot_longer()* from *tidyr*. We want to gather all the columns with names that start with "x" into one column and call that column `population`. We will also take the column names for all the variables that start with "x" and add them to a new variable, which we will call `year` so that we can keep track of which year each population value is for. [As we showed you above], we can use the `select()` helper function `starts_with()` to select all the columns that with names that start with the same character(s): 
+
+```{r}
+#| message: false
+wb_population_tidy <- wb_population_data %>% 
+  mutate(across(starts_with("x"), #<1> 
+                .fns = as.numeric)) %>% #<1> 
+  pivot_longer(cols = starts_with("x"), #<2>
+               names_to = "year", #<3>
+               values_to = "population") #<4>
+```
+1. First we want to make sure that all these columns are of the same data type. Otherwise they cannot be combined. We use `mutate()` and `across()` to change multiple columns. We use `starts_with("x")` to select all columns with names that start with "x" as the columns we would like to change, and we specify that `as.numeric` is the function we would like to apply.
+2. To `pivot_longer()`, we first need to select the columns that should be combined into a single variable using the `col` argument. Again we use `starts_with("x")` to select all columns with names that start with "x". 
+3. We then specify the name for the new variable containing the column names for all those columns with names starting with "x". The information that is useful in those column names is what year the value is for, so we will call this variable "year"
+4. For `values_to` we specify the name for the new and longer variables that we want to add all the values on the different columns we are pivoting. 
+
+The first rows of the result look like this: 
+
+```{r}
+head(wb_population_tidy)
+```
+
+Of course, the `year` variable doesn't look like exactly what we want. But we already learned about the `substr()` function, which handles this slight complication: 
+
+```{r}
+wb_population_tidy <- wb_population_tidy %>% 
+  mutate(year = substr(year, 2,5), 
+         year = as.integer(year))
+head(wb_population_tidy)
+```
+
+
+## `pivot_wider()`
+Just like you may `pivot_longer`, you may `pivot_wider()` reducing the number of rows and expanding the number of columns. Consider this dataset which contains country-year data on different democracy indeces from the [Varieties of Democracy project](https://v-dem.net/). 
+
+```{r}
+#| eval: false
+#| echo: false
+democracy_scores <- vdemdata::vdem %>% 
+  select(country_name, country_id, year, v2x_libdem, v2x_polyarchy, v2x_partipdem, v2x_egaldem) %>% 
+  pivot_longer(cols = starts_with("v2x"), 
+               names_to = "democracy_index", 
+               values_to = "score")
+
+write_csv(democracy_scores, file = "../data/democracy_scores.csv")
+
+```
+
+```{r}
+#| message: false
+democracy_scores <- read_delim("../data/democracy_scores.csv", delim = ",")
+
+head(democracy_scores)
+```
+
+Instead of one row per country-year, the dataset has one row per democracy index per country-year. This format can sometimes be useful for [data visualization in ggplot2](https://pages.github.uio.no/oyvinsti/STV4030A/Visualization/data_viz_in_ggplot.html), but it is inappropriate for doing country-year level analysis. We need to `pivot_wider()` the dataset. 
+
+To `pivot_wider()`, we need to specify the column in the existing dataset that contains the names of the new columns we will create to widen the data (the `names_from` argument) and the column in the existing dataset where the values on the new columns in the wider dataset should come from (the `values_from` argument):
+
+```{r}
+democracy_scores_country_year <- democracy_scores %>% 
+  pivot_wider(names_from = "democracy_index", #<1>
+              values_from = "score") #<2>
+```
+1. The names of the new columns should come from the column `democracy_index`. 
+2. The values for the new columns should come the column `score`.
+
+The top rows of the new `data.frame` look like this: 
+
+```{r}
+head(democracy_scores_country_year)
+```
+
+We successfully pivoted the data into a country-year format!
+
+
+
+
+
+
+
+
+
